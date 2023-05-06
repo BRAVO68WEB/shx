@@ -9,6 +9,7 @@ import routes from './routes';
 import { errorHandler, notFoundHandler } from './libs';
 import pkg from './package.json' assert { type: 'json' };
 import configStore, { IConfigKeys } from './configs';
+import CacheClient, { CacheEnvironment } from './helpers/cache.factory';
 
 export const app: express.Application = express();
 
@@ -17,9 +18,10 @@ console.log('🚀', '@' + pkg.author.name + '/' + pkg.name, 'v' + pkg.version);
 const isDev: boolean = process.env.NODE_ENV == 'production';
 console.log(isDev ? '🚀 Production Mode' : '🚀 Development Mode');
 const configs = new configStore(isDev);
-const configKeys: IConfigKeys = await configs.getConfigStore() as IConfigKeys;
+const configKeys: IConfigKeys = (await configs.getConfigStore()) as IConfigKeys;
 
 hgqlInit();
+CacheClient.init(configKeys.CACHE_ENV as CacheEnvironment);
 
 app.use(cors());
 app.use(helmet());

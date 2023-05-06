@@ -1,0 +1,25 @@
+table:
+  name: apikeys
+  schema: public
+array_relationships:
+  - name: gists
+    using:
+      foreign_key_constraint_on:
+        column: apikeyUsed
+        table:
+          name: gists
+          schema: public
+  - name: shorturls
+    using:
+      foreign_key_constraint_on:
+        column: apikeyUsed
+        table:
+          name: shorturls
+          schema: public
+  - name: uploads
+    using:
+      foreign_key_constraint_on:
+        column: apikeyUsed
+        table:
+          name: uploads
+          schema: public

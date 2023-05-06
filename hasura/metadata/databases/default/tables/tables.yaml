@@ -1,0 +1,4 @@
+- "!include public_apikeys.yaml"
+- "!include public_gists.yaml"
+- "!include public_shorturls.yaml"
+- "!include public_uploads.yaml"

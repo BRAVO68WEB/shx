@@ -2,7 +2,7 @@ import * as redis from 'redis';
 import NodeCache from 'node-cache';
 import { configKeys } from '..';
 
-type CacheEnvironment = 'development' | 'production';
+export type CacheEnvironment = 'development' | 'production';
 export default class CacheClient {
 	private static _clientMode: CacheEnvironment;
 	private static _redisClient: redis.RedisClientType;
@@ -20,10 +20,7 @@ export default class CacheClient {
 
 	static init(forceEnv?: CacheEnvironment) {
 		const env =
-			forceEnv ||
-			configKeys.CACHE_ENV ||
-			configKeys.NODE_ENV ||
-			'development';
+			forceEnv || configKeys.CACHE_ENV || configKeys.NODE_ENV || 'development';
 
 		if (!['development', 'production'].includes(env))
 			throw new Error(
@@ -38,7 +35,7 @@ export default class CacheClient {
 		if (env === 'production') {
 			this._redisClient = redis.createClient({
 				url: redisUrl,
-				name: '<>',  // TODO: add redis name
+				name: '<>', // TODO: add redis name
 			});
 			this._redisClient.connect();
 		}

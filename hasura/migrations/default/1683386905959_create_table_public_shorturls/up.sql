@@ -1,0 +1,2 @@
+CREATE TABLE "public"."shorturls" ("urlID" uuid NOT NULL DEFAULT gen_random_uuid(), "original_url" text NOT NULL, "short_key" text NOT NULL DEFAULT generate_short_url(), "created_on" timestamptz NOT NULL DEFAULT now(), "clicks" integer NOT NULL DEFAULT 0, "creater_ip" text, "apikeyUsed" uuid NOT NULL, PRIMARY KEY ("urlID") , FOREIGN KEY ("apikeyUsed") REFERENCES "public"."apikeys"("keyID") ON UPDATE cascade ON DELETE cascade, UNIQUE ("short_key"));COMMENT ON TABLE "public"."shorturls" IS E'All Short URLs';
+CREATE EXTENSION IF NOT EXISTS pgcrypto;

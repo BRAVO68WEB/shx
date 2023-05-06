@@ -1,0 +1,6 @@
+schema: 'graphql/schema.graphql'
+documents: 'services/*.ts'
+extensions:
+  languageService:
+    cacheSchemaFileForLookup: true
+    enableValidation: false

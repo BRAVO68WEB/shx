@@ -1,0 +1,1956 @@
+schema {
+  query: query_root
+  mutation: mutation_root
+  subscription: subscription_root
+}
+
+"""whether this query should be cached (Hasura Cloud only)"""
+directive @cached(
+  """measured in seconds"""
+  ttl: Int! = 60
+
+  """refresh the cache entry"""
+  refresh: Boolean! = false
+) on QUERY
+
+"""
+Boolean expression to compare columns of type "Boolean". All fields are combined with logical 'AND'.
+"""
+input Boolean_comparison_exp {
+  _eq: Boolean
+  _gt: Boolean
+  _gte: Boolean
+  _in: [Boolean!]
+  _is_null: Boolean
+  _lt: Boolean
+  _lte: Boolean
+  _neq: Boolean
+  _nin: [Boolean!]
+}
+
+"""
+Boolean expression to compare columns of type "Int". All fields are combined with logical 'AND'.
+"""
+input Int_comparison_exp {
+  _eq: Int
+  _gt: Int
+  _gte: Int
+  _in: [Int!]
+  _is_null: Boolean
+  _lt: Int
+  _lte: Int
+  _neq: Int
+  _nin: [Int!]
+}
+
+"""
+Boolean expression to compare columns of type "String". All fields are combined with logical 'AND'.
+"""
+input String_comparison_exp {
+  _eq: String
+  _gt: String
+  _gte: String
+
+  """does the column match the given case-insensitive pattern"""
+  _ilike: String
+  _in: [String!]
+
+  """
+  does the column match the given POSIX regular expression, case insensitive
+  """
+  _iregex: String
+  _is_null: Boolean
+
+  """does the column match the given pattern"""
+  _like: String
+  _lt: String
+  _lte: String
+  _neq: String
+
+  """does the column NOT match the given case-insensitive pattern"""
+  _nilike: String
+  _nin: [String!]
+
+  """
+  does the column NOT match the given POSIX regular expression, case insensitive
+  """
+  _niregex: String
+
+  """does the column NOT match the given pattern"""
+  _nlike: String
+
+  """
+  does the column NOT match the given POSIX regular expression, case sensitive
+  """
+  _nregex: String
+
+  """does the column NOT match the given SQL regular expression"""
+  _nsimilar: String
+
+  """
+  does the column match the given POSIX regular expression, case sensitive
+  """
+  _regex: String
+
+  """does the column match the given SQL regular expression"""
+  _similar: String
+}
+
+"""API Keys Allowed"""
+type apikeys {
+  created_at: timestamptz!
+  key: String!
+  keyID: uuid!
+  updated_at: timestamptz!
+
+  """An array relationship"""
+  uploads(
+    """distinct select on columns"""
+    distinct_on: [uploads_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [uploads_order_by!]
+
+    """filter the rows returned"""
+    where: uploads_bool_exp
+  ): [uploads!]!
+
+  """An aggregate relationship"""
+  uploads_aggregate(
+    """distinct select on columns"""
+    distinct_on: [uploads_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [uploads_order_by!]
+
+    """filter the rows returned"""
+    where: uploads_bool_exp
+  ): uploads_aggregate!
+}
+
+"""
+aggregated selection of "apikeys"
+"""
+type apikeys_aggregate {
+  aggregate: apikeys_aggregate_fields
+  nodes: [apikeys!]!
+}
+
+"""
+aggregate fields of "apikeys"
+"""
+type apikeys_aggregate_fields {
+  count(columns: [apikeys_select_column!], distinct: Boolean): Int!
+  max: apikeys_max_fields
+  min: apikeys_min_fields
+}
+
+"""
+Boolean expression to filter rows from the table "apikeys". All fields are combined with a logical 'AND'.
+"""
+input apikeys_bool_exp {
+  _and: [apikeys_bool_exp!]
+  _not: apikeys_bool_exp
+  _or: [apikeys_bool_exp!]
+  created_at: timestamptz_comparison_exp
+  key: String_comparison_exp
+  keyID: uuid_comparison_exp
+  updated_at: timestamptz_comparison_exp
+  uploads: uploads_bool_exp
+  uploads_aggregate: uploads_aggregate_bool_exp
+}
+
+"""
+unique or primary key constraints on table "apikeys"
+"""
+enum apikeys_constraint {
+  """
+  unique or primary key constraint on columns "key"
+  """
+  apikeys_key_key
+
+  """
+  unique or primary key constraint on columns "keyID"
+  """
+  apikeys_pkey
+}
+
+"""
+input type for inserting data into table "apikeys"
+"""
+input apikeys_insert_input {
+  created_at: timestamptz
+  key: String
+  keyID: uuid
+  updated_at: timestamptz
+  uploads: uploads_arr_rel_insert_input
+}
+
+"""aggregate max on columns"""
+type apikeys_max_fields {
+  created_at: timestamptz
+  key: String
+  keyID: uuid
+  updated_at: timestamptz
+}
+
+"""aggregate min on columns"""
+type apikeys_min_fields {
+  created_at: timestamptz
+  key: String
+  keyID: uuid
+  updated_at: timestamptz
+}
+
+"""
+response of any mutation on the table "apikeys"
+"""
+type apikeys_mutation_response {
+  """number of rows affected by the mutation"""
+  affected_rows: Int!
+
+  """data from the rows affected by the mutation"""
+  returning: [apikeys!]!
+}
+
+"""
+input type for inserting object relation for remote table "apikeys"
+"""
+input apikeys_obj_rel_insert_input {
+  data: apikeys_insert_input!
+
+  """upsert condition"""
+  on_conflict: apikeys_on_conflict
+}
+
+"""
+on_conflict condition type for table "apikeys"
+"""
+input apikeys_on_conflict {
+  constraint: apikeys_constraint!
+  update_columns: [apikeys_update_column!]! = []
+  where: apikeys_bool_exp
+}
+
+"""Ordering options when selecting data from "apikeys"."""
+input apikeys_order_by {
+  created_at: order_by
+  key: order_by
+  keyID: order_by
+  updated_at: order_by
+  uploads_aggregate: uploads_aggregate_order_by
+}
+
+"""primary key columns input for table: apikeys"""
+input apikeys_pk_columns_input {
+  keyID: uuid!
+}
+
+"""
+select columns of table "apikeys"
+"""
+enum apikeys_select_column {
+  """column name"""
+  created_at
+
+  """column name"""
+  key
+
+  """column name"""
+  keyID
+
+  """column name"""
+  updated_at
+}
+
+"""
+input type for updating data in table "apikeys"
+"""
+input apikeys_set_input {
+  created_at: timestamptz
+  key: String
+  keyID: uuid
+  updated_at: timestamptz
+}
+
+"""
+Streaming cursor of the table "apikeys"
+"""
+input apikeys_stream_cursor_input {
+  """Stream column input with initial value"""
+  initial_value: apikeys_stream_cursor_value_input!
+
+  """cursor ordering"""
+  ordering: cursor_ordering
+}
+
+"""Initial value of the column from where the streaming should start"""
+input apikeys_stream_cursor_value_input {
+  created_at: timestamptz
+  key: String
+  keyID: uuid
+  updated_at: timestamptz
+}
+
+"""
+update columns of table "apikeys"
+"""
+enum apikeys_update_column {
+  """column name"""
+  created_at
+
+  """column name"""
+  key
+
+  """column name"""
+  keyID
+
+  """column name"""
+  updated_at
+}
+
+input apikeys_updates {
+  """sets the columns of the filtered rows to the given values"""
+  _set: apikeys_set_input
+
+  """filter the rows which have to be updated"""
+  where: apikeys_bool_exp!
+}
+
+"""ordering argument of a cursor"""
+enum cursor_ordering {
+  """ascending ordering of the cursor"""
+  ASC
+
+  """descending ordering of the cursor"""
+  DESC
+}
+
+"""
+columns and relationships of "gists"
+"""
+type gists {
+  apikeyUsed: uuid!
+  content: String!
+  created_on: timestamptz!
+  creator_ip: String
+  gistID: uuid!
+  gist_url_key: String!
+  isOneTimeOnly: Boolean!
+  isPrivate: Boolean!
+  passkey: String
+  views: numeric!
+}
+
+"""
+aggregated selection of "gists"
+"""
+type gists_aggregate {
+  aggregate: gists_aggregate_fields
+  nodes: [gists!]!
+}
+
+"""
+aggregate fields of "gists"
+"""
+type gists_aggregate_fields {
+  avg: gists_avg_fields
+  count(columns: [gists_select_column!], distinct: Boolean): Int!
+  max: gists_max_fields
+  min: gists_min_fields
+  stddev: gists_stddev_fields
+  stddev_pop: gists_stddev_pop_fields
+  stddev_samp: gists_stddev_samp_fields
+  sum: gists_sum_fields
+  var_pop: gists_var_pop_fields
+  var_samp: gists_var_samp_fields
+  variance: gists_variance_fields
+}
+
+"""aggregate avg on columns"""
+type gists_avg_fields {
+  views: Float
+}
+
+"""
+Boolean expression to filter rows from the table "gists". All fields are combined with a logical 'AND'.
+"""
+input gists_bool_exp {
+  _and: [gists_bool_exp!]
+  _not: gists_bool_exp
+  _or: [gists_bool_exp!]
+  apikeyUsed: uuid_comparison_exp
+  content: String_comparison_exp
+  created_on: timestamptz_comparison_exp
+  creator_ip: String_comparison_exp
+  gistID: uuid_comparison_exp
+  gist_url_key: String_comparison_exp
+  isOneTimeOnly: Boolean_comparison_exp
+  isPrivate: Boolean_comparison_exp
+  passkey: String_comparison_exp
+  views: numeric_comparison_exp
+}
+
+"""
+unique or primary key constraints on table "gists"
+"""
+enum gists_constraint {
+  """
+  unique or primary key constraint on columns "gist_url_key"
+  """
+  gists_gist_url_key_key
+
+  """
+  unique or primary key constraint on columns "passkey"
+  """
+  gists_passkey_key
+
+  """
+  unique or primary key constraint on columns "gistID"
+  """
+  gists_pkey
+}
+
+"""
+input type for incrementing numeric columns in table "gists"
+"""
+input gists_inc_input {
+  views: numeric
+}
+
+"""
+input type for inserting data into table "gists"
+"""
+input gists_insert_input {
+  apikeyUsed: uuid
+  content: String
+  created_on: timestamptz
+  creator_ip: String
+  gistID: uuid
+  gist_url_key: String
+  isOneTimeOnly: Boolean
+  isPrivate: Boolean
+  passkey: String
+  views: numeric
+}
+
+"""aggregate max on columns"""
+type gists_max_fields {
+  apikeyUsed: uuid
+  content: String
+  created_on: timestamptz
+  creator_ip: String
+  gistID: uuid
+  gist_url_key: String
+  passkey: String
+  views: numeric
+}
+
+"""aggregate min on columns"""
+type gists_min_fields {
+  apikeyUsed: uuid
+  content: String
+  created_on: timestamptz
+  creator_ip: String
+  gistID: uuid
+  gist_url_key: String
+  passkey: String
+  views: numeric
+}
+
+"""
+response of any mutation on the table "gists"
+"""
+type gists_mutation_response {
+  """number of rows affected by the mutation"""
+  affected_rows: Int!
+
+  """data from the rows affected by the mutation"""
+  returning: [gists!]!
+}
+
+"""
+on_conflict condition type for table "gists"
+"""
+input gists_on_conflict {
+  constraint: gists_constraint!
+  update_columns: [gists_update_column!]! = []
+  where: gists_bool_exp
+}
+
+"""Ordering options when selecting data from "gists"."""
+input gists_order_by {
+  apikeyUsed: order_by
+  content: order_by
+  created_on: order_by
+  creator_ip: order_by
+  gistID: order_by
+  gist_url_key: order_by
+  isOneTimeOnly: order_by
+  isPrivate: order_by
+  passkey: order_by
+  views: order_by
+}
+
+"""primary key columns input for table: gists"""
+input gists_pk_columns_input {
+  gistID: uuid!
+}
+
+"""
+select columns of table "gists"
+"""
+enum gists_select_column {
+  """column name"""
+  apikeyUsed
+
+  """column name"""
+  content
+
+  """column name"""
+  created_on
+
+  """column name"""
+  creator_ip
+
+  """column name"""
+  gistID
+
+  """column name"""
+  gist_url_key
+
+  """column name"""
+  isOneTimeOnly
+
+  """column name"""
+  isPrivate
+
+  """column name"""
+  passkey
+
+  """column name"""
+  views
+}
+
+"""
+input type for updating data in table "gists"
+"""
+input gists_set_input {
+  apikeyUsed: uuid
+  content: String
+  created_on: timestamptz
+  creator_ip: String
+  gistID: uuid
+  gist_url_key: String
+  isOneTimeOnly: Boolean
+  isPrivate: Boolean
+  passkey: String
+  views: numeric
+}
+
+"""aggregate stddev on columns"""
+type gists_stddev_fields {
+  views: Float
+}
+
+"""aggregate stddev_pop on columns"""
+type gists_stddev_pop_fields {
+  views: Float
+}
+
+"""aggregate stddev_samp on columns"""
+type gists_stddev_samp_fields {
+  views: Float
+}
+
+"""
+Streaming cursor of the table "gists"
+"""
+input gists_stream_cursor_input {
+  """Stream column input with initial value"""
+  initial_value: gists_stream_cursor_value_input!
+
+  """cursor ordering"""
+  ordering: cursor_ordering
+}
+
+"""Initial value of the column from where the streaming should start"""
+input gists_stream_cursor_value_input {
+  apikeyUsed: uuid
+  content: String
+  created_on: timestamptz
+  creator_ip: String
+  gistID: uuid
+  gist_url_key: String
+  isOneTimeOnly: Boolean
+  isPrivate: Boolean
+  passkey: String
+  views: numeric
+}
+
+"""aggregate sum on columns"""
+type gists_sum_fields {
+  views: numeric
+}
+
+"""
+update columns of table "gists"
+"""
+enum gists_update_column {
+  """column name"""
+  apikeyUsed
+
+  """column name"""
+  content
+
+  """column name"""
+  created_on
+
+  """column name"""
+  creator_ip
+
+  """column name"""
+  gistID
+
+  """column name"""
+  gist_url_key
+
+  """column name"""
+  isOneTimeOnly
+
+  """column name"""
+  isPrivate
+
+  """column name"""
+  passkey
+
+  """column name"""
+  views
+}
+
+input gists_updates {
+  """increments the numeric columns with given value of the filtered values"""
+  _inc: gists_inc_input
+
+  """sets the columns of the filtered rows to the given values"""
+  _set: gists_set_input
+
+  """filter the rows which have to be updated"""
+  where: gists_bool_exp!
+}
+
+"""aggregate var_pop on columns"""
+type gists_var_pop_fields {
+  views: Float
+}
+
+"""aggregate var_samp on columns"""
+type gists_var_samp_fields {
+  views: Float
+}
+
+"""aggregate variance on columns"""
+type gists_variance_fields {
+  views: Float
+}
+
+"""mutation root"""
+type mutation_root {
+  """
+  delete data from the table: "apikeys"
+  """
+  delete_apikeys(
+    """filter the rows which have to be deleted"""
+    where: apikeys_bool_exp!
+  ): apikeys_mutation_response
+
+  """
+  delete single row from the table: "apikeys"
+  """
+  delete_apikeys_by_pk(keyID: uuid!): apikeys
+
+  """
+  delete data from the table: "gists"
+  """
+  delete_gists(
+    """filter the rows which have to be deleted"""
+    where: gists_bool_exp!
+  ): gists_mutation_response
+
+  """
+  delete single row from the table: "gists"
+  """
+  delete_gists_by_pk(gistID: uuid!): gists
+
+  """
+  delete data from the table: "shorturls"
+  """
+  delete_shorturls(
+    """filter the rows which have to be deleted"""
+    where: shorturls_bool_exp!
+  ): shorturls_mutation_response
+
+  """
+  delete single row from the table: "shorturls"
+  """
+  delete_shorturls_by_pk(urlID: uuid!): shorturls
+
+  """
+  delete data from the table: "uploads"
+  """
+  delete_uploads(
+    """filter the rows which have to be deleted"""
+    where: uploads_bool_exp!
+  ): uploads_mutation_response
+
+  """
+  delete single row from the table: "uploads"
+  """
+  delete_uploads_by_pk(fileID: uuid!): uploads
+
+  """
+  insert data into the table: "apikeys"
+  """
+  insert_apikeys(
+    """the rows to be inserted"""
+    objects: [apikeys_insert_input!]!
+
+    """upsert condition"""
+    on_conflict: apikeys_on_conflict
+  ): apikeys_mutation_response
+
+  """
+  insert a single row into the table: "apikeys"
+  """
+  insert_apikeys_one(
+    """the row to be inserted"""
+    object: apikeys_insert_input!
+
+    """upsert condition"""
+    on_conflict: apikeys_on_conflict
+  ): apikeys
+
+  """
+  insert data into the table: "gists"
+  """
+  insert_gists(
+    """the rows to be inserted"""
+    objects: [gists_insert_input!]!
+
+    """upsert condition"""
+    on_conflict: gists_on_conflict
+  ): gists_mutation_response
+
+  """
+  insert a single row into the table: "gists"
+  """
+  insert_gists_one(
+    """the row to be inserted"""
+    object: gists_insert_input!
+
+    """upsert condition"""
+    on_conflict: gists_on_conflict
+  ): gists
+
+  """
+  insert data into the table: "shorturls"
+  """
+  insert_shorturls(
+    """the rows to be inserted"""
+    objects: [shorturls_insert_input!]!
+
+    """upsert condition"""
+    on_conflict: shorturls_on_conflict
+  ): shorturls_mutation_response
+
+  """
+  insert a single row into the table: "shorturls"
+  """
+  insert_shorturls_one(
+    """the row to be inserted"""
+    object: shorturls_insert_input!
+
+    """upsert condition"""
+    on_conflict: shorturls_on_conflict
+  ): shorturls
+
+  """
+  insert data into the table: "uploads"
+  """
+  insert_uploads(
+    """the rows to be inserted"""
+    objects: [uploads_insert_input!]!
+
+    """upsert condition"""
+    on_conflict: uploads_on_conflict
+  ): uploads_mutation_response
+
+  """
+  insert a single row into the table: "uploads"
+  """
+  insert_uploads_one(
+    """the row to be inserted"""
+    object: uploads_insert_input!
+
+    """upsert condition"""
+    on_conflict: uploads_on_conflict
+  ): uploads
+
+  """
+  update data of the table: "apikeys"
+  """
+  update_apikeys(
+    """sets the columns of the filtered rows to the given values"""
+    _set: apikeys_set_input
+
+    """filter the rows which have to be updated"""
+    where: apikeys_bool_exp!
+  ): apikeys_mutation_response
+
+  """
+  update single row of the table: "apikeys"
+  """
+  update_apikeys_by_pk(
+    """sets the columns of the filtered rows to the given values"""
+    _set: apikeys_set_input
+    pk_columns: apikeys_pk_columns_input!
+  ): apikeys
+
+  """
+  update multiples rows of table: "apikeys"
+  """
+  update_apikeys_many(
+    """updates to execute, in order"""
+    updates: [apikeys_updates!]!
+  ): [apikeys_mutation_response]
+
+  """
+  update data of the table: "gists"
+  """
+  update_gists(
+    """increments the numeric columns with given value of the filtered values"""
+    _inc: gists_inc_input
+
+    """sets the columns of the filtered rows to the given values"""
+    _set: gists_set_input
+
+    """filter the rows which have to be updated"""
+    where: gists_bool_exp!
+  ): gists_mutation_response
+
+  """
+  update single row of the table: "gists"
+  """
+  update_gists_by_pk(
+    """increments the numeric columns with given value of the filtered values"""
+    _inc: gists_inc_input
+
+    """sets the columns of the filtered rows to the given values"""
+    _set: gists_set_input
+    pk_columns: gists_pk_columns_input!
+  ): gists
+
+  """
+  update multiples rows of table: "gists"
+  """
+  update_gists_many(
+    """updates to execute, in order"""
+    updates: [gists_updates!]!
+  ): [gists_mutation_response]
+
+  """
+  update data of the table: "shorturls"
+  """
+  update_shorturls(
+    """increments the numeric columns with given value of the filtered values"""
+    _inc: shorturls_inc_input
+
+    """sets the columns of the filtered rows to the given values"""
+    _set: shorturls_set_input
+
+    """filter the rows which have to be updated"""
+    where: shorturls_bool_exp!
+  ): shorturls_mutation_response
+
+  """
+  update single row of the table: "shorturls"
+  """
+  update_shorturls_by_pk(
+    """increments the numeric columns with given value of the filtered values"""
+    _inc: shorturls_inc_input
+
+    """sets the columns of the filtered rows to the given values"""
+    _set: shorturls_set_input
+    pk_columns: shorturls_pk_columns_input!
+  ): shorturls
+
+  """
+  update multiples rows of table: "shorturls"
+  """
+  update_shorturls_many(
+    """updates to execute, in order"""
+    updates: [shorturls_updates!]!
+  ): [shorturls_mutation_response]
+
+  """
+  update data of the table: "uploads"
+  """
+  update_uploads(
+    """sets the columns of the filtered rows to the given values"""
+    _set: uploads_set_input
+
+    """filter the rows which have to be updated"""
+    where: uploads_bool_exp!
+  ): uploads_mutation_response
+
+  """
+  update single row of the table: "uploads"
+  """
+  update_uploads_by_pk(
+    """sets the columns of the filtered rows to the given values"""
+    _set: uploads_set_input
+    pk_columns: uploads_pk_columns_input!
+  ): uploads
+
+  """
+  update multiples rows of table: "uploads"
+  """
+  update_uploads_many(
+    """updates to execute, in order"""
+    updates: [uploads_updates!]!
+  ): [uploads_mutation_response]
+}
+
+scalar numeric
+
+"""
+Boolean expression to compare columns of type "numeric". All fields are combined with logical 'AND'.
+"""
+input numeric_comparison_exp {
+  _eq: numeric
+  _gt: numeric
+  _gte: numeric
+  _in: [numeric!]
+  _is_null: Boolean
+  _lt: numeric
+  _lte: numeric
+  _neq: numeric
+  _nin: [numeric!]
+}
+
+"""column ordering options"""
+enum order_by {
+  """in ascending order, nulls last"""
+  asc
+
+  """in ascending order, nulls first"""
+  asc_nulls_first
+
+  """in ascending order, nulls last"""
+  asc_nulls_last
+
+  """in descending order, nulls first"""
+  desc
+
+  """in descending order, nulls first"""
+  desc_nulls_first
+
+  """in descending order, nulls last"""
+  desc_nulls_last
+}
+
+type query_root {
+  """
+  fetch data from the table: "apikeys"
+  """
+  apikeys(
+    """distinct select on columns"""
+    distinct_on: [apikeys_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [apikeys_order_by!]
+
+    """filter the rows returned"""
+    where: apikeys_bool_exp
+  ): [apikeys!]!
+
+  """
+  fetch aggregated fields from the table: "apikeys"
+  """
+  apikeys_aggregate(
+    """distinct select on columns"""
+    distinct_on: [apikeys_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [apikeys_order_by!]
+
+    """filter the rows returned"""
+    where: apikeys_bool_exp
+  ): apikeys_aggregate!
+
+  """fetch data from the table: "apikeys" using primary key columns"""
+  apikeys_by_pk(keyID: uuid!): apikeys
+
+  """
+  fetch data from the table: "gists"
+  """
+  gists(
+    """distinct select on columns"""
+    distinct_on: [gists_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [gists_order_by!]
+
+    """filter the rows returned"""
+    where: gists_bool_exp
+  ): [gists!]!
+
+  """
+  fetch aggregated fields from the table: "gists"
+  """
+  gists_aggregate(
+    """distinct select on columns"""
+    distinct_on: [gists_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [gists_order_by!]
+
+    """filter the rows returned"""
+    where: gists_bool_exp
+  ): gists_aggregate!
+
+  """fetch data from the table: "gists" using primary key columns"""
+  gists_by_pk(gistID: uuid!): gists
+
+  """
+  fetch data from the table: "shorturls"
+  """
+  shorturls(
+    """distinct select on columns"""
+    distinct_on: [shorturls_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [shorturls_order_by!]
+
+    """filter the rows returned"""
+    where: shorturls_bool_exp
+  ): [shorturls!]!
+
+  """
+  fetch aggregated fields from the table: "shorturls"
+  """
+  shorturls_aggregate(
+    """distinct select on columns"""
+    distinct_on: [shorturls_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [shorturls_order_by!]
+
+    """filter the rows returned"""
+    where: shorturls_bool_exp
+  ): shorturls_aggregate!
+
+  """fetch data from the table: "shorturls" using primary key columns"""
+  shorturls_by_pk(urlID: uuid!): shorturls
+
+  """An array relationship"""
+  uploads(
+    """distinct select on columns"""
+    distinct_on: [uploads_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [uploads_order_by!]
+
+    """filter the rows returned"""
+    where: uploads_bool_exp
+  ): [uploads!]!
+
+  """An aggregate relationship"""
+  uploads_aggregate(
+    """distinct select on columns"""
+    distinct_on: [uploads_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [uploads_order_by!]
+
+    """filter the rows returned"""
+    where: uploads_bool_exp
+  ): uploads_aggregate!
+
+  """fetch data from the table: "uploads" using primary key columns"""
+  uploads_by_pk(fileID: uuid!): uploads
+}
+
+"""All Short URLs"""
+type shorturls {
+  apikeyUsed: uuid!
+  clicks: Int!
+  created_on: timestamptz!
+  creator_ip: String
+  original_url: String!
+  short_key: String!
+  urlID: uuid!
+}
+
+"""
+aggregated selection of "shorturls"
+"""
+type shorturls_aggregate {
+  aggregate: shorturls_aggregate_fields
+  nodes: [shorturls!]!
+}
+
+"""
+aggregate fields of "shorturls"
+"""
+type shorturls_aggregate_fields {
+  avg: shorturls_avg_fields
+  count(columns: [shorturls_select_column!], distinct: Boolean): Int!
+  max: shorturls_max_fields
+  min: shorturls_min_fields
+  stddev: shorturls_stddev_fields
+  stddev_pop: shorturls_stddev_pop_fields
+  stddev_samp: shorturls_stddev_samp_fields
+  sum: shorturls_sum_fields
+  var_pop: shorturls_var_pop_fields
+  var_samp: shorturls_var_samp_fields
+  variance: shorturls_variance_fields
+}
+
+"""aggregate avg on columns"""
+type shorturls_avg_fields {
+  clicks: Float
+}
+
+"""
+Boolean expression to filter rows from the table "shorturls". All fields are combined with a logical 'AND'.
+"""
+input shorturls_bool_exp {
+  _and: [shorturls_bool_exp!]
+  _not: shorturls_bool_exp
+  _or: [shorturls_bool_exp!]
+  apikeyUsed: uuid_comparison_exp
+  clicks: Int_comparison_exp
+  created_on: timestamptz_comparison_exp
+  creator_ip: String_comparison_exp
+  original_url: String_comparison_exp
+  short_key: String_comparison_exp
+  urlID: uuid_comparison_exp
+}
+
+"""
+unique or primary key constraints on table "shorturls"
+"""
+enum shorturls_constraint {
+  """
+  unique or primary key constraint on columns "urlID"
+  """
+  shorturls_pkey
+
+  """
+  unique or primary key constraint on columns "short_key"
+  """
+  shorturls_short_key_key
+}
+
+"""
+input type for incrementing numeric columns in table "shorturls"
+"""
+input shorturls_inc_input {
+  clicks: Int
+}
+
+"""
+input type for inserting data into table "shorturls"
+"""
+input shorturls_insert_input {
+  apikeyUsed: uuid
+  clicks: Int
+  created_on: timestamptz
+  creator_ip: String
+  original_url: String
+  short_key: String
+  urlID: uuid
+}
+
+"""aggregate max on columns"""
+type shorturls_max_fields {
+  apikeyUsed: uuid
+  clicks: Int
+  created_on: timestamptz
+  creator_ip: String
+  original_url: String
+  short_key: String
+  urlID: uuid
+}
+
+"""aggregate min on columns"""
+type shorturls_min_fields {
+  apikeyUsed: uuid
+  clicks: Int
+  created_on: timestamptz
+  creator_ip: String
+  original_url: String
+  short_key: String
+  urlID: uuid
+}
+
+"""
+response of any mutation on the table "shorturls"
+"""
+type shorturls_mutation_response {
+  """number of rows affected by the mutation"""
+  affected_rows: Int!
+
+  """data from the rows affected by the mutation"""
+  returning: [shorturls!]!
+}
+
+"""
+on_conflict condition type for table "shorturls"
+"""
+input shorturls_on_conflict {
+  constraint: shorturls_constraint!
+  update_columns: [shorturls_update_column!]! = []
+  where: shorturls_bool_exp
+}
+
+"""Ordering options when selecting data from "shorturls"."""
+input shorturls_order_by {
+  apikeyUsed: order_by
+  clicks: order_by
+  created_on: order_by
+  creator_ip: order_by
+  original_url: order_by
+  short_key: order_by
+  urlID: order_by
+}
+
+"""primary key columns input for table: shorturls"""
+input shorturls_pk_columns_input {
+  urlID: uuid!
+}
+
+"""
+select columns of table "shorturls"
+"""
+enum shorturls_select_column {
+  """column name"""
+  apikeyUsed
+
+  """column name"""
+  clicks
+
+  """column name"""
+  created_on
+
+  """column name"""
+  creator_ip
+
+  """column name"""
+  original_url
+
+  """column name"""
+  short_key
+
+  """column name"""
+  urlID
+}
+
+"""
+input type for updating data in table "shorturls"
+"""
+input shorturls_set_input {
+  apikeyUsed: uuid
+  clicks: Int
+  created_on: timestamptz
+  creator_ip: String
+  original_url: String
+  short_key: String
+  urlID: uuid
+}
+
+"""aggregate stddev on columns"""
+type shorturls_stddev_fields {
+  clicks: Float
+}
+
+"""aggregate stddev_pop on columns"""
+type shorturls_stddev_pop_fields {
+  clicks: Float
+}
+
+"""aggregate stddev_samp on columns"""
+type shorturls_stddev_samp_fields {
+  clicks: Float
+}
+
+"""
+Streaming cursor of the table "shorturls"
+"""
+input shorturls_stream_cursor_input {
+  """Stream column input with initial value"""
+  initial_value: shorturls_stream_cursor_value_input!
+
+  """cursor ordering"""
+  ordering: cursor_ordering
+}
+
+"""Initial value of the column from where the streaming should start"""
+input shorturls_stream_cursor_value_input {
+  apikeyUsed: uuid
+  clicks: Int
+  created_on: timestamptz
+  creator_ip: String
+  original_url: String
+  short_key: String
+  urlID: uuid
+}
+
+"""aggregate sum on columns"""
+type shorturls_sum_fields {
+  clicks: Int
+}
+
+"""
+update columns of table "shorturls"
+"""
+enum shorturls_update_column {
+  """column name"""
+  apikeyUsed
+
+  """column name"""
+  clicks
+
+  """column name"""
+  created_on
+
+  """column name"""
+  creator_ip
+
+  """column name"""
+  original_url
+
+  """column name"""
+  short_key
+
+  """column name"""
+  urlID
+}
+
+input shorturls_updates {
+  """increments the numeric columns with given value of the filtered values"""
+  _inc: shorturls_inc_input
+
+  """sets the columns of the filtered rows to the given values"""
+  _set: shorturls_set_input
+
+  """filter the rows which have to be updated"""
+  where: shorturls_bool_exp!
+}
+
+"""aggregate var_pop on columns"""
+type shorturls_var_pop_fields {
+  clicks: Float
+}
+
+"""aggregate var_samp on columns"""
+type shorturls_var_samp_fields {
+  clicks: Float
+}
+
+"""aggregate variance on columns"""
+type shorturls_variance_fields {
+  clicks: Float
+}
+
+type subscription_root {
+  """
+  fetch data from the table: "apikeys"
+  """
+  apikeys(
+    """distinct select on columns"""
+    distinct_on: [apikeys_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [apikeys_order_by!]
+
+    """filter the rows returned"""
+    where: apikeys_bool_exp
+  ): [apikeys!]!
+
+  """
+  fetch aggregated fields from the table: "apikeys"
+  """
+  apikeys_aggregate(
+    """distinct select on columns"""
+    distinct_on: [apikeys_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [apikeys_order_by!]
+
+    """filter the rows returned"""
+    where: apikeys_bool_exp
+  ): apikeys_aggregate!
+
+  """fetch data from the table: "apikeys" using primary key columns"""
+  apikeys_by_pk(keyID: uuid!): apikeys
+
+  """
+  fetch data from the table in a streaming manner: "apikeys"
+  """
+  apikeys_stream(
+    """maximum number of rows returned in a single batch"""
+    batch_size: Int!
+
+    """cursor to stream the results returned by the query"""
+    cursor: [apikeys_stream_cursor_input]!
+
+    """filter the rows returned"""
+    where: apikeys_bool_exp
+  ): [apikeys!]!
+
+  """
+  fetch data from the table: "gists"
+  """
+  gists(
+    """distinct select on columns"""
+    distinct_on: [gists_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [gists_order_by!]
+
+    """filter the rows returned"""
+    where: gists_bool_exp
+  ): [gists!]!
+
+  """
+  fetch aggregated fields from the table: "gists"
+  """
+  gists_aggregate(
+    """distinct select on columns"""
+    distinct_on: [gists_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [gists_order_by!]
+
+    """filter the rows returned"""
+    where: gists_bool_exp
+  ): gists_aggregate!
+
+  """fetch data from the table: "gists" using primary key columns"""
+  gists_by_pk(gistID: uuid!): gists
+
+  """
+  fetch data from the table in a streaming manner: "gists"
+  """
+  gists_stream(
+    """maximum number of rows returned in a single batch"""
+    batch_size: Int!
+
+    """cursor to stream the results returned by the query"""
+    cursor: [gists_stream_cursor_input]!
+
+    """filter the rows returned"""
+    where: gists_bool_exp
+  ): [gists!]!
+
+  """
+  fetch data from the table: "shorturls"
+  """
+  shorturls(
+    """distinct select on columns"""
+    distinct_on: [shorturls_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [shorturls_order_by!]
+
+    """filter the rows returned"""
+    where: shorturls_bool_exp
+  ): [shorturls!]!
+
+  """
+  fetch aggregated fields from the table: "shorturls"
+  """
+  shorturls_aggregate(
+    """distinct select on columns"""
+    distinct_on: [shorturls_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [shorturls_order_by!]
+
+    """filter the rows returned"""
+    where: shorturls_bool_exp
+  ): shorturls_aggregate!
+
+  """fetch data from the table: "shorturls" using primary key columns"""
+  shorturls_by_pk(urlID: uuid!): shorturls
+
+  """
+  fetch data from the table in a streaming manner: "shorturls"
+  """
+  shorturls_stream(
+    """maximum number of rows returned in a single batch"""
+    batch_size: Int!
+
+    """cursor to stream the results returned by the query"""
+    cursor: [shorturls_stream_cursor_input]!
+
+    """filter the rows returned"""
+    where: shorturls_bool_exp
+  ): [shorturls!]!
+
+  """An array relationship"""
+  uploads(
+    """distinct select on columns"""
+    distinct_on: [uploads_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [uploads_order_by!]
+
+    """filter the rows returned"""
+    where: uploads_bool_exp
+  ): [uploads!]!
+
+  """An aggregate relationship"""
+  uploads_aggregate(
+    """distinct select on columns"""
+    distinct_on: [uploads_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [uploads_order_by!]
+
+    """filter the rows returned"""
+    where: uploads_bool_exp
+  ): uploads_aggregate!
+
+  """fetch data from the table: "uploads" using primary key columns"""
+  uploads_by_pk(fileID: uuid!): uploads
+
+  """
+  fetch data from the table in a streaming manner: "uploads"
+  """
+  uploads_stream(
+    """maximum number of rows returned in a single batch"""
+    batch_size: Int!
+
+    """cursor to stream the results returned by the query"""
+    cursor: [uploads_stream_cursor_input]!
+
+    """filter the rows returned"""
+    where: uploads_bool_exp
+  ): [uploads!]!
+}
+
+scalar timestamptz
+
+"""
+Boolean expression to compare columns of type "timestamptz". All fields are combined with logical 'AND'.
+"""
+input timestamptz_comparison_exp {
+  _eq: timestamptz
+  _gt: timestamptz
+  _gte: timestamptz
+  _in: [timestamptz!]
+  _is_null: Boolean
+  _lt: timestamptz
+  _lte: timestamptz
+  _neq: timestamptz
+  _nin: [timestamptz!]
+}
+
+"""File Uploads Data"""
+type uploads {
+  """An object relationship"""
+  apikey: apikeys!
+  apikeyUsed: uuid!
+  fileID: uuid!
+  filename: String!
+  upload_url: String!
+  uploaded_at: timestamptz!
+  uploader_ip: String
+}
+
+"""
+aggregated selection of "uploads"
+"""
+type uploads_aggregate {
+  aggregate: uploads_aggregate_fields
+  nodes: [uploads!]!
+}
+
+input uploads_aggregate_bool_exp {
+  count: uploads_aggregate_bool_exp_count
+}
+
+input uploads_aggregate_bool_exp_count {
+  arguments: [uploads_select_column!]
+  distinct: Boolean
+  filter: uploads_bool_exp
+  predicate: Int_comparison_exp!
+}
+
+"""
+aggregate fields of "uploads"
+"""
+type uploads_aggregate_fields {
+  count(columns: [uploads_select_column!], distinct: Boolean): Int!
+  max: uploads_max_fields
+  min: uploads_min_fields
+}
+
+"""
+order by aggregate values of table "uploads"
+"""
+input uploads_aggregate_order_by {
+  count: order_by
+  max: uploads_max_order_by
+  min: uploads_min_order_by
+}
+
+"""
+input type for inserting array relation for remote table "uploads"
+"""
+input uploads_arr_rel_insert_input {
+  data: [uploads_insert_input!]!
+
+  """upsert condition"""
+  on_conflict: uploads_on_conflict
+}
+
+"""
+Boolean expression to filter rows from the table "uploads". All fields are combined with a logical 'AND'.
+"""
+input uploads_bool_exp {
+  _and: [uploads_bool_exp!]
+  _not: uploads_bool_exp
+  _or: [uploads_bool_exp!]
+  apikey: apikeys_bool_exp
+  apikeyUsed: uuid_comparison_exp
+  fileID: uuid_comparison_exp
+  filename: String_comparison_exp
+  upload_url: String_comparison_exp
+  uploaded_at: timestamptz_comparison_exp
+  uploader_ip: String_comparison_exp
+}
+
+"""
+unique or primary key constraints on table "uploads"
+"""
+enum uploads_constraint {
+  """
+  unique or primary key constraint on columns "fileID"
+  """
+  uploads_pkey
+
+  """
+  unique or primary key constraint on columns "upload_url"
+  """
+  uploads_upload_url_key
+}
+
+"""
+input type for inserting data into table "uploads"
+"""
+input uploads_insert_input {
+  apikey: apikeys_obj_rel_insert_input
+  apikeyUsed: uuid
+  fileID: uuid
+  filename: String
+  upload_url: String
+  uploaded_at: timestamptz
+  uploader_ip: String
+}
+
+"""aggregate max on columns"""
+type uploads_max_fields {
+  apikeyUsed: uuid
+  fileID: uuid
+  filename: String
+  upload_url: String
+  uploaded_at: timestamptz
+  uploader_ip: String
+}
+
+"""
+order by max() on columns of table "uploads"
+"""
+input uploads_max_order_by {
+  apikeyUsed: order_by
+  fileID: order_by
+  filename: order_by
+  upload_url: order_by
+  uploaded_at: order_by
+  uploader_ip: order_by
+}
+
+"""aggregate min on columns"""
+type uploads_min_fields {
+  apikeyUsed: uuid
+  fileID: uuid
+  filename: String
+  upload_url: String
+  uploaded_at: timestamptz
+  uploader_ip: String
+}
+
+"""
+order by min() on columns of table "uploads"
+"""
+input uploads_min_order_by {
+  apikeyUsed: order_by
+  fileID: order_by
+  filename: order_by
+  upload_url: order_by
+  uploaded_at: order_by
+  uploader_ip: order_by
+}
+
+"""
+response of any mutation on the table "uploads"
+"""
+type uploads_mutation_response {
+  """number of rows affected by the mutation"""
+  affected_rows: Int!
+
+  """data from the rows affected by the mutation"""
+  returning: [uploads!]!
+}
+
+"""
+on_conflict condition type for table "uploads"
+"""
+input uploads_on_conflict {
+  constraint: uploads_constraint!
+  update_columns: [uploads_update_column!]! = []
+  where: uploads_bool_exp
+}
+
+"""Ordering options when selecting data from "uploads"."""
+input uploads_order_by {
+  apikey: apikeys_order_by
+  apikeyUsed: order_by
+  fileID: order_by
+  filename: order_by
+  upload_url: order_by
+  uploaded_at: order_by
+  uploader_ip: order_by
+}
+
+"""primary key columns input for table: uploads"""
+input uploads_pk_columns_input {
+  fileID: uuid!
+}
+
+"""
+select columns of table "uploads"
+"""
+enum uploads_select_column {
+  """column name"""
+  apikeyUsed
+
+  """column name"""
+  fileID
+
+  """column name"""
+  filename
+
+  """column name"""
+  upload_url
+
+  """column name"""
+  uploaded_at
+
+  """column name"""
+  uploader_ip
+}
+
+"""
+input type for updating data in table "uploads"
+"""
+input uploads_set_input {
+  apikeyUsed: uuid
+  fileID: uuid
+  filename: String
+  upload_url: String
+  uploaded_at: timestamptz
+  uploader_ip: String
+}
+
+"""
+Streaming cursor of the table "uploads"
+"""
+input uploads_stream_cursor_input {
+  """Stream column input with initial value"""
+  initial_value: uploads_stream_cursor_value_input!
+
+  """cursor ordering"""
+  ordering: cursor_ordering
+}
+
+"""Initial value of the column from where the streaming should start"""
+input uploads_stream_cursor_value_input {
+  apikeyUsed: uuid
+  fileID: uuid
+  filename: String
+  upload_url: String
+  uploaded_at: timestamptz
+  uploader_ip: String
+}
+
+"""
+update columns of table "uploads"
+"""
+enum uploads_update_column {
+  """column name"""
+  apikeyUsed
+
+  """column name"""
+  fileID
+
+  """column name"""
+  filename
+
+  """column name"""
+  upload_url
+
+  """column name"""
+  uploaded_at
+
+  """column name"""
+  uploader_ip
+}
+
+input uploads_updates {
+  """sets the columns of the filtered rows to the given values"""
+  _set: uploads_set_input
+
+  """filter the rows which have to be updated"""
+  where: uploads_bool_exp!
+}
+
+scalar uuid
+
+"""
+Boolean expression to compare columns of type "uuid". All fields are combined with logical 'AND'.
+"""
+input uuid_comparison_exp {
+  _eq: uuid
+  _gt: uuid
+  _gte: uuid
+  _in: [uuid!]
+  _is_null: Boolean
+  _lt: uuid
+  _lte: uuid
+  _neq: uuid
+  _nin: [uuid!]
+}
+

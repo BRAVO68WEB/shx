@@ -1,10 +1,8 @@
-🚀 **typescript-express-hasura-pgsql-template**
-
-A template repo to quickly start developing a backend with Express JS, Typescript, Redis, Hasura GraphQL (with Postgres), Husky, Nodemailer, and AWS S3 preconfigured.
+🚀 **SHX API**
 
 ## 📝 Description
 
-This repo provides a starting point for developing a backend with a modern tech stack.
+This repo contains source code for API powering in ShareX Uploader.
 
 ## 🛠️ Technologies Used
 

@@ -1,0 +1,7 @@
+table:
+  name: uploads
+  schema: public
+object_relationships:
+  - name: apikey
+    using:
+      foreign_key_constraint_on: apikeyUsed
