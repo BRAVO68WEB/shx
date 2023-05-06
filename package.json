@@ -1,0 +1,76 @@
+{
+	"name": "typescript-express-hasura-pgsql-template",
+	"version": "1.0.0",
+	"description": "Backend Repo Template",
+	"main": "index.ts",
+	"repository": "https://github.com/<username>/<repo-name>.git",
+	"author": {
+		"email": "<email>",
+		"name": "<name>",
+		"url": "<url>"
+	},
+	"license": "ISC",
+	"type": "module",
+	"private": true,
+	"dependencies": {
+		"@aws-sdk/client-s3": "^3.226.0",
+		"axios": "^1.2.1",
+		"cors": "^2.8.5",
+		"dotenv": "^16.0.3",
+		"envfile": "^6.18.0",
+		"express": "^4.18.2",
+		"form-data": "^4.0.0",
+		"graphql": "^16.6.0",
+		"graphql-request": "^5.0.0",
+		"helmet": "^6.0.1",
+		"joi": "^17.7.0",
+		"morgan": "^1.10.0",
+		"multer": "^1.4.5-lts.1",
+		"multer-s3": "^3.0.1",
+		"napi-nanoid": "^0.0.4",
+		"node-cache": "^5.1.2",
+		"nodemailer": "^6.8.0",
+		"redis": "^4.5.1"
+	},
+	"scripts": {
+		"dev": "concurrently \"npm run dev:express\" \"npm run dev:hasura\"",
+		"dev:hasura": "cd hasura && hasura --skip-update-check  --envfile ../.env console",
+		"dev:express": "cross-env NODE_ENV=development nodemon -x node --no-warnings --experimental-specifier-resolution=node --loader ts-node/esm index.ts --signal SIGKILL --ignore node_modules",
+		"build": "tsc",
+		"start": "node --es-module-specifier-resolution=node --loader ts-node/esm ./build/index.js",
+		"prettier": "prettier --write \"**/*.{ts,tsx,js,jsx,json,css,scss,md}\"",
+		"prepare": "husky install",
+		"configure-husky": "npx husky install && npx husky add .husky/pre-commit \"npx --no-install lint-staged\""
+	},
+	"devDependencies": {
+		"@swc/core": "^1.3.23",
+		"@swc/wasm": "^1.3.23",
+		"@types/cors": "^2.8.13",
+		"@types/express": "^4.17.14",
+		"@types/morgan": "^1.9.3",
+		"@typescript-eslint/eslint-plugin": "^5.54.1",
+		"@typescript-eslint/parser": "^5.54.1",
+		"concurrently": "^7.6.0",
+		"cross-env": "^7.0.3",
+		"eslint": "^8.35.0",
+		"eslint-config-prettier": "^8.7.0",
+		"hasura-cli": "^2.15.1",
+		"husky": "^8.0.3",
+		"lint-staged": "^13.1.2",
+		"nodemon": "^2.0.22",
+		"prettier": "^2.8.2",
+		"ts-node": "^10.9.1",
+		"typescript": "^4.9.3"
+	},
+	"lint-staged": {
+		"**/*.{js,json,ts,css}": [
+			"eslint --fix",
+			"prettier --write"
+		]
+	},
+	"husky": {
+		"hooks": {
+			"pre-commit": "lint-staged"
+		}
+	}
+}
