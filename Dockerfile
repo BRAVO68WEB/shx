@@ -2,14 +2,12 @@ FROM node:alpine
 
 WORKDIR /usr/src/app
 
-COPY package.json ./
+COPY . .
 
 RUN yarn
 RUN npm install -g typescript
 
 RUN yarn build
-
-COPY . .
 
 EXPOSE 9000
 
