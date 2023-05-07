@@ -1,22 +1,16 @@
 import multer from 'multer';
 import path from 'path';
 import { nanoid } from 'napi-nanoid';
-interface UploaderConfig {
-	mimeFilters: string[];
-}
-export class UploadFactory {
-	public getUploader(config?: UploaderConfig) {
-		const storage = multer.memoryStorage({
-			filename: (req, file, cb) => {
-				const fileName =
-					file.originalname + '-' + nanoid() + path.extname(file.originalname);
-				cb(null, fileName);
-			},
-		});
+import { FileData } from '../types';
+import { IUploadFactory, UploaderConfig } from '../interfaces/upload.interface';
+
+export class UploadFactory implements IUploadFactory {
+	public getUploader(config?: UploaderConfig): any {
+		const storage = multer.memoryStorage();
 
 		return multer({
 			storage: storage,
-			fileFilter: (req, file, cb) => {
+			fileFilter: (req, file: FileData, cb) => {
 				const fileName =
 					file.originalname.split('.')[
 						file.originalname.split('.').length - 2
@@ -29,7 +23,7 @@ export class UploadFactory {
 					if (config.mimeFilters.includes(file.mimetype)) {
 						cb(null, true);
 					} else {
-						cb(new Error('File type not allowed'), false);
+						cb(null, false);
 					}
 				} else {
 					cb(null, true);

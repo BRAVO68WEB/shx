@@ -1,27 +1,13 @@
 import fs from 'fs';
 import { parse as parseFile } from 'envfile';
+import {
+	IConfigClass,
+	IConfigStore,
+	IConfigKeys,
+} from '../interfaces/config.interface';
 
-type IconfigStore = 'development' | 'production';
-
-export interface IConfigKeys {
-	PORT: string | number;
-	NODE_ENV: string;
-	HASURA_GRAPHQL_ADMIN_SECRET: string;
-	HASURA_GRAPHQL_ENDPOINT: string;
-	CACHE_ENV: string;
-	REDIS_URL: string;
-	R2_CLIENT_ID: string;
-	R2_CLIENT_SECRET: string;
-	R2_BUCKET_NAME: string;
-	R2_BUCKET_REGION: string;
-	R2_BUCKET_ENDPOINT: string;
-	R2_BUCKET_URL: string;
-	R2_BUCKET_FOLDER: string;
-	MASTER_KEY: string;
-}
-
-export default class ConfigStoreFactory {
-	public configStoreType: IconfigStore;
+export default class ConfigStoreFactory implements IConfigClass {
+	public configStoreType: IConfigStore;
 
 	constructor(isProd = false) {
 		if (isProd) {
@@ -31,7 +17,7 @@ export default class ConfigStoreFactory {
 		}
 	}
 
-	public async getConfigStore() {
+	public async getConfigStore(): Promise<Partial<IConfigKeys>> {
 		if (this.configStoreType === 'development') {
 			const envContent = await fs.readFileSync(`./.env`, 'utf8');
 			const env: Partial<IConfigKeys> = await parseFile(envContent);

@@ -1,9 +1,17 @@
 import { NextFunction, Response } from 'express';
 import { ModRequest } from '../types';
 import SxcuService from '../services/sxcu.service';
+import { ISXCUController } from '../interfaces/sxcu.interface';
 
-export default class SxcuController extends SxcuService {
-	public image = async (req: ModRequest, res: Response, next: NextFunction) => {
+export default class SxcuController
+	extends SxcuService
+	implements ISXCUController
+{
+	public image = async (
+		req: ModRequest,
+		res: Response,
+		next: NextFunction
+	): Promise<any> => {
 		try {
 			const fileData = await this.createUploadImageSxcu(
 				req.user.apiKey,
@@ -15,7 +23,11 @@ export default class SxcuController extends SxcuService {
 		}
 	};
 
-	public file = async (req: ModRequest, res: Response, next: NextFunction) => {
+	public file = async (
+		req: ModRequest,
+		res: Response,
+		next: NextFunction
+	): Promise<any> => {
 		try {
 			const fileData = await this.createUploadFileSxcu(
 				req.user.apiKey,

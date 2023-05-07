@@ -3,13 +3,15 @@ import { configKeys } from '..';
 import { gql } from 'graphql-request';
 import { client } from '../helpers';
 import sharp from 'sharp';
+import { IUploaderService } from '../interfaces/upload.interface';
+import { UserMeta } from '../types';
 
 const uploaderService = new UploaderService(configKeys.R2_BUCKET_NAME);
 
-export default class Uploader {
-	public uploadS = async (file: any, meta: any) => {
+export default class Uploader implements IUploaderService {
+	public uploadS = async (file: any, meta: UserMeta) => {
 		await uploaderService.uploadFile(
-			configKeys.R2_BUCKET_FOLDER,
+			configKeys.R2_BUCKET_FOLDER!,
 			file.newName,
 			file.buffer,
 			file.mimetype,
@@ -47,12 +49,12 @@ export default class Uploader {
 		return data.insert_uploads_one;
 	};
 
-	public uploadImageS = async (file: any, meta: any) => {
+	public uploadImageS = async (file: any, meta: UserMeta) => {
 		const image: any = sharp(file.buffer);
 		await image.toFormat('jpeg');
 		const buffer: any = await image.toBuffer();
 		await uploaderService.uploadFile(
-			configKeys.R2_BUCKET_FOLDER,
+			configKeys.R2_BUCKET_FOLDER!,
 			file.newName,
 			buffer,
 			file.mimetype,

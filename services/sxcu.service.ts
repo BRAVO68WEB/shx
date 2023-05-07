@@ -1,8 +1,12 @@
+import { ISXCUService } from '../interfaces/sxcu.interface';
 import { SXCUFile } from '../types';
 
-export default class SxcuService {
-	public async createUploadImageSxcu(apiKey: string, url: string) {
-		const sxcu: Partial<SXCUFile> = {
+export default class SxcuService implements ISXCUService {
+	public async createUploadImageSxcu(
+		apiKey: string,
+		url: string
+	): Promise<SXCUFile> {
+		const sxcu: SXCUFile = {
 			Version: '15.0.0',
 			Name: 'Images (shx)',
 			DestinationType: 'ImageUploader',
@@ -20,8 +24,11 @@ export default class SxcuService {
 		return sxcu;
 	}
 
-	public async createUploadFileSxcu(apiKey: string, url: string) {
-		const sxcu: Partial<SXCUFile> = {
+	public async createUploadFileSxcu(
+		apiKey: string,
+		url: string
+	): Promise<SXCUFile> {
+		const sxcu: SXCUFile = {
 			Version: '15.0.0',
 			Name: 'Files (shx)',
 			DestinationType: 'FileUploader',
@@ -39,8 +46,11 @@ export default class SxcuService {
 		return sxcu;
 	}
 
-	public async createURLShrinkSxcu(apiKey: string, url: string) {
-		const sxcu: Partial<SXCUFile> = {
+	public async createURLShrinkSxcu(
+		apiKey: string,
+		url: string
+	): Promise<SXCUFile> {
+		const sxcu: SXCUFile = {
 			Version: '12.4.0',
 			Name: 'URL Shortener (shx)',
 			DestinationType: 'URLShortener',
@@ -60,8 +70,8 @@ export default class SxcuService {
 		return sxcu;
 	}
 
-	public async createPasteSxcu(apiKey: string, url: string) {
-		const sxcu: Partial<SXCUFile> = {
+	public async createPasteSxcu(apiKey: string, url: string): Promise<SXCUFile> {
+		const sxcu: SXCUFile = {
 			Version: '12.4.0',
 			Name: 'Paste (shx)',
 			DestinationType: 'TextUploader',

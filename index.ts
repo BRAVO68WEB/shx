@@ -8,7 +8,7 @@ import { hgqlInit } from './helpers';
 import routes from './routes';
 import { errorHandler, notFoundHandler } from './libs';
 import pkg from './package.json' assert { type: 'json' };
-import configStore, { IConfigKeys } from './configs';
+import configStore from './configs';
 import CacheClient, { CacheEnvironment } from './helpers/cache.factory';
 import URLStoreController from './controllers/urlstore.controller';
 
@@ -19,7 +19,7 @@ console.log('🚀', '@' + pkg.author.name + '/' + pkg.name, 'v' + pkg.version);
 const isDev: boolean = process.env.NODE_ENV == 'production';
 console.log(isDev ? '🚀 Production Mode' : '🚀 Development Mode');
 const configs = new configStore(isDev);
-const configKeys: IConfigKeys = (await configs.getConfigStore()) as IConfigKeys;
+const configKeys = await configs.getConfigStore();
 const urlStoreController = new URLStoreController();
 
 hgqlInit();

@@ -1,7 +1,8 @@
 import { S3Client, PutObjectCommand, S3ClientConfig } from '@aws-sdk/client-s3';
 import { configKeys } from '..';
+import { IUploadStrategy } from '../interfaces/upload.interface';
 
-export default class UploaderService {
+export default class UploadStrategy implements IUploadStrategy {
 	private static _s3Client;
 	private static _s3Opts;
 	private static _clientType;
@@ -10,7 +11,7 @@ export default class UploaderService {
 		const options = {
 			bucket,
 		};
-		UploaderService._s3Opts = options;
+		UploadStrategy._s3Opts = options;
 
 		const s3ClientOpts: S3ClientConfig = {
 			region: configKeys.R2_BUCKET_REGION || '',
@@ -22,7 +23,7 @@ export default class UploaderService {
 			},
 		};
 		const client = new S3Client(s3ClientOpts);
-		UploaderService._s3Client = client;
+		UploadStrategy._s3Client = client;
 	}
 
 	async uploadFile(
@@ -31,16 +32,16 @@ export default class UploaderService {
 		file: Buffer,
 		fileType: string,
 		acl?: string
-	) {
+	): Promise<any> {
 		const key = [entity, id].join('/');
 		const uploadParams = {
-			Bucket: UploaderService._s3Opts.bucket,
+			Bucket: UploadStrategy._s3Opts.bucket,
 			ACL: acl,
 			ContentType: fileType,
 			Body: file,
 			Key: key,
 		};
-		await UploaderService._s3Client.send(new PutObjectCommand(uploadParams));
+		await UploadStrategy._s3Client.send(new PutObjectCommand(uploadParams));
 		return {
 			url: configKeys.R2_BUCKET_URL,
 			bucket_name: configKeys.R2_BUCKET_NAME,

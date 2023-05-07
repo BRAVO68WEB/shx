@@ -2,13 +2,21 @@ import { NextFunction, Response } from 'express';
 import APIKeyService from '../services/apikey.service';
 import { ModRequest } from '../types';
 import { makeResponse } from '../libs';
+import { IAPIKeyController } from '../interfaces/apikey.interface';
 
-export default class APIKeyController extends APIKeyService {
-	public list = async (req: ModRequest, res: Response, next: NextFunction) => {
+export default class APIKeyController
+	extends APIKeyService
+	implements IAPIKeyController
+{
+	public list = async (
+		req: ModRequest,
+		res: Response,
+		next: NextFunction
+	): Promise<any> => {
 		try {
 			const { masterkey } = req.query as { masterkey: string };
 			const apikeys = await this.listS(masterkey);
-			res.status(200).json(makeResponse(apikeys));
+			return res.status(200).json(makeResponse(apikeys));
 		} catch (error) {
 			next(error);
 		}
@@ -18,7 +26,7 @@ export default class APIKeyController extends APIKeyService {
 		req: ModRequest,
 		res: Response,
 		next: NextFunction
-	) => {
+	): Promise<any> => {
 		try {
 			const { masterkey } = req.query as { masterkey: string };
 			const apikey = await this.generateS(masterkey);
@@ -32,7 +40,7 @@ export default class APIKeyController extends APIKeyService {
 		req: ModRequest,
 		res: Response,
 		next: NextFunction
-	) => {
+	): Promise<any> => {
 		try {
 			const { masterkey, apikey } = req.query as {
 				masterkey: string;

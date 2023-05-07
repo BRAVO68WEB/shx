@@ -2,13 +2,17 @@ import { NextFunction, Response } from 'express';
 import { ModRequest } from '../types';
 import Uploader from '../services/upload.service';
 import { makeResponse } from '../libs';
+import { IUploaderController } from '../interfaces/upload.interface';
 
-export default class UploadController extends Uploader {
+export default class UploadController
+	extends Uploader
+	implements IUploaderController
+{
 	public upload = async (
 		req: ModRequest,
 		res: Response,
 		next: NextFunction
-	) => {
+	): Promise<any> => {
 		try {
 			const { file } = req;
 			if (!file) {
@@ -31,7 +35,7 @@ export default class UploadController extends Uploader {
 		req: ModRequest,
 		res: Response,
 		next: NextFunction
-	) => {
+	): Promise<any> => {
 		try {
 			const { file } = req;
 			if (!file) {

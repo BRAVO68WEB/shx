@@ -1,8 +1,10 @@
 import { gql } from 'graphql-request';
 import { client } from '../helpers';
+import { IGistService, IPrivate } from '../interfaces/gists.interface';
+import { UserMeta } from '../types';
 
-export default class GistService {
-	public async getGistS(gistKey: string, passkey?: any) {
+export default class GistService implements IGistService {
+	public async getGistS(gistKey: string, passkey?: string): Promise<any> {
 		const query = gql`
 			query getGist($gistKey: String!) {
 				gists(where: { gist_url_key: { _eq: $gistKey } }) {
@@ -62,10 +64,10 @@ export default class GistService {
 
 	public async createGistS(
 		content: string,
-		meta: any,
-		priavte?: any,
+		meta: UserMeta,
+		privateMeta: IPrivate,
 		isOneTimeOnly = false
-	) {
+	): Promise<any> {
 		const query = gql`
 			mutation createGist($object: gists_insert_input!) {
 				insert_gists_one(object: $object) {
@@ -88,8 +90,8 @@ export default class GistService {
 			...variables.object,
 			isOneTimeOnly,
 			content,
-			isPrivate: priavte.isPrivate,
-			passkey: priavte.isPrivate ? priavte.passkey : null,
+			isPrivate: privateMeta?.isPrivate ?? false,
+			passkey: privateMeta.isPrivate ? privateMeta.passkey : null,
 		};
 
 		const result: any = await client.request(query, variables);

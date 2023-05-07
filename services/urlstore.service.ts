@@ -1,8 +1,10 @@
 import { gql } from 'graphql-request';
 import { client } from '../helpers';
+import { UserMeta } from '../types';
+import { IURLStoreService } from '../interfaces/urlstore.interface';
 
-export default class URLStore {
-	public async storeURLS(url: string, meta: any) {
+export default class URLStore implements IURLStoreService {
+	public async storeURLS(url: string, meta: UserMeta) {
 		const query = gql`
 			mutation insertURL($object: shorturls_insert_input!) {
 				insert_shorturls_one(object: $object) {

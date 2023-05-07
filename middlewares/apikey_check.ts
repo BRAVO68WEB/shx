@@ -1,11 +1,16 @@
 import { Response, NextFunction } from 'express';
-import { ModRequest } from '../types';
+import { ModRequest, UserMeta } from '../types';
 import APIKeyService from '../services/apikey.service';
+import { IAPIKeyAuth } from '../interfaces/apikey.interface';
 
 const apiKeyService = new APIKeyService();
 
-export default class APIKeyAuth {
-	public async check(req: ModRequest, res: Response, next: NextFunction) {
+export default class APIKeyAuth implements IAPIKeyAuth {
+	public check = async (
+		req: ModRequest,
+		res: Response,
+		next: NextFunction
+	): Promise<any> => {
 		if (!req.headers['x-shx-api-key'] && !req.query.apikey) {
 			return res.status(401).json({
 				success: false,
@@ -26,7 +31,7 @@ export default class APIKeyAuth {
 			apiKeyID: data.keyID,
 			ip: req.ip,
 			apiKey: data.key,
-		};
+		} as UserMeta;
 		next();
-	}
+	};
 }

@@ -1,5 +1,5 @@
 import { Request } from 'express';
-
+import Multer from 'multer';
 export interface PaginationType {
 	page: number;
 	limit: number;
@@ -11,12 +11,14 @@ export interface PaginationType {
 export interface ModRequest extends Request {
 	file: any;
 	files: any;
-	user: {
-		ip: string;
-		apiKeyID: string;
-		apiKey: string;
-	};
+	user: UserMeta;
 	image: any;
+}
+
+export interface UserMeta {
+	apiKeyID: string;
+	ip: string;
+	apiKey: string;
 }
 
 export interface SXCUFile {
@@ -25,19 +27,23 @@ export interface SXCUFile {
 	DestinationType: string;
 	RequestMethod: string;
 	RequestURL: string;
-	Parameters: {
+	Parameters?: {
 		[key: string]: string;
 	};
 	Headers: {
 		[key: string]: string;
 	};
 	Body: string;
-	Arguments: {
+	Arguments?: {
 		[key: string]: string;
 	};
-	FileFormName: string;
+	FileFormName?: string;
 	URL: string;
-	ThumbnailURL: string;
-	DeletionURL: string;
+	ThumbnailURL?: string;
+	DeletionURL?: string;
 	ErrorMessage: string;
+}
+
+export interface FileData extends Express.Multer.File {
+	newName: string;
 }

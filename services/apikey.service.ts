@@ -1,9 +1,10 @@
 import { gql } from 'graphql-request';
 import { client } from '../helpers';
 import { configKeys } from '..';
+import { IAPIKeyService } from '../interfaces/apikey.interface';
 
-export default class APIKeyService {
-	public async checkS(apikey: string) {
+export default class APIKeyService implements IAPIKeyService {
+	public async checkS(apikey: string): Promise<any> {
 		const query = gql`
 			query checkAPIKey($apikey: String!) {
 				apikeys(where: { key: { _eq: $apikey } }) {
@@ -23,7 +24,7 @@ export default class APIKeyService {
 		}
 	}
 
-	public async generateS(masterKey: string) {
+	public async generateS(masterKey: string): Promise<any> {
 		if (masterKey !== configKeys.MASTER_KEY)
 			throw new Error('Invalid master key');
 		const query = gql`
@@ -38,7 +39,7 @@ export default class APIKeyService {
 		return result.insert_apikeys_one;
 	}
 
-	public async deleteS(apikey: string, masterKey: string) {
+	public async deleteS(apikey: string, masterKey: string): Promise<any> {
 		if (masterKey !== configKeys.MASTER_KEY)
 			throw new Error('Invalid master key');
 		const query = gql`
@@ -55,7 +56,7 @@ export default class APIKeyService {
 		return result.delete_apikeys.affected_rows;
 	}
 
-	public async listS(masterKey: string) {
+	public async listS(masterKey: string): Promise<any> {
 		console.log(masterKey);
 		if (masterKey !== configKeys.MASTER_KEY)
 			throw new Error('Invalid master key');
