@@ -1,28 +1,51 @@
-name: Build Checks
-
+name: 🏗️ Build + Publish Docker Image to GHCR
 on:
-  push:
-
+  workflow_dispatch:
+  push: 
+    branches: ['main']
+    tags: [v*]
+env:
+  REGISTRY: ghcr.io
+  IMAGE_NAME: shx-server-api
 jobs:
-  build:
+  build-and-push-image:
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
     steps:
-        - uses: actions/checkout@v2
-        - name: Set output
-          id: vars
-          run: echo "tag=${GITHUB_REF#refs/*/}" >> $GITHUB_OUTPUT
-        - name: Build and Publish latest Docker image
-          uses: TCPShield/gp-docker-action@1.1.3
-          with:
-              github-token: ${{ secrets.GITHUB_TOKEN }}
-              image-name: shx-server-api
-              dockerfile: Dockerfile
-        - name: Build and Publish to GitHub Releases
-          uses: actions/create-release@v1
-          env:
-              GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          with:
-              tag_name: ${{ steps.vars.outputs.tag }}
-              release_name: ${{ steps.vars.outputs.tag }}
-              draft: false
-              prerelease: false
+        # Fetch the code
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Prepare
+        id: prep
+        run: echo ::set-output name=version::${GITHUB_REF##*/}
+
+      # Use QEMU for multi-architecture builds
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v1
+        with:
+          platforms: all
+
+        # Login into GH container registry
+      - name: Log in to registry
+        run: echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u ${{ github.actor }} --password-stdin
+
+        # Build the image from default Dockerfile
+      - name: Build image
+        run: docker build . --file Dockerfile --tag $IMAGE_NAME --label "runnumber=${GITHUB_RUN_ID}"
+
+        # Push build image
+      - name: Push image
+        run: |
+          IMAGE_ID=ghcr.io/${{ github.repository_owner }}/$IMAGE_NAME
+          IMAGE_ID=$(echo $IMAGE_ID | tr '[A-Z]' '[a-z]')
+          VERSION=$(echo "${{ github.ref }}" | sed -e 's,.*/\(.*\),\1,')
+          [[ "${{ github.ref }}" == "refs/tags/"* ]] && VERSION=$(echo $VERSION | sed -e 's/^v//')
+          [ "$VERSION" == "master" ] && VERSION=latest
+          echo IMAGE_ID=$IMAGE_ID
+          echo VERSION=$VERSION
+          docker tag $IMAGE_NAME $IMAGE_ID:$VERSION
+          docker push $IMAGE_ID:$VERSION
+   
