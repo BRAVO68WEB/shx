@@ -10,6 +10,7 @@ import { errorHandler, notFoundHandler } from './libs';
 import pkg from './package.json' assert { type: 'json' };
 import configStore, { IConfigKeys } from './configs';
 import CacheClient, { CacheEnvironment } from './helpers/cache.factory';
+import URLStoreController from './controllers/urlstore.controller';
 
 export const app: express.Application = express();
 
@@ -19,6 +20,7 @@ const isDev: boolean = process.env.NODE_ENV == 'production';
 console.log(isDev ? '🚀 Production Mode' : '🚀 Development Mode');
 const configs = new configStore(isDev);
 const configKeys: IConfigKeys = (await configs.getConfigStore()) as IConfigKeys;
+const urlStoreController = new URLStoreController();
 
 hgqlInit();
 CacheClient.init(configKeys.CACHE_ENV as CacheEnvironment);
@@ -40,6 +42,7 @@ app.use('/health', (req, res) => {
 
 console.log('☄', 'Base Route', '/');
 app.use('/', routes);
+app.get('/:urlKey', urlStoreController.get);
 
 app.use(notFoundHandler);
 app.use(errorHandler);

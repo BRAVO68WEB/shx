@@ -1,6 +1,7 @@
 import { NextFunction, Response } from 'express';
 import { ModRequest } from '../types';
 import Uploader from '../services/upload.service';
+import { makeResponse } from '../libs';
 
 export default class UploadController extends Uploader {
 	public upload = async (
@@ -15,12 +16,12 @@ export default class UploadController extends Uploader {
 				next(error);
 				return;
 			}
-			const data = await this.uploadS(file, req.user);
-			res.status(200).json({
-				success: true,
-				message: 'File uploaded successfully',
-				data,
-			});
+			let data = await this.uploadS(file, req.user);
+			data = {
+				...data,
+				url: data.upload_url,
+			};
+			res.status(200).json(makeResponse(data));
 		} catch (error: any) {
 			next(error);
 		}
@@ -38,12 +39,12 @@ export default class UploadController extends Uploader {
 				next(error);
 				return;
 			}
-			const data = await this.uploadImageS(file, req.user);
-			res.status(200).json({
-				success: true,
-				message: 'Image uploaded successfully',
-				data,
-			});
+			let data = await this.uploadImageS(file, req.user);
+			data = {
+				...data,
+				url: data.upload_url,
+			};
+			res.status(200).json(makeResponse(data));
 		} catch (error: any) {
 			next(error);
 		}

@@ -12,6 +12,7 @@ export default class GistService {
 					created_on
 					isPrivate
 					isOneTimeOnly
+					views
 				}
 			}
 		`;
@@ -22,7 +23,8 @@ export default class GistService {
 		if (result.gists.length === 0) {
 			return null;
 		} else {
-			if (result.gists[0].isOneTimeOnly) {
+			const gistData = result.gists[0];
+			if (gistData.isOneTimeOnly) {
 				const delQuery = gql`
 					mutation deleteGist($gistKey: String!) {
 						delete_gists(where: { gist_url_key: { _eq: $gistKey } }) {
@@ -50,10 +52,10 @@ export default class GistService {
 				};
 				await client.request(updtViewQuery, updtViewVariables);
 			}
-			if (result.gists[0].passkey !== passkey && result.gists[0].isPrivate) {
+			if (gistData.passkey == passkey && gistData.isPrivate) {
 				return null;
 			} else {
-				return result.gists[0];
+				return gistData;
 			}
 		}
 	}

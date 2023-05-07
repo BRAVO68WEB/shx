@@ -34,10 +34,7 @@ export default class APIKeyService {
 				}
 			}
 		`;
-		const variables = {
-			masterKey,
-		};
-		const result: any = await client.request(query, variables);
+		const result: any = await client.request(query);
 		return result.insert_apikeys_one;
 	}
 
@@ -59,6 +56,7 @@ export default class APIKeyService {
 	}
 
 	public async listS(masterKey: string) {
+		console.log(masterKey);
 		if (masterKey !== configKeys.MASTER_KEY)
 			throw new Error('Invalid master key');
 		const query = gql`
@@ -69,10 +67,7 @@ export default class APIKeyService {
 				}
 			}
 		`;
-		const variables = {
-			masterKey,
-		};
-		const result: any = await client.request(query, variables);
+		const result: any = await client.request(query);
 		return result.apikeys;
 	}
 }

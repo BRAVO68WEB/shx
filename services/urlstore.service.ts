@@ -4,7 +4,7 @@ import { client } from '../helpers';
 export default class URLStore {
 	public async storeURLS(url: string, meta: any) {
 		const query = gql`
-			mutation insertURL($object: urls_insert_input!) {
+			mutation insertURL($object: shorturls_insert_input!) {
 				insert_shorturls_one(object: $object) {
 					short_key
 					original_url
@@ -19,7 +19,7 @@ export default class URLStore {
 			},
 		};
 		const result: any = await client.request(query, variables);
-		return result.insert_urls.returning[0];
+		return result.insert_shorturls_one;
 	}
 
 	public async getURLS(short_key: string) {
