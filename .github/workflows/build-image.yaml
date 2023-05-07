@@ -17,7 +17,6 @@ jobs:
               github-token: ${{ secrets.GITHUB_TOKEN }}
               image-name: shx-server-api
               dockerfile: Dockerfile
-              image-tag: latest
         - name: Build and Publish to GitHub Releases
           uses: actions/create-release@v1
           env:
