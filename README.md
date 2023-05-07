@@ -10,7 +10,8 @@ Shx is a custom ShareX server that allows you to upload and share files, images,
 - Express.js
 - TypeScript
 - Redis
-- AWS S3
+- Cloudflare R2
+- Hasura Graphql (with PostgreSQL)
 
 ## 🚀 Features
 
