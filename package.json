@@ -37,7 +37,7 @@
 		"dev": "concurrently \"npm run dev:express\" \"npm run dev:hasura\"",
 		"dev:hasura": "cd hasura && hasura --skip-update-check  --envfile ../.env console",
 		"dev:express": "cross-env NODE_ENV=development nodemon -x node --no-warnings --experimental-specifier-resolution=node --loader ts-node/esm index.ts --signal SIGKILL --ignore node_modules",
-		"build": "tsc",
+		"build": "tsc -p tsconfig.json",
 		"start": "node --es-module-specifier-resolution=node --loader ts-node/esm ./build/index.js",
 		"prettier": "prettier --write \"**/*.{ts,tsx,js,jsx,json,css,scss,md}\"",
 		"prepare": "husky install",
