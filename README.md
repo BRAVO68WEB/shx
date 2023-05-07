@@ -1,18 +1,23 @@
-#🚀 **SHX API**
+# 🚀 **SHX SERVER**
 
 ## 📝 Description
 
-This repo contains source code for API powering in ShareX Uploader.
+Shx is a custom ShareX server that allows you to upload and share files, images, text and URLs with ease. This server is built using Node.js and Express.js and stores the uploaded content on AWS S3 and Redis.
 
 ## 🛠️ Technologies Used
 
-- Express JS
-- Typescript
+- Node.js
+- Express.js
+- TypeScript
 - Redis
-- Hasura GraphQL (with Postgres)
-- Husky
-- Nodemailer
 - AWS S3
+
+## 🚀 Features
+
+- File upload
+- Image upload
+- Text upload
+- URL shortener
 
 ## 🚀 Getting Started
 
@@ -25,14 +30,10 @@ To get started with the project, follow these steps:
 
 ## 📜 Scripts
 
-- `npm run dev`: Starts the development server for both Hasura and Express.
-- `npm run dev:hasura`: Starts the Hasura development server.
-- `npm run dev:express`: Starts the Express development server.
+- `npm run dev`: Starts the development server.
 - `npm run build`: Builds the project.
 - `npm start`: Starts the project.
 - `npm run prettier`: Runs Prettier to format code.
-- `npm run prepare`: Installs Husky.
-- `npm run configure-husky`: Configures Husky.
 
 ## 📝 License
 
@@ -42,4 +43,4 @@ For more information, please see the `LICENSE` file.
 
 ## 📧 Contact
 
-If you have any questions or would like to contribute to the project, please contact `hi@b68.dev`.
+If you have any questions or would like to contribute to the project, please contact `hi@yourdomain.com`.
