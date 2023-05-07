@@ -1,0 +1,27 @@
+name: Build Checks
+
+on:
+  push:
+    tags: [ 'v*' ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+        - uses: actions/checkout@v2
+        - name: Build and Publish latest Docker image
+          uses: TCPShield/gp-docker-action@1.1.3
+          with:
+              github-token: ${{ secrets.GITHUB_TOKEN }}
+              image-name: shx-server-api
+              dockerfile: Dockerfile
+              image-tag: ${{ github.ref }}
+        - name: Build and Publish to GitHub Releases
+          uses: actions/create-release@v1
+          env:
+              GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          with:
+              tag_name: ${{ github.ref }}
+              release_name: ${{ github.ref }}
+              draft: false
+              prerelease: false
