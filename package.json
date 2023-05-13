@@ -3,7 +3,7 @@
 	"version": "1.0.0",
 	"description": "My ShareX Server acting as Daddy",
 	"main": "index.ts",
-	"repository": "https://github.com/bravo68web/sx.git",
+	"repository": "https://github.com/bravo68web/shx.git",
 	"author": {
 		"email": "hi@b68.dev",
 		"name": "Jyotirmoy Bandyopadhayaya",

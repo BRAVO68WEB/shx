@@ -1,6 +1,9 @@
 import path from 'path';
 import { readdirSync } from 'fs';
 import { fileURLToPath } from 'url';
+import pkg from '../package.json' assert { type: 'json' };
+import { execSync } from 'child_process';
+const gitHash = execSync('git rev-parse HEAD').toString().trim();
 
 const __filename = fileURLToPath(import.meta.url);
 
@@ -37,4 +40,15 @@ let baseDir = path.dirname(__filename);
 baseDir = path.resolve(baseDir);
 
 loadRoutes(baseDir);
+
+router.get('/', (req, res) => {
+	return res.status(200).json({
+		message: 'Welcome to the SHX API!',
+		status: 'OK',
+		version: pkg.version,
+		source_code: pkg.repository,
+		git_commit_id: gitHash,
+	});
+});
+
 export default router;
