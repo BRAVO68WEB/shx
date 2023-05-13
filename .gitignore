@@ -134,3 +134,16 @@ dist
 yarn.lock
 package-lock.json
 build
+
+!uploads/.gitkeep
+uploads/*.png
+uploads/*.jpg
+uploads/*.jpeg
+uploads/*.gif
+uploads/*.svg
+uploads/*.ico
+uploads/*.mp4
+uploads/*.mp3
+uploads/*.zip
+uploads/*.rar
+uploads/*.pdf

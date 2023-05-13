@@ -27,4 +27,16 @@ router.post(
 	uploadController.uploadImage as any
 );
 
+router.post(
+	'/image-from-url',
+	apiKeyAuth.check as any,
+	uploadController.uploadImageFromURL as any
+);
+
+router.post(
+	'/file-from-url',
+	apiKeyAuth.check as any,
+	uploadController.uploadFileFromURL as any
+);
+
 export default router;

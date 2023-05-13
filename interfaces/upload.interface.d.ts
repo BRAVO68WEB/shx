@@ -8,11 +8,23 @@ export interface IUploaderController {
 		res: Response,
 		next: NextFunction
 	): Promise<void>;
+	uploadImageFromURL(
+		req: ModRequest,
+		res: Response,
+		next: NextFunction
+	): Promise<void>;
+	uploadFileFromURL(
+		req: ModRequest,
+		res: Response,
+		next: NextFunction
+	): Promise<void>;
 }
 
 export interface IUploaderService {
 	uploadImageS(file: any, meta: UserMeta): Promise<void>;
 	uploadS(file: any, meta: UserMeta): Promise<void>;
+	uploadImageViaURLS(url: string, meta: UserMeta): Promise<void>;
+	uploadFileViaURLS(url: string, meta: UserMeta): Promise<void>;
 }
 
 export interface UploaderConfig {
