@@ -34,7 +34,8 @@ To contribute to our custom ShareX server, follow these steps to set up the deve
 3. Install the required dependencies by running the following command in the project root directory:
 
    ```
-   npm install
+   yarn
+   yarn configure-husky
    ```
 
 4. Edit `.env` inside `packages/api`. Start the API server by running the following command:
@@ -49,6 +50,8 @@ To contribute to our custom ShareX server, follow these steps to set up the deve
    ```
    cd packages/cli
    yarn r
+
+   shx
    ```
 
 6. Edit `.env` inside `packages/frontend`. Start the Dashboard by running the following command:

@@ -35,6 +35,20 @@ stores the uploaded content on AWS S3 and Redis.
 - CLI Support
 - Admin Dashboard
 
+## 🎁 Project Setup
+
+### @packages/api
+
+The API package contains the server-side code responsible for handling file, image, and text uploads, as well as URL shortening. It provides the core functionality of the ShareX server.
+
+### @packages/cli
+
+The CLI package includes the command-line interface (CLI) for interacting with the ShareX server from the terminal. It allows users to perform various actions, such as uploading files, images, or text, and generating short URLs.
+
+### @packages/frondend
+
+The Dashboard package consists of the web-based admin dashboard for managing files, images, or text, and generated short URLs. It provides an intuitive interface for administrators to manage the ShareX server.
+
 ## 📝 License
 
 This project is licensed under the ISC License.
