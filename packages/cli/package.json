@@ -1,0 +1,27 @@
+{
+  "name": "shx-cli",
+  "version": "1.0.0",
+  "description": "CLI  Utility for SHX API",
+  "main": "build/src/shx.js",
+  "author": "BRAVO68WEB",
+  "license": "MIT",
+  "private": true,
+  "devDependencies": {
+    "@types/node": "^20.1.5",
+    "typescript": "^5.0.4"
+  },
+  "dependencies": {
+    "axios": "^1.4.0",
+    "commander": "^10.0.1",
+    "configstore": "^6.0.0"
+  },
+  "scripts": {
+    "i:g": "npm i -g .",
+    "u:g": "npm uninstall -g shx-cli",
+    "build": "tsc",
+    "r": "npm run u:g && npm run build && npm run i:g"
+  },
+  "bin": {
+    "shx": "./build/src/shx.js"
+  }
+}

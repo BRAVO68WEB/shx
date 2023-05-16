@@ -1,5 +1,5 @@
-schema: 'graphql/schema.graphql'
-documents: 'services/*.ts'
+schema: 'packages/api/graphql/schema.graphql'
+documents: 'packages/api/services/*.ts'
 extensions:
   languageService:
     cacheSchemaFileForLookup: true

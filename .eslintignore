@@ -122,3 +122,5 @@ jwtRS256.key.pub
 
 #markdown files
 **/*.md
+
+*/**/.json

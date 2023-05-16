@@ -5,7 +5,6 @@ import morgan from 'morgan';
 import helmet from 'helmet';
 
 import { hgqlInit } from './helpers';
-import routes from './routes';
 import { errorHandler, notFoundHandler } from './libs';
 import pkg from './package.json' assert { type: 'json' };
 import configStore from './configs';
@@ -21,6 +20,10 @@ console.log(isDev ? '🚀 Production Mode' : '🚀 Development Mode');
 const configs = new configStore(isDev);
 const configKeys = await configs.getConfigStore();
 const urlStoreController = new URLStoreController();
+
+console.log('🔑', 'Master Key', configKeys.MASTER_KEY);
+
+import routes from './routes';
 
 hgqlInit();
 CacheClient.init(configKeys.CACHE_ENV as CacheEnvironment);

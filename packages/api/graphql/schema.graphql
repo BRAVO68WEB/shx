@@ -99,8 +99,80 @@ input String_comparison_exp {
 """API Keys Allowed"""
 type apikeys {
   created_at: timestamptz!
+
+  """An array relationship"""
+  gists(
+    """distinct select on columns"""
+    distinct_on: [gists_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [gists_order_by!]
+
+    """filter the rows returned"""
+    where: gists_bool_exp
+  ): [gists!]!
+
+  """An aggregate relationship"""
+  gists_aggregate(
+    """distinct select on columns"""
+    distinct_on: [gists_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [gists_order_by!]
+
+    """filter the rows returned"""
+    where: gists_bool_exp
+  ): gists_aggregate!
   key: String!
   keyID: uuid!
+
+  """An array relationship"""
+  shorturls(
+    """distinct select on columns"""
+    distinct_on: [shorturls_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [shorturls_order_by!]
+
+    """filter the rows returned"""
+    where: shorturls_bool_exp
+  ): [shorturls!]!
+
+  """An aggregate relationship"""
+  shorturls_aggregate(
+    """distinct select on columns"""
+    distinct_on: [shorturls_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [shorturls_order_by!]
+
+    """filter the rows returned"""
+    where: shorturls_bool_exp
+  ): shorturls_aggregate!
   updated_at: timestamptz!
 
   """An array relationship"""
@@ -165,8 +237,12 @@ input apikeys_bool_exp {
   _not: apikeys_bool_exp
   _or: [apikeys_bool_exp!]
   created_at: timestamptz_comparison_exp
+  gists: gists_bool_exp
+  gists_aggregate: gists_aggregate_bool_exp
   key: String_comparison_exp
   keyID: uuid_comparison_exp
+  shorturls: shorturls_bool_exp
+  shorturls_aggregate: shorturls_aggregate_bool_exp
   updated_at: timestamptz_comparison_exp
   uploads: uploads_bool_exp
   uploads_aggregate: uploads_aggregate_bool_exp
@@ -192,8 +268,10 @@ input type for inserting data into table "apikeys"
 """
 input apikeys_insert_input {
   created_at: timestamptz
+  gists: gists_arr_rel_insert_input
   key: String
   keyID: uuid
+  shorturls: shorturls_arr_rel_insert_input
   updated_at: timestamptz
   uploads: uploads_arr_rel_insert_input
 }
@@ -247,8 +325,10 @@ input apikeys_on_conflict {
 """Ordering options when selecting data from "apikeys"."""
 input apikeys_order_by {
   created_at: order_by
+  gists_aggregate: gists_aggregate_order_by
   key: order_by
   keyID: order_by
+  shorturls_aggregate: shorturls_aggregate_order_by
   updated_at: order_by
   uploads_aggregate: uploads_aggregate_order_by
 }
@@ -342,6 +422,8 @@ enum cursor_ordering {
 columns and relationships of "gists"
 """
 type gists {
+  """An object relationship"""
+  apikey: apikeys!
   apikeyUsed: uuid!
   content: String!
   created_on: timestamptz!
@@ -362,6 +444,33 @@ type gists_aggregate {
   nodes: [gists!]!
 }
 
+input gists_aggregate_bool_exp {
+  bool_and: gists_aggregate_bool_exp_bool_and
+  bool_or: gists_aggregate_bool_exp_bool_or
+  count: gists_aggregate_bool_exp_count
+}
+
+input gists_aggregate_bool_exp_bool_and {
+  arguments: gists_select_column_gists_aggregate_bool_exp_bool_and_arguments_columns!
+  distinct: Boolean
+  filter: gists_bool_exp
+  predicate: Boolean_comparison_exp!
+}
+
+input gists_aggregate_bool_exp_bool_or {
+  arguments: gists_select_column_gists_aggregate_bool_exp_bool_or_arguments_columns!
+  distinct: Boolean
+  filter: gists_bool_exp
+  predicate: Boolean_comparison_exp!
+}
+
+input gists_aggregate_bool_exp_count {
+  arguments: [gists_select_column!]
+  distinct: Boolean
+  filter: gists_bool_exp
+  predicate: Int_comparison_exp!
+}
+
 """
 aggregate fields of "gists"
 """
@@ -379,9 +488,43 @@ type gists_aggregate_fields {
   variance: gists_variance_fields
 }
 
+"""
+order by aggregate values of table "gists"
+"""
+input gists_aggregate_order_by {
+  avg: gists_avg_order_by
+  count: order_by
+  max: gists_max_order_by
+  min: gists_min_order_by
+  stddev: gists_stddev_order_by
+  stddev_pop: gists_stddev_pop_order_by
+  stddev_samp: gists_stddev_samp_order_by
+  sum: gists_sum_order_by
+  var_pop: gists_var_pop_order_by
+  var_samp: gists_var_samp_order_by
+  variance: gists_variance_order_by
+}
+
+"""
+input type for inserting array relation for remote table "gists"
+"""
+input gists_arr_rel_insert_input {
+  data: [gists_insert_input!]!
+
+  """upsert condition"""
+  on_conflict: gists_on_conflict
+}
+
 """aggregate avg on columns"""
 type gists_avg_fields {
   views: Float
+}
+
+"""
+order by avg() on columns of table "gists"
+"""
+input gists_avg_order_by {
+  views: order_by
 }
 
 """
@@ -391,6 +534,7 @@ input gists_bool_exp {
   _and: [gists_bool_exp!]
   _not: gists_bool_exp
   _or: [gists_bool_exp!]
+  apikey: apikeys_bool_exp
   apikeyUsed: uuid_comparison_exp
   content: String_comparison_exp
   created_on: timestamptz_comparison_exp
@@ -434,6 +578,7 @@ input gists_inc_input {
 input type for inserting data into table "gists"
 """
 input gists_insert_input {
+  apikey: apikeys_obj_rel_insert_input
   apikeyUsed: uuid
   content: String
   created_on: timestamptz
@@ -458,6 +603,20 @@ type gists_max_fields {
   views: numeric
 }
 
+"""
+order by max() on columns of table "gists"
+"""
+input gists_max_order_by {
+  apikeyUsed: order_by
+  content: order_by
+  created_on: order_by
+  creator_ip: order_by
+  gistID: order_by
+  gist_url_key: order_by
+  passkey: order_by
+  views: order_by
+}
+
 """aggregate min on columns"""
 type gists_min_fields {
   apikeyUsed: uuid
@@ -468,6 +627,20 @@ type gists_min_fields {
   gist_url_key: String
   passkey: String
   views: numeric
+}
+
+"""
+order by min() on columns of table "gists"
+"""
+input gists_min_order_by {
+  apikeyUsed: order_by
+  content: order_by
+  created_on: order_by
+  creator_ip: order_by
+  gistID: order_by
+  gist_url_key: order_by
+  passkey: order_by
+  views: order_by
 }
 
 """
@@ -492,6 +665,7 @@ input gists_on_conflict {
 
 """Ordering options when selecting data from "gists"."""
 input gists_order_by {
+  apikey: apikeys_order_by
   apikeyUsed: order_by
   content: order_by
   created_on: order_by
@@ -545,6 +719,28 @@ enum gists_select_column {
 }
 
 """
+select "gists_aggregate_bool_exp_bool_and_arguments_columns" columns of table "gists"
+"""
+enum gists_select_column_gists_aggregate_bool_exp_bool_and_arguments_columns {
+  """column name"""
+  isOneTimeOnly
+
+  """column name"""
+  isPrivate
+}
+
+"""
+select "gists_aggregate_bool_exp_bool_or_arguments_columns" columns of table "gists"
+"""
+enum gists_select_column_gists_aggregate_bool_exp_bool_or_arguments_columns {
+  """column name"""
+  isOneTimeOnly
+
+  """column name"""
+  isPrivate
+}
+
+"""
 input type for updating data in table "gists"
 """
 input gists_set_input {
@@ -565,14 +761,35 @@ type gists_stddev_fields {
   views: Float
 }
 
+"""
+order by stddev() on columns of table "gists"
+"""
+input gists_stddev_order_by {
+  views: order_by
+}
+
 """aggregate stddev_pop on columns"""
 type gists_stddev_pop_fields {
   views: Float
 }
 
+"""
+order by stddev_pop() on columns of table "gists"
+"""
+input gists_stddev_pop_order_by {
+  views: order_by
+}
+
 """aggregate stddev_samp on columns"""
 type gists_stddev_samp_fields {
   views: Float
+}
+
+"""
+order by stddev_samp() on columns of table "gists"
+"""
+input gists_stddev_samp_order_by {
+  views: order_by
 }
 
 """
@@ -603,6 +820,13 @@ input gists_stream_cursor_value_input {
 """aggregate sum on columns"""
 type gists_sum_fields {
   views: numeric
+}
+
+"""
+order by sum() on columns of table "gists"
+"""
+input gists_sum_order_by {
+  views: order_by
 }
 
 """
@@ -656,14 +880,35 @@ type gists_var_pop_fields {
   views: Float
 }
 
+"""
+order by var_pop() on columns of table "gists"
+"""
+input gists_var_pop_order_by {
+  views: order_by
+}
+
 """aggregate var_samp on columns"""
 type gists_var_samp_fields {
   views: Float
 }
 
+"""
+order by var_samp() on columns of table "gists"
+"""
+input gists_var_samp_order_by {
+  views: order_by
+}
+
 """aggregate variance on columns"""
 type gists_variance_fields {
   views: Float
+}
+
+"""
+order by variance() on columns of table "gists"
+"""
+input gists_variance_order_by {
+  views: order_by
 }
 
 """mutation root"""
@@ -1015,9 +1260,7 @@ type query_root {
   """fetch data from the table: "apikeys" using primary key columns"""
   apikeys_by_pk(keyID: uuid!): apikeys
 
-  """
-  fetch data from the table: "gists"
-  """
+  """An array relationship"""
   gists(
     """distinct select on columns"""
     distinct_on: [gists_select_column!]
@@ -1035,9 +1278,7 @@ type query_root {
     where: gists_bool_exp
   ): [gists!]!
 
-  """
-  fetch aggregated fields from the table: "gists"
-  """
+  """An aggregate relationship"""
   gists_aggregate(
     """distinct select on columns"""
     distinct_on: [gists_select_column!]
@@ -1058,9 +1299,7 @@ type query_root {
   """fetch data from the table: "gists" using primary key columns"""
   gists_by_pk(gistID: uuid!): gists
 
-  """
-  fetch data from the table: "shorturls"
-  """
+  """An array relationship"""
   shorturls(
     """distinct select on columns"""
     distinct_on: [shorturls_select_column!]
@@ -1078,9 +1317,7 @@ type query_root {
     where: shorturls_bool_exp
   ): [shorturls!]!
 
-  """
-  fetch aggregated fields from the table: "shorturls"
-  """
+  """An aggregate relationship"""
   shorturls_aggregate(
     """distinct select on columns"""
     distinct_on: [shorturls_select_column!]
@@ -1143,6 +1380,8 @@ type query_root {
 
 """All Short URLs"""
 type shorturls {
+  """An object relationship"""
+  apikey: apikeys!
   apikeyUsed: uuid!
   clicks: Int!
   created_on: timestamptz!
@@ -1158,6 +1397,17 @@ aggregated selection of "shorturls"
 type shorturls_aggregate {
   aggregate: shorturls_aggregate_fields
   nodes: [shorturls!]!
+}
+
+input shorturls_aggregate_bool_exp {
+  count: shorturls_aggregate_bool_exp_count
+}
+
+input shorturls_aggregate_bool_exp_count {
+  arguments: [shorturls_select_column!]
+  distinct: Boolean
+  filter: shorturls_bool_exp
+  predicate: Int_comparison_exp!
 }
 
 """
@@ -1177,9 +1427,43 @@ type shorturls_aggregate_fields {
   variance: shorturls_variance_fields
 }
 
+"""
+order by aggregate values of table "shorturls"
+"""
+input shorturls_aggregate_order_by {
+  avg: shorturls_avg_order_by
+  count: order_by
+  max: shorturls_max_order_by
+  min: shorturls_min_order_by
+  stddev: shorturls_stddev_order_by
+  stddev_pop: shorturls_stddev_pop_order_by
+  stddev_samp: shorturls_stddev_samp_order_by
+  sum: shorturls_sum_order_by
+  var_pop: shorturls_var_pop_order_by
+  var_samp: shorturls_var_samp_order_by
+  variance: shorturls_variance_order_by
+}
+
+"""
+input type for inserting array relation for remote table "shorturls"
+"""
+input shorturls_arr_rel_insert_input {
+  data: [shorturls_insert_input!]!
+
+  """upsert condition"""
+  on_conflict: shorturls_on_conflict
+}
+
 """aggregate avg on columns"""
 type shorturls_avg_fields {
   clicks: Float
+}
+
+"""
+order by avg() on columns of table "shorturls"
+"""
+input shorturls_avg_order_by {
+  clicks: order_by
 }
 
 """
@@ -1189,6 +1473,7 @@ input shorturls_bool_exp {
   _and: [shorturls_bool_exp!]
   _not: shorturls_bool_exp
   _or: [shorturls_bool_exp!]
+  apikey: apikeys_bool_exp
   apikeyUsed: uuid_comparison_exp
   clicks: Int_comparison_exp
   created_on: timestamptz_comparison_exp
@@ -1224,6 +1509,7 @@ input shorturls_inc_input {
 input type for inserting data into table "shorturls"
 """
 input shorturls_insert_input {
+  apikey: apikeys_obj_rel_insert_input
   apikeyUsed: uuid
   clicks: Int
   created_on: timestamptz
@@ -1244,6 +1530,19 @@ type shorturls_max_fields {
   urlID: uuid
 }
 
+"""
+order by max() on columns of table "shorturls"
+"""
+input shorturls_max_order_by {
+  apikeyUsed: order_by
+  clicks: order_by
+  created_on: order_by
+  creator_ip: order_by
+  original_url: order_by
+  short_key: order_by
+  urlID: order_by
+}
+
 """aggregate min on columns"""
 type shorturls_min_fields {
   apikeyUsed: uuid
@@ -1253,6 +1552,19 @@ type shorturls_min_fields {
   original_url: String
   short_key: String
   urlID: uuid
+}
+
+"""
+order by min() on columns of table "shorturls"
+"""
+input shorturls_min_order_by {
+  apikeyUsed: order_by
+  clicks: order_by
+  created_on: order_by
+  creator_ip: order_by
+  original_url: order_by
+  short_key: order_by
+  urlID: order_by
 }
 
 """
@@ -1277,6 +1589,7 @@ input shorturls_on_conflict {
 
 """Ordering options when selecting data from "shorturls"."""
 input shorturls_order_by {
+  apikey: apikeys_order_by
   apikeyUsed: order_by
   clicks: order_by
   created_on: order_by
@@ -1335,14 +1648,35 @@ type shorturls_stddev_fields {
   clicks: Float
 }
 
+"""
+order by stddev() on columns of table "shorturls"
+"""
+input shorturls_stddev_order_by {
+  clicks: order_by
+}
+
 """aggregate stddev_pop on columns"""
 type shorturls_stddev_pop_fields {
   clicks: Float
 }
 
+"""
+order by stddev_pop() on columns of table "shorturls"
+"""
+input shorturls_stddev_pop_order_by {
+  clicks: order_by
+}
+
 """aggregate stddev_samp on columns"""
 type shorturls_stddev_samp_fields {
   clicks: Float
+}
+
+"""
+order by stddev_samp() on columns of table "shorturls"
+"""
+input shorturls_stddev_samp_order_by {
+  clicks: order_by
 }
 
 """
@@ -1370,6 +1704,13 @@ input shorturls_stream_cursor_value_input {
 """aggregate sum on columns"""
 type shorturls_sum_fields {
   clicks: Int
+}
+
+"""
+order by sum() on columns of table "shorturls"
+"""
+input shorturls_sum_order_by {
+  clicks: order_by
 }
 
 """
@@ -1414,14 +1755,35 @@ type shorturls_var_pop_fields {
   clicks: Float
 }
 
+"""
+order by var_pop() on columns of table "shorturls"
+"""
+input shorturls_var_pop_order_by {
+  clicks: order_by
+}
+
 """aggregate var_samp on columns"""
 type shorturls_var_samp_fields {
   clicks: Float
 }
 
+"""
+order by var_samp() on columns of table "shorturls"
+"""
+input shorturls_var_samp_order_by {
+  clicks: order_by
+}
+
 """aggregate variance on columns"""
 type shorturls_variance_fields {
   clicks: Float
+}
+
+"""
+order by variance() on columns of table "shorturls"
+"""
+input shorturls_variance_order_by {
+  clicks: order_by
 }
 
 type subscription_root {
@@ -1482,9 +1844,7 @@ type subscription_root {
     where: apikeys_bool_exp
   ): [apikeys!]!
 
-  """
-  fetch data from the table: "gists"
-  """
+  """An array relationship"""
   gists(
     """distinct select on columns"""
     distinct_on: [gists_select_column!]
@@ -1502,9 +1862,7 @@ type subscription_root {
     where: gists_bool_exp
   ): [gists!]!
 
-  """
-  fetch aggregated fields from the table: "gists"
-  """
+  """An aggregate relationship"""
   gists_aggregate(
     """distinct select on columns"""
     distinct_on: [gists_select_column!]
@@ -1539,9 +1897,7 @@ type subscription_root {
     where: gists_bool_exp
   ): [gists!]!
 
-  """
-  fetch data from the table: "shorturls"
-  """
+  """An array relationship"""
   shorturls(
     """distinct select on columns"""
     distinct_on: [shorturls_select_column!]
@@ -1559,9 +1915,7 @@ type subscription_root {
     where: shorturls_bool_exp
   ): [shorturls!]!
 
-  """
-  fetch aggregated fields from the table: "shorturls"
-  """
+  """An aggregate relationship"""
   shorturls_aggregate(
     """distinct select on columns"""
     distinct_on: [shorturls_select_column!]

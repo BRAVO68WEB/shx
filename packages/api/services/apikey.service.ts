@@ -57,7 +57,6 @@ export default class APIKeyService implements IAPIKeyService {
 	}
 
 	public async listS(masterKey: string): Promise<any> {
-		console.log(masterKey);
 		if (masterKey !== configKeys.MASTER_KEY)
 			throw new Error('Invalid master key');
 		const query = gql`

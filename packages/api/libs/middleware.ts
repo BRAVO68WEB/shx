@@ -2,7 +2,7 @@ import { NextFunction, Request, Response } from 'express';
 import Joi from 'joi';
 import { CustomError, NotFoundError } from './error';
 import { pick } from './utilities';
-import { configKeys } from ".."
+import { configKeys } from '..';
 
 export const errorHandler = async (
 	err: any,
@@ -58,7 +58,7 @@ export const validate =
 				})
 			);
 		}
-		
+
 		Object.assign(req, value);
 
 		return next();

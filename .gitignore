@@ -131,9 +131,10 @@ dist
 
 .husky
 
-yarn.lock
-package-lock.json
-build
+*/**/yarn.lock
+*/**/package-lock.json
+*/**/build
+*/**/dist
 
 !uploads/.gitkeep
 uploads/*.png
@@ -147,3 +148,11 @@ uploads/*.mp3
 uploads/*.zip
 uploads/*.rar
 uploads/*.pdf
+
+*/**/node_modules
+*/**/.env
+
+yarn.lock
+package-lock.json
+build
+dist

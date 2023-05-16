@@ -31,7 +31,10 @@ const loadRoutes = async (dirPath: string, prefix = '/') => {
 				router.use(modRoute, mod.default);
 			}
 		} else if (f.isDirectory()) {
-			await loadRoutes(path.resolve(dirPath, f.name), prefix + f.name + '/');
+			await loadRoutes(
+				path.resolve(dirPath, f.name),
+				path.join(prefix, f.name, '/')
+			);
 		}
 	});
 };

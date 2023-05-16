@@ -9,11 +9,15 @@ import axios from 'axios';
 import fs from 'fs';
 import { nanoid } from 'napi-nanoid';
 
-const uploaderService = new UploaderService(configKeys.R2_BUCKET_NAME);
-
 export default class Uploader implements IUploaderService {
+	uploaderService: UploaderService;
+
+	constructor() {
+		this.uploaderService = new UploaderService(configKeys.R2_BUCKET_NAME);
+	}
+
 	public uploadS = async (file: any, meta: UserMeta) => {
-		await uploaderService.uploadFile(
+		await this.uploaderService.uploadFile(
 			configKeys.R2_BUCKET_FOLDER!,
 			file.newName,
 			file.buffer,
@@ -56,7 +60,7 @@ export default class Uploader implements IUploaderService {
 		const image: any = sharp(file.buffer);
 		await image.toFormat('jpeg');
 		const buffer: any = await image.toBuffer();
-		await uploaderService.uploadFile(
+		await this.uploaderService.uploadFile(
 			configKeys.R2_BUCKET_FOLDER!,
 			file.newName,
 			buffer,
@@ -102,7 +106,7 @@ export default class Uploader implements IUploaderService {
 		const image: any = sharp(rawImage);
 		await image.toFormat('jpeg');
 		const buffer: any = await image.toBuffer();
-		await uploaderService.uploadFile(
+		await this.uploaderService.uploadFile(
 			configKeys.R2_BUCKET_FOLDER!,
 			filename,
 			buffer,
@@ -167,7 +171,7 @@ export default class Uploader implements IUploaderService {
 
 	public uploadFileViaURLS = async (url: string, meta: UserMeta) => {
 		const filename = await this.downloadFile(url);
-		await uploaderService.uploadFile(
+		await this.uploaderService.uploadFile(
 			configKeys.R2_BUCKET_FOLDER!,
 			filename,
 			fs.readFileSync(`uploads/${filename}`),
