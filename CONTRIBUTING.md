@@ -12,7 +12,6 @@ Thank you for considering contributing to our custom ShareX server! We appreciat
 - [Project Structure](#project-structure)
   - [API](#api)
   - [CLI](#cli)
-  - [Dashboard](#dashboard)
 - [Contribution Process](#contribution-process)
   - [Reporting Issues](#reporting-issues)
   - [Submitting Pull Requests](#submitting-pull-requests)
@@ -72,10 +71,6 @@ The API package contains the server-side code responsible for handling file, ima
 ### CLI
 
 The CLI package includes the command-line interface (CLI) for interacting with the ShareX server from the terminal. It allows users to perform various actions, such as uploading files, images, or text, and generating short URLs.
-
-### Dashboard
-
-The Dashboard package consists of the web-based admin dashboard for managing files, images, or text, and generated short URLs. It provides an intuitive interface for administrators to manage the ShareX server.
 
 ## Contribution Process
 

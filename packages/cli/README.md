@@ -1,6 +1,5 @@
-# 🚀 **Project SHX**
+# 🚀 **SHX CLI**
 
-![GitHub Workflow Status](https://img.shields.io/github/actions/workflow/status/bravo68web/shx/build.yaml?style=for-the-badge)
 ![GitHub last commit](https://img.shields.io/github/last-commit/bravo68web/shx?style=for-the-badge)
 ![GitHub code size in bytes](https://img.shields.io/github/languages/code-size/bravo68web/shx?style=for-the-badge)
 ![Snyk Vulnerabilities for GitHub Repo](https://img.shields.io/snyk/vulnerabilities/github/bravo68web/shx?style=for-the-badge)
@@ -18,12 +17,10 @@ stores the uploaded content on AWS S3 and Redis.
 ## 🛠️ Technologies Used
 
 - Node.js
-- Express.js
 - TypeScript
-- Redis
-- Cloudflare R2
-- Hasura Graphql (with PostgreSQL)
 - Commander.js
+- Axios
+- Chalk
 
 ## 🚀 Features
 
@@ -31,17 +28,13 @@ stores the uploaded content on AWS S3 and Redis.
 - Image upload
 - Text upload
 - URL shortener
-- CLI Support
 
-## 🎁 Project Setup
+## 📜 Scripts
 
-### @packages/api
-
-The API package contains the server-side code responsible for handling file, image, and text uploads, as well as URL shortening. It provides the core functionality of the ShareX server.
-
-### @packages/cli
-
-The CLI package includes the command-line interface (CLI) for interacting with the ShareX server from the terminal. It allows users to perform various actions, such as uploading files, images, or text, and generating short URLs.
+- `npm run i:g`: Installs the CLI globally on your system.
+- `npm run build`: Builds the project with Typechecks.
+- `npm run r`:  Uninstalls the CLI globally from your system, rebuild the code and reinstall the CLI globally on your system.
+- `npm run u:g`: Uninstalls the CLI globally from your system.
 
 ## 📝 License
 
