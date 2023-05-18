@@ -5,7 +5,7 @@
   "main": "build/src/shx.js",
   "author": "BRAVO68WEB",
   "license": "MIT",
-  "private": true,
+  "private": false,
   "devDependencies": {
     "@types/node": "^20.1.5",
     "typescript": "^5.0.4"
