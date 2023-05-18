@@ -1,5 +1,6 @@
 # 🚀 **SHX API**
 
+![GitHub Workflow Status (with branch)](https://img.shields.io/github/actions/workflow/status/BRAVO68WEB/shx/build-api.yaml?branch=dev&label=API%20BUILD%20STATUS&logo=typescript&style=for-the-badge)
 ![GitHub last commit](https://img.shields.io/github/last-commit/bravo68web/shx?style=for-the-badge)
 ![GitHub code size in bytes](https://img.shields.io/github/languages/code-size/bravo68web/shx?style=for-the-badge)
 ![Snyk Vulnerabilities for GitHub Repo](https://img.shields.io/snyk/vulnerabilities/github/bravo68web/shx?style=for-the-badge)
@@ -10,7 +11,7 @@
 
 ## 📝 Description
 
-Shx is a custom ShareX server that allows you to upload and share files, images,
+Shx API is a custom ShareX server that allows you to upload and share files, images,
 text and URLs with ease. This server is built using Node.js and Express.js and
 stores the uploaded content on AWS S3 and Redis.
 
@@ -34,11 +35,10 @@ stores the uploaded content on AWS S3 and Redis.
 
 To get started with the project, follow these steps:
 
-1. Clone the repo.
-2. Run `npm install` to install dependencies.
-3. Copy the `.env.example` file and create a `.env` file with your environment
-   variables.
-4. Run `npm run dev` to start the development server.
+1. Run `npm install` to install dependencies.
+2. Copy the `.env.example` file and create a `.env` file with your environment
+   variables with appropriate values.
+3. Run `npm run dev` to start the development server.
 
 ## 📜 Scripts
 
