@@ -1,6 +1,6 @@
 # 🚀 **Project SHX**
 
-![GitHub Workflow Status](https://img.shields.io/github/actions/workflow/status/bravo68web/shx/build.yaml?style=for-the-badge)
+![GitHub Workflow Status](https://img.shields.io/github/actions/workflow/status/bravo68web/shx/build-image.yaml?style=for-the-badge)
 ![GitHub last commit](https://img.shields.io/github/last-commit/bravo68web/shx?style=for-the-badge)
 ![GitHub code size in bytes](https://img.shields.io/github/languages/code-size/bravo68web/shx?style=for-the-badge)
 ![Snyk Vulnerabilities for GitHub Repo](https://img.shields.io/snyk/vulnerabilities/github/bravo68web/shx?style=for-the-badge)
