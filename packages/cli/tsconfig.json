@@ -4,7 +4,7 @@
 		"typeRoots": ["node_modules/@types", "types"],
 		"resolveJsonModule": true,
 		"esModuleInterop": true,
-		"target": "ES2017",
+		"target": "ESNext",
 		"strict": true,
 		"module": "commonjs",
 		"moduleResolution": "node",
@@ -14,7 +14,8 @@
 		"declaration": true,
 		"sourceMap": false,
 		"noImplicitAny": false,
-		"types": ["node"]
+		"types": ["node"],
+		"allowJs": true
 	},
 	"exclude": ["node_modules/**/*", "build/**/*"],
 	"include": ["**/*.ts", "**/*.tsx", "**/*.json", "**/*.js"],
