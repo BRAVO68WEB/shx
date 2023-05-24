@@ -1,0 +1,29 @@
+import React, { ButtonHTMLAttributes, InputHTMLAttributes } from "react";
+import {cva,VariantProps} from "class-variance-authority"
+import { cn } from "@/lib/utils";
+
+const buttonVariance = cva(
+	'flex w-full justify-center rounded-md mt-4 font-semibold leading-6 text-white shadow-sm active:scale-105 transition',
+	{
+		variants: {
+			variant: {
+				default: 'bg-primary',
+			},
+			size: {
+				default: 'px-3 py-1.5 text-sm',
+			},
+		},
+		defaultVariants: {
+			variant: 'default',
+			size: 'default',
+		},
+	}
+);
+
+interface ButtonProsp extends ButtonHTMLAttributes<HTMLButtonElement>,VariantProps<typeof buttonVariance>  {}
+
+const Button = ({className,size,variant,...props}:ButtonProsp) => {
+    return <button className={cn(buttonVariance({variant,size,className}))} {...props} />
+}
+
+export default Button
