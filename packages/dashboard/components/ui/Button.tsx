@@ -22,8 +22,10 @@ const buttonVariance = cva(
 
 interface ButtonProsp extends ButtonHTMLAttributes<HTMLButtonElement>,VariantProps<typeof buttonVariance>  {}
 
-const Button = ({className,size,variant,...props}:ButtonProsp) => {
-    return <button className={cn(buttonVariance({variant,size,className}))} {...props} />
+const Button = ({className,size,variant,children,...props}:ButtonProsp) => {
+    return <button className={cn(buttonVariance({variant,size,className}))} {...props} >
+		{children}
+	</button>
 }
 
 export default Button
