@@ -2,8 +2,7 @@
   kind: postgres
   configuration:
     connection_info:
-      database_url:
-        from_env: PG_DATABASE_URL
+      database_url: postgresql://b68web:LSQsz9TMUlP8@ep-crimson-snowflake-666973.ap-southeast-1.aws.neon.tech/neondb
       isolation_level: read-committed
       use_prepared_statements: false
   tables: "!include default/tables/tables.yaml"

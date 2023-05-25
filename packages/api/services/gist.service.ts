@@ -97,4 +97,74 @@ export default class GistService implements IGistService {
 		const result: any = await client.request(query, variables);
 		return result.insert_gists_one;
 	}
+
+	public async deleteGistS(gistID: string): Promise<any> {
+		const query = gql`
+			mutation deleteGist($gistID: uuid!) {
+				delete_gists(where: { gistID: { _eq: $gistID } }) {
+					affected_rows
+				}
+			}
+		`;
+		const variables = {
+			gistID,
+		};
+		const result: any = await client.request(query, variables);
+		return result.delete_gists.affected_rows;
+	}
+
+	public async listGistsS(
+		searchString = '',
+		pageNo = 1,
+		pageSize = 10
+	): Promise<any> {
+		const query = gql`
+			query listGists($searchString: String!, $pageNo: Int!, $pageSize: Int!) {
+				gists(
+					where: {
+						_or: [
+							{ content: { _iregex: $searchString } }
+							{ gist_url_key: { _iregex: $searchString } }
+						]
+					}
+					limit: $pageSize
+					offset: $pageNo
+				) {
+					gistID
+					content
+					gist_url_key
+					created_on
+					isPrivate
+					isOneTimeOnly
+					views
+				}
+			}
+		`;
+		const variables = {
+			searchString,
+			pageNo: (pageNo - 1) * pageSize,
+			pageSize,
+		};
+		const result: any = await client.request(query, variables);
+		return result.gists;
+	}
+
+	public async updateGistS(gistID: string, content: string): Promise<any> {
+		const query = gql`
+			mutation updateGist($gistID: uuid!, $content: String!) {
+				update_gists(
+					where: { gistID: { _eq: $gistID } }
+					_set: { content: $content }
+				) {
+					affected_rows
+				}
+			}
+		`;
+		const variables = {
+			gistID,
+			content,
+		};
+		const result: any = await client.request(query, variables);
+		return result.update_gists.affected_rows;
+	}
 }

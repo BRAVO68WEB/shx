@@ -31,6 +31,7 @@ export default class Uploader implements IUploaderService {
 					uploaded_at
 					filename
 					upload_url
+					deleteToken
 				}
 			}
 		`;
@@ -74,6 +75,7 @@ export default class Uploader implements IUploaderService {
 					uploaded_at
 					filename
 					upload_url
+					deleteToken
 				}
 			}
 		`;
@@ -121,6 +123,7 @@ export default class Uploader implements IUploaderService {
 					uploaded_at
 					filename
 					upload_url
+					deleteToken
 				}
 			}
 		`;
@@ -186,6 +189,7 @@ export default class Uploader implements IUploaderService {
 					uploaded_at
 					filename
 					upload_url
+					deleteToken
 				}
 			}
 		`;
@@ -232,5 +236,128 @@ export default class Uploader implements IUploaderService {
 			});
 
 		return filename;
+	};
+
+	public deleteFileS = async (fileID: string, delToken: string) => {
+		const findQuery = gql`
+			query findFile($fileID: uuid!) {
+				uploads_by_pk(fileID: $fileID) {
+					fileID
+					filename
+					upload_url
+					deleteToken
+				}
+			}
+		`;
+
+		const findVariables = {
+			fileID: fileID,
+		};
+
+		const findData: any = await client.request(findQuery, findVariables);
+
+		if (!findData.uploads_by_pk) {
+			throw new Error('File not found');
+		}
+
+		if (!(findData.uploads_by_pk.deleteToken == delToken)) {
+			throw new Error('Invalid delete token');
+		}
+
+		const delquery = gql`
+			mutation deleteFile($fileID: uuid!) {
+				delete_uploads_by_pk(fileID: $fileID) {
+					fileID
+					upload_url
+				}
+			}
+		`;
+
+		const variables = {
+			fileID: fileID,
+		};
+
+		const data: any = await client.request(delquery, variables);
+
+		const filename = data.delete_uploads_by_pk.upload_url.split('/').pop()!;
+
+		await this.uploaderService.deleteFile(
+			configKeys.R2_BUCKET_FOLDER!,
+			filename
+		);
+
+		return data.delete_uploads_by_pk;
+	};
+
+	public listFilesS = async (
+		searchQuery: any,
+		limit: number,
+		offset: number
+	) => {
+		const query = gql`
+			query listFiles($searchQuery: String!, $limit: Int!, $offset: Int!) {
+				uploads(
+					where: {
+						_or: [
+							{ filename: { _iregex: $searchQuery } }
+							{ upload_url: { _iregex: $searchQuery } }
+						]
+					}
+					limit: $limit
+					offset: $offset
+					order_by: { uploaded_at: desc }
+				) {
+					fileID
+					uploaded_at
+					filename
+					upload_url
+					deleteToken
+				}
+				uploads_aggregate(
+					where: {
+						_or: [
+							{ filename: { _iregex: $searchQuery } }
+							{ upload_url: { _iregex: $searchQuery } }
+						]
+					}
+				) {
+					aggregate {
+						count
+					}
+				}
+			}
+		`;
+
+		const variables = {
+			searchQuery: `%${searchQuery}%`,
+			limit: limit,
+			offset: offset,
+		};
+
+		const data: any = await client.request(query, variables);
+
+		return data.uploads;
+	};
+
+	public getFileS = async (fileID: string) => {
+		const query = gql`
+			query getFile($fileID: uuid!) {
+				uploads_by_pk(fileID: $fileID) {
+					fileID
+					uploaded_at
+					filename
+					upload_url
+					deleteToken
+				}
+			}
+		`;
+
+		const variables = {
+			fileID: fileID,
+		};
+
+		const data: any = await client.request(query, variables);
+
+		return data.uploads_by_pk;
 	};
 }

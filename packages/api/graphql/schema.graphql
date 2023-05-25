@@ -2026,6 +2026,7 @@ type uploads {
   """An object relationship"""
   apikey: apikeys!
   apikeyUsed: uuid!
+  deleteToken: String!
   fileID: uuid!
   filename: String!
   upload_url: String!
@@ -2089,6 +2090,7 @@ input uploads_bool_exp {
   _or: [uploads_bool_exp!]
   apikey: apikeys_bool_exp
   apikeyUsed: uuid_comparison_exp
+  deleteToken: String_comparison_exp
   fileID: uuid_comparison_exp
   filename: String_comparison_exp
   upload_url: String_comparison_exp
@@ -2117,6 +2119,7 @@ input type for inserting data into table "uploads"
 input uploads_insert_input {
   apikey: apikeys_obj_rel_insert_input
   apikeyUsed: uuid
+  deleteToken: String
   fileID: uuid
   filename: String
   upload_url: String
@@ -2127,6 +2130,7 @@ input uploads_insert_input {
 """aggregate max on columns"""
 type uploads_max_fields {
   apikeyUsed: uuid
+  deleteToken: String
   fileID: uuid
   filename: String
   upload_url: String
@@ -2139,6 +2143,7 @@ order by max() on columns of table "uploads"
 """
 input uploads_max_order_by {
   apikeyUsed: order_by
+  deleteToken: order_by
   fileID: order_by
   filename: order_by
   upload_url: order_by
@@ -2149,6 +2154,7 @@ input uploads_max_order_by {
 """aggregate min on columns"""
 type uploads_min_fields {
   apikeyUsed: uuid
+  deleteToken: String
   fileID: uuid
   filename: String
   upload_url: String
@@ -2161,6 +2167,7 @@ order by min() on columns of table "uploads"
 """
 input uploads_min_order_by {
   apikeyUsed: order_by
+  deleteToken: order_by
   fileID: order_by
   filename: order_by
   upload_url: order_by
@@ -2192,6 +2199,7 @@ input uploads_on_conflict {
 input uploads_order_by {
   apikey: apikeys_order_by
   apikeyUsed: order_by
+  deleteToken: order_by
   fileID: order_by
   filename: order_by
   upload_url: order_by
@@ -2210,6 +2218,9 @@ select columns of table "uploads"
 enum uploads_select_column {
   """column name"""
   apikeyUsed
+
+  """column name"""
+  deleteToken
 
   """column name"""
   fileID
@@ -2232,6 +2243,7 @@ input type for updating data in table "uploads"
 """
 input uploads_set_input {
   apikeyUsed: uuid
+  deleteToken: String
   fileID: uuid
   filename: String
   upload_url: String
@@ -2253,6 +2265,7 @@ input uploads_stream_cursor_input {
 """Initial value of the column from where the streaming should start"""
 input uploads_stream_cursor_value_input {
   apikeyUsed: uuid
+  deleteToken: String
   fileID: uuid
   filename: String
   upload_url: String
@@ -2266,6 +2279,9 @@ update columns of table "uploads"
 enum uploads_update_column {
   """column name"""
   apikeyUsed
+
+  """column name"""
+  deleteToken
 
   """column name"""
   fileID
