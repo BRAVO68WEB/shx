@@ -1,3 +1,5 @@
+import axiosClient from '../libs/axios';
+
 export default async (
 	ourl: string,
 	shrinkOptions: {
