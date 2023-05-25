@@ -1,4 +1,6 @@
-import axiosClient from '../libs/axios';
+import axios from 'axios';
+import clip from 'clipboardy';
+import { configFile } from '../shx';
 
 export default async (
 	ourl: string,
@@ -6,8 +8,26 @@ export default async (
 		clipboard: boolean;
 	}
 ) => {
-	console.log('Shorten URL ...\n');
+	const axReq = {
+		url: configFile.get('serverurl') + '/url/',
+		method: 'POST',
+		headers: {
+			'Content-Type': 'application/json',
+			'x-shx-api-key': configFile.get('token'),
+		},
+		data: {
+			url: ourl,
+		},
+	};
+	const result = await axios(axReq);
+	let resURL = '';
+	if (result.data.message == 'Success') {
+		resURL = configFile.get('serverurl') + '/' + result.data.data.short_key;
+		console.log('Shorten URL :- ', resURL);
+	} else {
+		console.log('Error :- ', result.data.error);
+		return;
+	}
 
-	console.log('URL :- ', ourl);
-	console.log('Shrink Options :- ', shrinkOptions);
+	if (shrinkOptions.clipboard) clip.writeSync(resURL);
 };
