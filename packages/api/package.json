@@ -1,6 +1,6 @@
 {
 	"name": "shx-api",
-	"version": "1.0.0",
+	"version": "1.1.0",
 	"description": "My ShareX Server acting as Daddy",
 	"main": "index.ts",
 	"repository": "https://github.com/bravo68web/shx.git",
