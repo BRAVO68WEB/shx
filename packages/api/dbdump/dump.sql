@@ -198,7 +198,8 @@ CREATE TABLE public.uploads (
     uploaded_at timestamp with time zone DEFAULT now() NOT NULL,
     upload_url text NOT NULL,
     "apikeyUsed" uuid NOT NULL,
-    uploader_ip text
+    uploader_ip text,
+    deleteToken text DEFAULT generate_short_url() NOT NULL
 );
 
 --
