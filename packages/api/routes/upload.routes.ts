@@ -39,4 +39,18 @@ router.post(
 	uploadController.uploadFileFromURL as any
 );
 
+router.get('/', apiKeyAuth.check as any, uploadController.getAllFiles as any);
+
+router.get(
+	'/:fileID',
+	apiKeyAuth.check as any,
+	uploadController.getFile as any
+);
+
+router.get(
+	'/delete/:fileID',
+	apiKeyAuth.check as any,
+	uploadController.deleteFile as any
+);
+
 export default router;

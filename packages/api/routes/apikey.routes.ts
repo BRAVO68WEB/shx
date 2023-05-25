@@ -11,4 +11,6 @@ router.post('/', apiKeyController.generate as any);
 
 router.delete('/', apiKeyController.revoke as any);
 
+router.get('/verify/:apikey', apiKeyController.verify as any);
+
 export default router;
