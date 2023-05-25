@@ -52,4 +52,18 @@ export default class APIKeyController
 			next(error);
 		}
 	};
+
+	public verify = async (
+		req: ModRequest,
+		res: Response,
+		next: NextFunction
+	): Promise<any> => {
+		try {
+			const { apikey } = req.params as { apikey: string };
+			const result = await this.verifyS(apikey);
+			res.status(200).json(makeResponse({ result }));
+		} catch (error) {
+			next(error);
+		}
+	};
 }
