@@ -99,4 +99,57 @@ export default class UploadController
 			next(error);
 		}
 	};
+
+	public getFile = async (
+		req: ModRequest,
+		res: Response,
+		next: NextFunction
+	): Promise<any> => {
+		try {
+			const { fileID } = req.params;
+			if (!fileID) {
+				const error = new Error('Please provide a fileID');
+				next(error);
+				return;
+			}
+			const data = await this.getFileS(fileID);
+			res.status(200).json(makeResponse(data));
+		} catch (error: any) {
+			next(error);
+		}
+	};
+
+	public getAllFiles = async (
+		req: ModRequest,
+		res: Response,
+		next: NextFunction
+	): Promise<any> => {
+		try {
+			const { limit, offset, query = '' } = req.query;
+			const data = await this.listFilesS(query, Number(limit), Number(offset));
+			res.status(200).json(makeResponse(data));
+		} catch (error: any) {
+			next(error);
+		}
+	};
+
+	public deleteFile = async (
+		req: ModRequest,
+		res: Response,
+		next: NextFunction
+	): Promise<any> => {
+		try {
+			const { fileID } = req.params as { fileID: string };
+			const { token } = req.query as { token: string };
+			if (!fileID) {
+				const error = new Error('Please provide a fileID');
+				next(error);
+				return;
+			}
+			const data = await this.deleteFileS(fileID, token);
+			res.status(200).json(makeResponse(data));
+		} catch (error: any) {
+			next(error);
+		}
+	};
 }

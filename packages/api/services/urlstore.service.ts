@@ -38,4 +38,85 @@ export default class URLStore implements IURLStoreService {
 		const result: any = await client.request(query, variables);
 		return result.shorturls[0];
 	}
+
+	public async deleteURLS(urlID: string) {
+		const query = gql`
+			mutation deleteURL($urlID: uuid!) {
+				delete_shorturls(where: { urlID: { _eq: $urlID } }) {
+					affected_rows
+				}
+			}
+		`;
+		const variables = {
+			urlID,
+		};
+		const result: any = await client.request(query, variables);
+		return result.delete_shorturls.affected_rows;
+	}
+
+	public async getAllURLS(searchQuery = '', limit = 10, offset = 0) {
+		const query = gql`
+			query getAllURLS($searchQuery: String!, $limit: Int!, $offset: Int!) {
+				shorturls(
+					where: {
+						_or: [
+							{ short_key: { _iregex: $searchQuery } }
+							{ original_url: { _iregex: $searchQuery } }
+						]
+					}
+					limit: $limit
+					offset: $offset
+				) {
+					clicks
+					original_url
+					short_key
+					urlID
+				}
+			}
+		`;
+		const variables = {
+			searchQuery,
+			limit,
+			offset,
+		};
+		const result: any = await client.request(query, variables);
+		return result.shorturls;
+	}
+
+	public async getaURLS(urlID: string) {
+		const query = gql`
+			query getaURLS($urlID: uuid!) {
+				shorturls(where: { urlID: { _eq: $urlID } }) {
+					clicks
+					original_url
+					short_key
+					urlID
+				}
+			}
+		`;
+		const variables = {
+			urlID,
+		};
+		const result: any = await client.request(query, variables);
+		return result.shorturls[0];
+	}
+
+	public async updateURLS(urlID: string, updateObject: any) {
+		const query = gql`
+			mutation updateURLS($urlID: uuid!, $updateObject: shorturls_set_input!) {
+				update_shorturls(
+					where: { urlID: { _eq: $urlID } }
+					_set: $updateObject
+				) {
+					affected_rows
+				}
+			}
+		`;
+		const variables = {
+			urlID,
+			updateObject,
+		};
+		const result: any = await client.request(query, variables);
+		return result.update_shorturls.affected_rows;
+	}
 }

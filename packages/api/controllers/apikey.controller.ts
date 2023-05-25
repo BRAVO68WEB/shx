@@ -3,6 +3,7 @@ import APIKeyService from '../services/apikey.service';
 import { ModRequest } from '../types';
 import { makeResponse } from '../libs';
 import { IAPIKeyController } from '../interfaces/apikey.interface';
+import { CustomError } from '../libs/error';
 
 export default class APIKeyController
 	extends APIKeyService
@@ -31,8 +32,13 @@ export default class APIKeyController
 			const { masterkey } = req.query as { masterkey: string };
 			const apikey = await this.generateS(masterkey);
 			res.status(201).json(makeResponse(apikey));
-		} catch (error) {
-			next(error);
+		} catch (error: any) {
+			next(
+				new CustomError({
+					message: error.message,
+					statusCode: 403,
+				})
+			);
 		}
 	};
 

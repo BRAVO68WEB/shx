@@ -9,4 +9,20 @@ const router = Router();
 
 router.post('/', apiKeyAuth.check as any, urlStoreController.create as any);
 
+router.get('/:urlID', apiKeyAuth.check as any, urlStoreController.fetch as any);
+
+router.get('/', apiKeyAuth.check as any, urlStoreController.getAll as any);
+
+router.put(
+	'/:urlID',
+	apiKeyAuth.check as any,
+	urlStoreController.update as any
+);
+
+router.delete(
+	'/:urlID',
+	apiKeyAuth.check as any,
+	urlStoreController.delete as any
+);
+
 export default router;
