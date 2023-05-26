@@ -3,7 +3,7 @@
 --
 
 -- Dumped from database version 15.2
--- Dumped by pg_dump version 15.3
+-- Dumped by pg_dump version 15.3 (Ubuntu 15.3-1.pgdg22.04+1)
 
 SET statement_timeout = 0;
 SET lock_timeout = 0;
@@ -38,7 +38,7 @@ COMMENT ON EXTENSION pgcrypto IS 'cryptographic functions';
 
 
 --
--- Name: generate_api_key(); Type: FUNCTION; Schema: public;  
+-- Name: generate_api_key(); Type: FUNCTION; Schema: public; Owner: shx-dev
 --
 
 CREATE FUNCTION public.generate_api_key() RETURNS text
@@ -65,8 +65,11 @@ BEGIN
 END;
 $$;
 
+
+ALTER FUNCTION public.generate_api_key() OWNER TO "shx-dev";
+
 --
--- Name: generate_short_url(); Type: FUNCTION; Schema: public;  
+-- Name: generate_short_url(); Type: FUNCTION; Schema: public; Owner: shx-dev
 --
 
 CREATE FUNCTION public.generate_short_url() RETURNS text
@@ -85,8 +88,11 @@ BEGIN
 END;
 $$;
 
+
+ALTER FUNCTION public.generate_short_url() OWNER TO "shx-dev";
+
 --
--- Name: set_current_timestamp_updated_at(); Type: FUNCTION; Schema: public;  
+-- Name: set_current_timestamp_updated_at(); Type: FUNCTION; Schema: public; Owner: shx-dev
 --
 
 CREATE FUNCTION public.set_current_timestamp_updated_at() RETURNS trigger
@@ -101,8 +107,11 @@ BEGIN
 END;
 $$;
 
+
+ALTER FUNCTION public.set_current_timestamp_updated_at() OWNER TO "shx-dev";
+
 --
--- Name: unique_random(integer, text, text); Type: FUNCTION; Schema: public;  
+-- Name: unique_random(integer, text, text); Type: FUNCTION; Schema: public; Owner: shx-dev
 --
 
 CREATE FUNCTION public.unique_random(len integer, _table text, _col text) RETURNS text
@@ -125,12 +134,14 @@ end;
 $$;
 
 
+ALTER FUNCTION public.unique_random(len integer, _table text, _col text) OWNER TO "shx-dev";
+
 SET default_tablespace = '';
 
 SET default_table_access_method = heap;
 
 --
--- Name: apikeys; Type: TABLE; Schema: public;  
+-- Name: apikeys; Type: TABLE; Schema: public; Owner: shx-dev
 --
 
 CREATE TABLE public.apikeys (
@@ -141,15 +152,17 @@ CREATE TABLE public.apikeys (
 );
 
 
+ALTER TABLE public.apikeys OWNER TO "shx-dev";
+
 --
--- Name: TABLE apikeys; Type: COMMENT; Schema: public;  
+-- Name: TABLE apikeys; Type: COMMENT; Schema: public; Owner: shx-dev
 --
 
 COMMENT ON TABLE public.apikeys IS 'API Keys Allowed';
 
 
 --
--- Name: gists; Type: TABLE; Schema: public;  
+-- Name: gists; Type: TABLE; Schema: public; Owner: shx-dev
 --
 
 CREATE TABLE public.gists (
@@ -166,8 +179,10 @@ CREATE TABLE public.gists (
 );
 
 
+ALTER TABLE public.gists OWNER TO "shx-dev";
+
 --
--- Name: shorturls; Type: TABLE; Schema: public;  
+-- Name: shorturls; Type: TABLE; Schema: public; Owner: shx-dev
 --
 
 CREATE TABLE public.shorturls (
@@ -181,15 +196,17 @@ CREATE TABLE public.shorturls (
 );
 
 
+ALTER TABLE public.shorturls OWNER TO "shx-dev";
+
 --
--- Name: TABLE shorturls; Type: COMMENT; Schema: public;  
+-- Name: TABLE shorturls; Type: COMMENT; Schema: public; Owner: shx-dev
 --
 
 COMMENT ON TABLE public.shorturls IS 'All Short URLs';
 
 
 --
--- Name: uploads; Type: TABLE; Schema: public;  
+-- Name: uploads; Type: TABLE; Schema: public; Owner: shx-dev
 --
 
 CREATE TABLE public.uploads (
@@ -199,18 +216,21 @@ CREATE TABLE public.uploads (
     upload_url text NOT NULL,
     "apikeyUsed" uuid NOT NULL,
     uploader_ip text,
-    deleteToken text DEFAULT generate_short_url() NOT NULL
+    "deleteToken" text DEFAULT public.generate_short_url() NOT NULL
 );
 
+
+ALTER TABLE public.uploads OWNER TO "shx-dev";
+
 --
--- Name: TABLE uploads; Type: COMMENT; Schema: public;  
+-- Name: TABLE uploads; Type: COMMENT; Schema: public; Owner: shx-dev
 --
 
 COMMENT ON TABLE public.uploads IS 'File Uploads Data';
 
 
 --
--- Data for Name: apikeys; Type: TABLE DATA; Schema: public;  
+-- Data for Name: apikeys; Type: TABLE DATA; Schema: public; Owner: shx-dev
 --
 
 COPY public.apikeys ("keyID", key, created_at, updated_at) FROM stdin;
@@ -218,7 +238,7 @@ COPY public.apikeys ("keyID", key, created_at, updated_at) FROM stdin;
 
 
 --
--- Data for Name: gists; Type: TABLE DATA; Schema: public;  
+-- Data for Name: gists; Type: TABLE DATA; Schema: public; Owner: shx-dev
 --
 
 COPY public.gists ("gistID", content, gist_url_key, "isPrivate", passkey, "isOneTimeOnly", views, creator_ip, created_on, "apikeyUsed") FROM stdin;
@@ -226,7 +246,7 @@ COPY public.gists ("gistID", content, gist_url_key, "isPrivate", passkey, "isOne
 
 
 --
--- Data for Name: shorturls; Type: TABLE DATA; Schema: public;  
+-- Data for Name: shorturls; Type: TABLE DATA; Schema: public; Owner: shx-dev
 --
 
 COPY public.shorturls ("urlID", original_url, short_key, created_on, clicks, creator_ip, "apikeyUsed") FROM stdin;
@@ -234,15 +254,15 @@ COPY public.shorturls ("urlID", original_url, short_key, created_on, clicks, cre
 
 
 --
--- Data for Name: uploads; Type: TABLE DATA; Schema: public;  
+-- Data for Name: uploads; Type: TABLE DATA; Schema: public; Owner: shx-dev
 --
 
-COPY public.uploads ("fileID", filename, uploaded_at, upload_url, "apikeyUsed", uploader_ip) FROM stdin;
+COPY public.uploads ("fileID", filename, uploaded_at, upload_url, "apikeyUsed", uploader_ip, "deleteToken") FROM stdin;
 \.
 
 
 --
--- Name: apikeys apikeys_key_key; Type: CONSTRAINT; Schema: public;  
+-- Name: apikeys apikeys_key_key; Type: CONSTRAINT; Schema: public; Owner: shx-dev
 --
 
 ALTER TABLE ONLY public.apikeys
@@ -250,7 +270,7 @@ ALTER TABLE ONLY public.apikeys
 
 
 --
--- Name: apikeys apikeys_pkey; Type: CONSTRAINT; Schema: public;  
+-- Name: apikeys apikeys_pkey; Type: CONSTRAINT; Schema: public; Owner: shx-dev
 --
 
 ALTER TABLE ONLY public.apikeys
@@ -258,7 +278,7 @@ ALTER TABLE ONLY public.apikeys
 
 
 --
--- Name: gists gists_gist_url_key_key; Type: CONSTRAINT; Schema: public;  
+-- Name: gists gists_gist_url_key_key; Type: CONSTRAINT; Schema: public; Owner: shx-dev
 --
 
 ALTER TABLE ONLY public.gists
@@ -266,15 +286,7 @@ ALTER TABLE ONLY public.gists
 
 
 --
--- Name: gists gists_passkey_key; Type: CONSTRAINT; Schema: public;  
---
-
-ALTER TABLE ONLY public.gists
-    ADD CONSTRAINT gists_passkey_key UNIQUE (passkey);
-
-
---
--- Name: gists gists_pkey; Type: CONSTRAINT; Schema: public;  
+-- Name: gists gists_pkey; Type: CONSTRAINT; Schema: public; Owner: shx-dev
 --
 
 ALTER TABLE ONLY public.gists
@@ -282,7 +294,7 @@ ALTER TABLE ONLY public.gists
 
 
 --
--- Name: shorturls shorturls_pkey; Type: CONSTRAINT; Schema: public;  
+-- Name: shorturls shorturls_pkey; Type: CONSTRAINT; Schema: public; Owner: shx-dev
 --
 
 ALTER TABLE ONLY public.shorturls
@@ -290,7 +302,7 @@ ALTER TABLE ONLY public.shorturls
 
 
 --
--- Name: shorturls shorturls_short_key_key; Type: CONSTRAINT; Schema: public;  
+-- Name: shorturls shorturls_short_key_key; Type: CONSTRAINT; Schema: public; Owner: shx-dev
 --
 
 ALTER TABLE ONLY public.shorturls
@@ -298,7 +310,7 @@ ALTER TABLE ONLY public.shorturls
 
 
 --
--- Name: uploads uploads_pkey; Type: CONSTRAINT; Schema: public;  
+-- Name: uploads uploads_pkey; Type: CONSTRAINT; Schema: public; Owner: shx-dev
 --
 
 ALTER TABLE ONLY public.uploads
@@ -306,7 +318,7 @@ ALTER TABLE ONLY public.uploads
 
 
 --
--- Name: uploads uploads_upload_url_key; Type: CONSTRAINT; Schema: public;  
+-- Name: uploads uploads_upload_url_key; Type: CONSTRAINT; Schema: public; Owner: shx-dev
 --
 
 ALTER TABLE ONLY public.uploads
@@ -314,21 +326,21 @@ ALTER TABLE ONLY public.uploads
 
 
 --
--- Name: apikeys set_public_apikeys_updated_at; Type: TRIGGER; Schema: public;  
+-- Name: apikeys set_public_apikeys_updated_at; Type: TRIGGER; Schema: public; Owner: shx-dev
 --
 
 CREATE TRIGGER set_public_apikeys_updated_at BEFORE UPDATE ON public.apikeys FOR EACH ROW EXECUTE FUNCTION public.set_current_timestamp_updated_at();
 
 
 --
--- Name: TRIGGER set_public_apikeys_updated_at ON apikeys; Type: COMMENT; Schema: public;  
+-- Name: TRIGGER set_public_apikeys_updated_at ON apikeys; Type: COMMENT; Schema: public; Owner: shx-dev
 --
 
 COMMENT ON TRIGGER set_public_apikeys_updated_at ON public.apikeys IS 'trigger to set value of column "updated_at" to current timestamp on row update';
 
 
 --
--- Name: gists gists_apikeyUsed_fkey; Type: FK CONSTRAINT; Schema: public;  
+-- Name: gists gists_apikeyUsed_fkey; Type: FK CONSTRAINT; Schema: public; Owner: shx-dev
 --
 
 ALTER TABLE ONLY public.gists
@@ -336,7 +348,7 @@ ALTER TABLE ONLY public.gists
 
 
 --
--- Name: shorturls shorturls_apikeyUsed_fkey; Type: FK CONSTRAINT; Schema: public;  
+-- Name: shorturls shorturls_apikeyUsed_fkey; Type: FK CONSTRAINT; Schema: public; Owner: shx-dev
 --
 
 ALTER TABLE ONLY public.shorturls
@@ -344,7 +356,7 @@ ALTER TABLE ONLY public.shorturls
 
 
 --
--- Name: uploads uploads_apikeyUsed_fkey; Type: FK CONSTRAINT; Schema: public;  
+-- Name: uploads uploads_apikeyUsed_fkey; Type: FK CONSTRAINT; Schema: public; Owner: shx-dev
 --
 
 ALTER TABLE ONLY public.uploads
