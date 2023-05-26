@@ -6,13 +6,36 @@ export default (program: Command) => {
 		.command('gist')
 		.description('Create a new gist')
 		.option('-c, --clipboard', 'Copy url to clipboard', false)
-		.action((gistOptions: { clipboard: boolean }) => {
-			if (!gistOptions.clipboard) {
-				gistOptions = {
-					clipboard: true,
-				};
-			}
+		.option('-o, --override', 'Override question', false)
+		.option('-p, --passkey <passkey>', 'Passkey for private gist', '')
+		.option('-b, --burn', 'Burn after reading', false)
+		.action(
+			(gistOptions: {
+				clipboard: boolean;
+				overide: boolean;
+				oc: any;
+				passkey: string;
+			}) => {
+				const stdin = process.stdin;
+				let inputText = '';
 
-			gistFn(gistOptions);
-		});
+				if (!process.stdin.isTTY) {
+					stdin.setEncoding('utf-8');
+
+					stdin.on('readable', () => {
+						const chunk = stdin.read();
+						if (chunk !== null) {
+							inputText += chunk;
+						}
+					});
+
+					stdin.on('end', () => {
+						gistOptions.oc = inputText.trim() || gistOptions.oc;
+						gistFn(gistOptions);
+					});
+				} else {
+					gistFn(gistOptions);
+				}
+			}
+		);
 };
