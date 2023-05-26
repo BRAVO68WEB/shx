@@ -16,3 +16,4 @@ jobs:
       - run: npm install -g yarn
       - run: cd packages/cli/ && yarn && yarn build && yarn r
       - run: shx help
+      - run: du -sh

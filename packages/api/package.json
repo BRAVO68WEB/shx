@@ -39,7 +39,8 @@
 		"dev:express": "cross-env NODE_ENV=development nodemon -x node --no-warnings --experimental-specifier-resolution=node --loader ts-node/esm index.ts --signal SIGKILL --ignore node_modules",
 		"build": "tsc -p tsconfig.json",
 		"start": "node --es-module-specifier-resolution=node --loader ts-node/esm ./build/index.js",
-		"fetch:schemas": "bash bin/fetch-gql-schema.sh"
+		"fetch:schemas": "bash bin/fetch-gql-schema.sh",
+		"fetch:db": "bash bin/fetch-db-schema.sh"
 	},
 	"devDependencies": {
 		"@swc/core": "^1.3.23",
