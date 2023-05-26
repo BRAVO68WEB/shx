@@ -1,4 +1,4 @@
-#!/usr/bin/env node --no-warnings
+#!/usr/bin/env node
 process.removeAllListeners('warning');
 import { Command } from 'commander';
 import { LoadCommads } from './commands';
