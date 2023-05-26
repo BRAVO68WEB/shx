@@ -17,7 +17,7 @@
     "commander": "^10.0.1",
     "configstore": "5.0.1",
     "copy-to-clipboard": "^3.3.3",
-    "inquirer": "^8.0.0"
+    "inquirer": "^9.2.6"
   },
   "scripts": {
     "i:g": "npm i -g .",
