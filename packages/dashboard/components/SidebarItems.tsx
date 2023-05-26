@@ -1,7 +1,8 @@
 import React from "react"
 
 const SidebarItems = () => {
-	return <></>;
+	return <>
+	</>;
 };
 
 export default SidebarItems

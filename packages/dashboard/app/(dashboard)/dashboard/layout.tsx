@@ -8,7 +8,7 @@ interface DashboardLayoutProps {
 
 const Layout = ({ children }: DashboardLayoutProps) => {
 	return (
-		<div className="flex min-h-screen">
+		<div className="flex h-screen">
 			<div className="sidebar w-full max-w-xs h-screen bg-black flex flex-col overflow-x-hidden overflow-y-auto">
 				{sidebarGroups.map((sidebarGrp, index) => {
 					return (
@@ -29,7 +29,7 @@ const Layout = ({ children }: DashboardLayoutProps) => {
 					);
 				})}
 			</div>
-			<main>{children}</main>
+			<main className='w-full h-full overflow-y-auto'>{children}</main>
 		</div>
 	);
 };
