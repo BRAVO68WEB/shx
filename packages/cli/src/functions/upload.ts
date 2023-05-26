@@ -4,17 +4,19 @@ import clip from 'clipboardy';
 import axios from 'axios';
 import { configFile } from '../shx';
 import { lookup } from 'mime-types';
+import chalk from 'chalk';
 
 export default async (filePath: string, fileOptions: any) => {
 	let fileType = 'file';
 	if (fileOptions.image) fileType = 'image';
-	console.log('Upload a file ...\n');
+
+	console.log(chalk.yellow('Uploading a file ... \n'));
+
 	const fileBlob = new Blob([fs.readFileSync(filePath)], {
 		type: lookup(filePath),
 		endings: 'native',
 	});
 	const formData = new FormData();
-
 	formData.append('file', fileBlob, path.basename(filePath));
 
 	const reqData = {
@@ -26,8 +28,9 @@ export default async (filePath: string, fileOptions: any) => {
 		},
 		data: formData,
 	};
+
 	const { data } = await axios(reqData);
-	console.log('Upload URL :- ', data.data.url);
+	console.log(chalk.greenBright('Upload URL :- ', data.data.url));
 
 	if (fileOptions.clipboard) {
 		clip.writeSync(data.data.url);
