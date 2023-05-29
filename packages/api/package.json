@@ -31,6 +31,7 @@
 		"node-cache": "^5.1.2",
 		"nodemailer": "^6.8.0",
 		"redis": "^4.5.1",
+		"sanitize-filename": "^1.6.3",
 		"sharp": "^0.32.1"
 	},
 	"scripts": {
