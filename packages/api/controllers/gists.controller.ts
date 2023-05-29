@@ -41,9 +41,9 @@ export default class GistController
 		next: NextFunction
 	): Promise<any> => {
 		try {
-			const { gistKey } = req.params;
+			const { gistID } = req.params;
 			const { passkey } = req.query as { passkey: string };
-			const gist = await this.getGistS(gistKey, passkey);
+			const gist = await this.getGistS(gistID, passkey);
 			if (gist === null) {
 				res.status(404).json(
 					makeResponse({
@@ -52,6 +52,107 @@ export default class GistController
 				);
 			} else {
 				res.status(200).json(makeResponse(gist));
+			}
+		} catch (error) {
+			next(error);
+		}
+	};
+
+	public delete = async (
+		req: ModRequest,
+		res: Response,
+		next: NextFunction
+	): Promise<any> => {
+		try {
+			const { gistID } = req.params;
+			const gist = await this.deleteGistS(gistID);
+			if (gist === null) {
+				res.status(404).json(
+					makeResponse({
+						message: 'Gist not found !!',
+					})
+				);
+			} else {
+				res.status(202).json(
+					makeResponse({
+						message: 'Gist deleted successfully !!',
+					})
+				);
+			}
+		} catch (error) {
+			next(error);
+		}
+	};
+
+	public update = async (
+		req: ModRequest,
+		res: Response,
+		next: NextFunction
+	): Promise<any> => {
+		try {
+			const { gistID } = req.params;
+			const { content } = req.body;
+			const gist = await this.updateGistS(gistID, content);
+			if (gist === null) {
+				res.status(404).json(
+					makeResponse({
+						message: 'Gist not found !!',
+					})
+				);
+			} else {
+				res.status(200).json(
+					makeResponse({
+						message: 'Gist updated successfully !!',
+					})
+				);
+			}
+		} catch (error) {
+			next(error);
+		}
+	};
+
+	public getAll = async (
+		req: ModRequest,
+		res: Response,
+		next: NextFunction
+	): Promise<any> => {
+		try {
+			const { search, limit, skip } = req.query as {
+				search: string;
+				limit: string;
+				skip: string;
+			};
+			const gists = await this.listGistsS(
+				search,
+				parseInt(limit),
+				parseInt(skip)
+			);
+			res.status(200).json(makeResponse(gists));
+		} catch (error) {
+			next(error);
+		}
+	};
+
+	public getRaw = async (
+		req: Request,
+		res: Response,
+		next: NextFunction
+	): Promise<any> => {
+		try {
+			const { gistID } = req.params;
+			const { passkey } = req.query as { passkey: string };
+			const gist = await this.getGistS(gistID, passkey);
+			if (gist === null) {
+				res.status(404).json(
+					makeResponse({
+						message: 'Gist not found or Invalid passkey passed !!',
+					})
+				);
+			} else {
+				res
+					.status(200)
+					.setHeader('Content-Type', 'text/plain')
+					.send(gist.content);
 			}
 		} catch (error) {
 			next(error);

@@ -44,4 +44,83 @@ export default class URLStoreController
 			next(error);
 		}
 	};
+
+	public delete = async (
+		req: ModRequest,
+		res: Response,
+		next: NextFunction
+	): Promise<any> => {
+		try {
+			const { urlID } = req.params;
+			const urlstore = await this.deleteURLS(urlID);
+			if (urlstore === null) {
+				return res
+					.status(404)
+					.json(makeResponse({ message: 'URL not found !!' }));
+			}
+			res.status(202).json(makeResponse({ message: 'URL deleted !!' }));
+		} catch (error) {
+			next(error);
+		}
+	};
+
+	public update = async (
+		req: ModRequest,
+		res: Response,
+		next: NextFunction
+	): Promise<any> => {
+		try {
+			const { urlID } = req.params;
+			const { original_url, short_key } = req.body;
+			const urlstore = await this.updateURLS(urlID, {
+				original_url,
+				short_key,
+			});
+			if (urlstore === null) {
+				return res
+					.status(404)
+					.json(makeResponse({ message: 'URL not found !!' }));
+			}
+			res.status(200).json(makeResponse({ message: 'URL updated !!' }));
+		} catch (error) {
+			next(error);
+		}
+	};
+
+	public getAll = async (
+		req: ModRequest,
+		res: Response,
+		next: NextFunction
+	): Promise<any> => {
+		try {
+			const { query, limit, page } = req.query;
+			const urlstore = await this.getAllURLS(
+				query as string,
+				Number(limit),
+				Number(page)
+			);
+			res.status(200).json(makeResponse(urlstore));
+		} catch (error) {
+			next(error);
+		}
+	};
+
+	public fetch = async (
+		req: ModRequest,
+		res: Response,
+		next: NextFunction
+	): Promise<any> => {
+		try {
+			const { urlID } = req.params;
+			const urlstore = await this.getaURLS(urlID);
+			if (urlstore === null) {
+				return res
+					.status(404)
+					.json(makeResponse({ message: 'URL not found !!' }));
+			}
+			res.status(200).json(makeResponse(urlstore));
+		} catch (error) {
+			next(error);
+		}
+	};
 }
