@@ -8,6 +8,7 @@ import { UserMeta } from '../types';
 import axios from 'axios';
 import fs from 'fs';
 import { nanoid } from 'napi-nanoid';
+import sanitize from 'sanitize-filename';
 
 export default class Uploader implements IUploaderService {
 	uploaderService: UploaderService;
@@ -102,8 +103,8 @@ export default class Uploader implements IUploaderService {
 	};
 
 	public uploadImageViaURLS = async (url: string, meta: UserMeta) => {
-		const filename = await this.downloadImage(url);
-
+		let filename = await this.downloadImage(url);
+		filename = sanitize(filename);
 		const rawImage = fs.readFileSync(`uploads/${filename}`);
 		const image: any = sharp(rawImage);
 		await image.toFormat('jpeg');
@@ -153,7 +154,8 @@ export default class Uploader implements IUploaderService {
 	};
 
 	private downloadImage = async (url: string) => {
-		const filename = nanoid() + url.split('/').pop()!;
+		let filename = nanoid() + url.split('/').pop()!;
+		filename = sanitize(filename);
 		await axios({
 			url,
 			method: 'GET',
@@ -173,7 +175,8 @@ export default class Uploader implements IUploaderService {
 	};
 
 	public uploadFileViaURLS = async (url: string, meta: UserMeta) => {
-		const filename = await this.downloadFile(url);
+		let filename = await this.downloadFile(url);
+		filename = sanitize(filename);
 		await this.uploaderService.uploadFile(
 			configKeys.R2_BUCKET_FOLDER!,
 			filename,
@@ -219,7 +222,8 @@ export default class Uploader implements IUploaderService {
 	};
 
 	private downloadFile = async (url: string) => {
-		const filename = nanoid() + url.split('/').pop()!;
+		let filename = nanoid() + url.split('/').pop()!;
+		filename = sanitize(filename);
 		await axios({
 			url,
 			method: 'GET',
