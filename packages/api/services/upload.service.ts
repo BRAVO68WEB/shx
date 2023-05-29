@@ -349,7 +349,7 @@ export default class Uploader implements IUploaderService {
 		`;
 
 		const variables = {
-			searchQuery: `%${searchQuery}%`,
+			searchQuery,
 			limit: limit,
 			offset: offset,
 		};
