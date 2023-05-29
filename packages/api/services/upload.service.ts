@@ -153,9 +153,15 @@ export default class Uploader implements IUploaderService {
 		return data.insert_uploads_one;
 	};
 
+	// TODO: Move All this logic to a separate service and fetch from database
+
 	private downloadImage = async (url: string) => {
 		let filename = nanoid() + url.split('/').pop()!;
 		filename = sanitize(filename);
+		const whitelistedExtensions = ['png', 'jpg', 'jpeg', 'gif', 'svg', 'ico'];
+		if (!whitelistedExtensions.includes(filename.split('.').pop() as string)) {
+			throw new Error('Image extension not whitelisted');
+		}
 		await axios({
 			url,
 			method: 'GET',
@@ -163,9 +169,6 @@ export default class Uploader implements IUploaderService {
 		})
 			.then(res => {
 				return sharp(res.data).toFile(`uploads/${filename}`);
-			})
-			.then(() => {
-				console.log(`Image downloaded!`);
 			})
 			.catch(err => {
 				console.log(`Couldn't process: ${err}`);
@@ -224,6 +227,22 @@ export default class Uploader implements IUploaderService {
 	private downloadFile = async (url: string) => {
 		let filename = nanoid() + url.split('/').pop()!;
 		filename = sanitize(filename);
+		const whitelistedExtensions = [
+			'png',
+			'jpg',
+			'jpeg',
+			'gif',
+			'svg',
+			'ico',
+			'mp4',
+			'mp3',
+			'zip',
+			'rar',
+			'pdf',
+		];
+		if (!whitelistedExtensions.includes(filename.split('.').pop() as string)) {
+			throw new Error('File extension not whitelisted');
+		}
 		await axios({
 			url,
 			method: 'GET',
@@ -231,9 +250,6 @@ export default class Uploader implements IUploaderService {
 		})
 			.then(res => {
 				return fs.writeFileSync(`uploads/${filename}`, res.data);
-			})
-			.then(() => {
-				console.log(`File downloaded!`);
 			})
 			.catch(err => {
 				console.log(`Couldn't process: ${err}`);
