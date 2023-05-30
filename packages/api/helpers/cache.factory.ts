@@ -35,7 +35,7 @@ export default class CacheClient {
 		if (env === 'production') {
 			this._redisClient = redis.createClient({
 				url: redisUrl,
-				name: '<>', // TODO: add redis name
+				name: '<>',
 			});
 			this._redisClient.connect();
 		}
