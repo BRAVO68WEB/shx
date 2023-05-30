@@ -6,6 +6,8 @@ import {
 	IConfigKeys,
 } from '../interfaces/config.interface';
 
+// Use zod to validate the config
+
 export default class ConfigStoreFactory implements IConfigClass {
 	public configStoreType: IConfigStore;
 

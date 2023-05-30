@@ -42,6 +42,8 @@ app.use(
 );
 app.set('trust proxy', 1);
 
+// TODO: Add file based logging using winston
+
 app.use('/health', (req, res) => {
 	return res.status(200).json({
 		app: pkg.name,
