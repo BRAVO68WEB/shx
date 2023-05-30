@@ -28,11 +28,11 @@ const Input = ({
 	variant,
 	children,
 	label,
-	withLabel = true,
+	withLabel = false,
 	...props
 }: InputProps) => {
 	return (
-		<div>
+		<>
 			{withLabel && (
 				<label htmlFor="email" className="block text-sm font-medium leading-6">
 					{label}
@@ -42,7 +42,7 @@ const Input = ({
 				className={cn(inputVariance({ variant, className }))}
 				{...props}
 			/>
-		</div>
+		</>
 	);
 };
 

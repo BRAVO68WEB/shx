@@ -17,6 +17,7 @@ const LoginForm = () => {
 		>
 			<Input
 				label="Master Key"
+				withLabel={true}
 				placeholder="Master Key"
 				type="text"
 				name="masterKey"
