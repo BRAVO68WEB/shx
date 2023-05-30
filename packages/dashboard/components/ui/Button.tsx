@@ -12,7 +12,7 @@ const buttonVariance = cva(
 			},
 			size: {
 				default: 'px-3 py-1.5 text-sm',
-				icon:'w-auto p-3 m-0'
+				icon:'w-auto h-auto p-3 m-0'
 			},
 		},
 		defaultVariants: {
