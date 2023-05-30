@@ -8,6 +8,7 @@ import { UserMeta } from '../types';
 import axios from 'axios';
 import fs from 'fs';
 import { nanoid } from 'napi-nanoid';
+import sanitize from 'sanitize-filename';
 
 export default class Uploader implements IUploaderService {
 	uploaderService: UploaderService;
@@ -31,6 +32,7 @@ export default class Uploader implements IUploaderService {
 					uploaded_at
 					filename
 					upload_url
+					deleteToken
 				}
 			}
 		`;
@@ -74,6 +76,7 @@ export default class Uploader implements IUploaderService {
 					uploaded_at
 					filename
 					upload_url
+					deleteToken
 				}
 			}
 		`;
@@ -100,8 +103,8 @@ export default class Uploader implements IUploaderService {
 	};
 
 	public uploadImageViaURLS = async (url: string, meta: UserMeta) => {
-		const filename = await this.downloadImage(url);
-
+		let filename = await this.downloadImage(url);
+		filename = sanitize(filename);
 		const rawImage = fs.readFileSync(`uploads/${filename}`);
 		const image: any = sharp(rawImage);
 		await image.toFormat('jpeg');
@@ -121,6 +124,7 @@ export default class Uploader implements IUploaderService {
 					uploaded_at
 					filename
 					upload_url
+					deleteToken
 				}
 			}
 		`;
@@ -149,8 +153,15 @@ export default class Uploader implements IUploaderService {
 		return data.insert_uploads_one;
 	};
 
+	// TODO: Move All this logic to a separate service and fetch from database
+
 	private downloadImage = async (url: string) => {
-		const filename = nanoid() + url.split('/').pop()!;
+		let filename = nanoid() + url.split('/').pop()!;
+		filename = sanitize(filename);
+		const whitelistedExtensions = ['png', 'jpg', 'jpeg', 'gif', 'svg', 'ico'];
+		if (!whitelistedExtensions.includes(filename.split('.').pop() as string)) {
+			throw new Error('Image extension not whitelisted');
+		}
 		await axios({
 			url,
 			method: 'GET',
@@ -158,9 +169,6 @@ export default class Uploader implements IUploaderService {
 		})
 			.then(res => {
 				return sharp(res.data).toFile(`uploads/${filename}`);
-			})
-			.then(() => {
-				console.log(`Image downloaded!`);
 			})
 			.catch(err => {
 				console.log(`Couldn't process: ${err}`);
@@ -170,7 +178,8 @@ export default class Uploader implements IUploaderService {
 	};
 
 	public uploadFileViaURLS = async (url: string, meta: UserMeta) => {
-		const filename = await this.downloadFile(url);
+		let filename = await this.downloadFile(url);
+		filename = sanitize(filename);
 		await this.uploaderService.uploadFile(
 			configKeys.R2_BUCKET_FOLDER!,
 			filename,
@@ -186,6 +195,7 @@ export default class Uploader implements IUploaderService {
 					uploaded_at
 					filename
 					upload_url
+					deleteToken
 				}
 			}
 		`;
@@ -215,7 +225,24 @@ export default class Uploader implements IUploaderService {
 	};
 
 	private downloadFile = async (url: string) => {
-		const filename = nanoid() + url.split('/').pop()!;
+		let filename = nanoid() + url.split('/').pop()!;
+		filename = sanitize(filename);
+		const whitelistedExtensions = [
+			'png',
+			'jpg',
+			'jpeg',
+			'gif',
+			'svg',
+			'ico',
+			'mp4',
+			'mp3',
+			'zip',
+			'rar',
+			'pdf',
+		];
+		if (!whitelistedExtensions.includes(filename.split('.').pop() as string)) {
+			throw new Error('File extension not whitelisted');
+		}
 		await axios({
 			url,
 			method: 'GET',
@@ -224,13 +251,133 @@ export default class Uploader implements IUploaderService {
 			.then(res => {
 				return fs.writeFileSync(`uploads/${filename}`, res.data);
 			})
-			.then(() => {
-				console.log(`File downloaded!`);
-			})
 			.catch(err => {
 				console.log(`Couldn't process: ${err}`);
 			});
 
 		return filename;
+	};
+
+	public deleteFileS = async (fileID: string, delToken: string) => {
+		const findQuery = gql`
+			query findFile($fileID: uuid!) {
+				uploads_by_pk(fileID: $fileID) {
+					fileID
+					filename
+					upload_url
+					deleteToken
+				}
+			}
+		`;
+
+		const findVariables = {
+			fileID: fileID,
+		};
+
+		const findData: any = await client.request(findQuery, findVariables);
+
+		if (!findData.uploads_by_pk) {
+			throw new Error('File not found');
+		}
+
+		if (!(findData.uploads_by_pk.deleteToken == delToken)) {
+			throw new Error('Invalid delete token');
+		}
+
+		const delquery = gql`
+			mutation deleteFile($fileID: uuid!) {
+				delete_uploads_by_pk(fileID: $fileID) {
+					fileID
+					upload_url
+				}
+			}
+		`;
+
+		const variables = {
+			fileID: fileID,
+		};
+
+		const data: any = await client.request(delquery, variables);
+
+		const filename = data.delete_uploads_by_pk.upload_url.split('/').pop()!;
+
+		await this.uploaderService.deleteFile(
+			configKeys.R2_BUCKET_FOLDER!,
+			filename
+		);
+
+		return data.delete_uploads_by_pk;
+	};
+
+	public listFilesS = async (
+		searchQuery: any,
+		limit: number,
+		offset: number
+	) => {
+		const query = gql`
+			query listFiles($searchQuery: String!, $limit: Int!, $offset: Int!) {
+				uploads(
+					where: {
+						_or: [
+							{ filename: { _iregex: $searchQuery } }
+							{ upload_url: { _iregex: $searchQuery } }
+						]
+					}
+					limit: $limit
+					offset: $offset
+					order_by: { uploaded_at: desc }
+				) {
+					fileID
+					uploaded_at
+					filename
+					upload_url
+					deleteToken
+				}
+				uploads_aggregate(
+					where: {
+						_or: [
+							{ filename: { _iregex: $searchQuery } }
+							{ upload_url: { _iregex: $searchQuery } }
+						]
+					}
+				) {
+					aggregate {
+						count
+					}
+				}
+			}
+		`;
+
+		const variables = {
+			searchQuery,
+			limit: limit,
+			offset: offset,
+		};
+
+		const data: any = await client.request(query, variables);
+
+		return data.uploads;
+	};
+
+	public getFileS = async (fileID: string) => {
+		const query = gql`
+			query getFile($fileID: uuid!) {
+				uploads_by_pk(fileID: $fileID) {
+					fileID
+					uploaded_at
+					filename
+					upload_url
+					deleteToken
+				}
+			}
+		`;
+
+		const variables = {
+			fileID: fileID,
+		};
+
+		const data: any = await client.request(query, variables);
+
+		return data.uploads_by_pk;
 	};
 }

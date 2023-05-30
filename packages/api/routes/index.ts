@@ -3,7 +3,9 @@ import { readdirSync } from 'fs';
 import { fileURLToPath } from 'url';
 import pkg from '../package.json' assert { type: 'json' };
 import { execSync } from 'child_process';
-const gitHash = execSync('git rev-parse HEAD').toString().trim();
+let gitHash = '';
+if (!process.env.DOCKER_ENV)
+	gitHash = execSync('git rev-parse HEAD').toString().trim();
 
 const __filename = fileURLToPath(import.meta.url);
 

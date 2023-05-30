@@ -70,4 +70,24 @@ export default class APIKeyService implements IAPIKeyService {
 		const result: any = await client.request(query);
 		return result.apikeys;
 	}
+
+	public async verifyS(apikey: string): Promise<any> {
+		const query = gql`
+			query verifyAPIKey($apikey: String!) {
+				apikeys(where: { key: { _eq: $apikey } }) {
+					key
+					keyID
+				}
+			}
+		`;
+		const variables = {
+			apikey,
+		};
+		const result: any = await client.request(query, variables);
+		if (result.apikeys.length === 0) {
+			return false;
+		} else {
+			return true;
+		}
+	}
 }

@@ -3,6 +3,7 @@ import cors from 'cors';
 import express from 'express';
 import morgan from 'morgan';
 import helmet from 'helmet';
+import ratelimiter from 'express-rate-limit';
 
 import { hgqlInit } from './helpers';
 import { errorHandler, notFoundHandler } from './libs';
@@ -33,6 +34,13 @@ app.use(helmet());
 app.use(morgan('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true, limit: '50mb' }));
+app.use(
+	ratelimiter({
+		windowMs: 15 * 60 * 1000, // 15 minutes
+		max: 100, // limit each IP to 100 requests per windowMs
+	})
+);
+app.set('trust proxy', 1);
 
 app.use('/health', (req, res) => {
 	return res.status(200).json({
@@ -44,6 +52,7 @@ app.use('/health', (req, res) => {
 });
 
 console.log('☄', 'Base Route', '/');
+
 app.use('/', routes);
 app.get('/:urlKey', urlStoreController.get);
 

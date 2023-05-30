@@ -1,0 +1,71 @@
+version: '3.1'
+
+services:
+  database:
+    image: postgres:15
+    restart: always
+    environment:
+      POSTGRES_PASSWORD: shx
+      POSTGRES_USER: shx
+      POSTGRES_DB: shx
+    ports:
+      - 5432
+    volumes:
+      - ./dbdump/dump.sql:/docker-entrypoint-initdb.d/dbdump.sql
+
+  hasura:
+    image: hasura/graphql-engine:latest
+    restart: always
+    environment:
+      HASURA_GRAPHQL_DATABASE_URL: postgres://shx:shx@database:5432/shx
+      HASURA_GRAPHQL_ENABLE_CONSOLE: "true"
+      HASURA_GRAPHQL_ADMIN_SECRET: ${HASURA_GRAPHQL_ADMIN_SECRET}
+      HASURA_GRAPHQL_UNAUTHORIZED_ROLE: anonymous
+    ports:
+      - 8080
+    depends_on:
+      - database
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8080/healthz"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+
+  redis:
+    image: redis:latest
+    restart: always
+    ports:
+      - 6379
+
+  api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    restart: always
+    environment:
+      PORT: 4000
+      NODE_ENV: ${NODE_ENV}
+      HASURA_GRAPHQL_ADMIN_SECRET: ${HASURA_GRAPHQL_ADMIN_SECRET}
+      HASURA_GRAPHQL_ENDPOINT: http://hasura:8080/v1/graphql
+      CACHE_ENV: ${CACHE_ENV}
+      REDIS_URL: redis://redis:6379
+      R2_CLIENT_ID: ${R2_CLIENT_ID}
+      R2_CLIENT_SECRET: ${R2_CLIENT_SECRET}
+      R2_BUCKET_NAME: ${R2_BUCKET_NAME}
+      R2_BUCKET_REGION: ${R2_BUCKET_REGION}
+      R2_BUCKET_ENDPOINT: ${R2_BUCKET_ENDPOINT}
+      R2_BUCKET_URL: ${R2_BUCKET_URL}
+      R2_BUCKET_FOLDER: ${R2_BUCKET_FOLDER}
+      MASTER_KEY: ${MASTER_KEY}
+      DOCKER_ENV: true
+    ports:
+      - 4000:4000
+    depends_on:
+      - database
+      - hasura
+      - redis
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:${PORT}/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 5

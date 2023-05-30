@@ -1,0 +1,16 @@
+name: "💫 Misc Issue"
+description: Create a new misc issue.
+title: "💫 [MISC] - <title>"
+labels: [
+  "help wanted",
+  "question"
+]
+body:
+  - type: textarea
+    id: description
+    attributes:
+      label: "Description"
+      description: Please enter an explicit description of your issue
+      placeholder: Short and explicit description of your question you want to ask ...
+    validations:
+      required: true
