@@ -17,6 +17,7 @@ export default class APIKeyController
 		try {
 			const { masterkey } = req.query as { masterkey: string };
 			const apikeys = await this.listS(masterkey);
+			// TODO: Enpacsulate API Key to avoid showing entire key after generation
 			return res.status(200).json(makeResponse(apikeys));
 		} catch (error) {
 			next(error);

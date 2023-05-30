@@ -11,6 +11,7 @@ export class UploadFactory implements IUploadFactory {
 		return multer({
 			storage: storage,
 			fileFilter: (req, file: FileData, cb) => {
+				// TODO: Filename sanitization
 				const fileName =
 					file.originalname.split('.')[
 						file.originalname.split('.').length - 2
