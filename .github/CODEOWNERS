@@ -1,1 +1,3 @@
-* @BRAVO68WEB
+packages/api/* @BRAVO68WEB
+packages/cli/* @BRAVO68WEB
+packages/dashboard/* @chirag3003
