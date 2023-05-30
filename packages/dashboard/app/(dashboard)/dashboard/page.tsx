@@ -4,7 +4,7 @@ import React from "react";
 const Dashboard = () => {
     return (
         <>
-         <UploadsList />   
+            <h1 className="text-5xl">Dasbhboard</h1>
         </>
     )
 }
