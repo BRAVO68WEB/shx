@@ -13,7 +13,7 @@ export default async (filePath: string, fileOptions: any) => {
 	console.log(chalk.yellow('Uploading a file ... \n'));
 
 	const fileBlob = new Blob([fs.readFileSync(filePath)], {
-		type: lookup(filePath),
+		type: lookup(filePath) as string,
 		endings: 'native',
 	});
 	const formData = new FormData();
