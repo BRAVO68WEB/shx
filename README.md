@@ -41,6 +41,10 @@ The API package contains the server-side code responsible for handling file, ima
 
 The CLI package includes the command-line interface (CLI) for interacting with the ShareX server from the terminal. It allows users to perform various actions, such as uploading files, images, or text, and generating short URLs.
 
+### @packages/dasbhoard
+
+The dashboard package includes the web interface for interacting with the server. It allows users to perform various actions, such as uploading files, images, or text, and generating short URLs directly via web interface.
+
 ## 📝 License
 
 This project is licensed under the ISC License.
