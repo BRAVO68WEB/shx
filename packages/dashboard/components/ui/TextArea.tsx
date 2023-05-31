@@ -1,6 +1,4 @@
 import React, {
-	ButtonHTMLAttributes,
-	InputHTMLAttributes,
 	LegacyRef,
 	MutableRefObject,
 	TextareaHTMLAttributes,
@@ -37,7 +35,6 @@ const TextArea = forwardRef<HTMLTextAreaElement | TextAreaProps>(
 		{
 			className,
 			variant,
-			children,
 			label,
 			withLabel = false,
 			placeholder,

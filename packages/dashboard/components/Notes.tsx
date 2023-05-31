@@ -1,33 +1,35 @@
-"use client"
-import React, { useEffect, useRef } from 'react'
+'use client';
+import React, { useEffect, useRef } from 'react';
 import Button from '@/components/ui/Button';
 import Input from '@/components/ui/Input';
-import { Edit, PlusIcon, SearchIcon, Trash, Trash2 } from 'lucide-react';
+import { PlusIcon, SearchIcon } from 'lucide-react';
 import NotesList from './Lists/NotesList';
 import TextArea from './ui/TextArea';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { AddNoteType, addNoteSchema } from '@/lib/validators/notes';
 
-
-
 function Notes() {
-    const dialogRef = useRef<HTMLDialogElement>(null)
-	const {register,handleSubmit,formState:{errors}} = useForm<AddNoteType>({
-		resolver:zodResolver(addNoteSchema),
-	})
-	const addNoteSubmit = (data:AddNoteType) => {
-		console.log('data')
-		console.log(data)
-	}
-	console.log(errors,'errs')
-    useEffect(() => {
-        dialogRef.current?.show()
-    },[])
-  return (
+	const dialogRef = useRef<HTMLDialogElement>(null);
+	const {
+		register,
+		handleSubmit,
+		formState: { errors },
+	} = useForm<AddNoteType>({
+		resolver: zodResolver(addNoteSchema),
+	});
+	const addNoteSubmit = (data: AddNoteType) => {
+		console.log('data');
+		console.log(data);
+	};
+	console.log(errors, 'errs');
+	useEffect(() => {
+		dialogRef.current?.show();
+	}, []);
+	return (
 		<>
 			<div className="bg-gray-900 p-5 flex items-center w-full gap-2 my-10">
-				<Input type={"text"} placeholder="Search Notes" className="flex-1" />
+				<Input type={'text'} placeholder="Search Notes" className="flex-1" />
 				<Button size="icon">
 					<SearchIcon className="h-4 w-4" />
 				</Button>
@@ -63,7 +65,7 @@ function Notes() {
 					<div className="relative flex items-start">
 						<div className="flex h-6 items-center">
 							<input
-								{...register("burn")}
+								{...register('burn')}
 								id="burn"
 								type="checkbox"
 								className="h-4 w-4 rounded border-primary bg-transparent text-primary"
@@ -86,4 +88,4 @@ function Notes() {
 	);
 }
 
-export default Notes
+export default Notes;

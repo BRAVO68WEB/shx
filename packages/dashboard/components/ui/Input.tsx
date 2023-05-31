@@ -1,4 +1,9 @@
-import React, { forwardRef, InputHTMLAttributes, LegacyRef, MutableRefObject } from 'react';
+import React, {
+	forwardRef,
+	InputHTMLAttributes,
+	LegacyRef,
+	MutableRefObject,
+} from 'react';
 import { cva, VariantProps } from 'class-variance-authority';
 import { cn } from '@/lib/utils';
 import { RefCallBack } from 'react-hook-form';
@@ -22,19 +27,12 @@ interface InputProps
 		VariantProps<typeof inputVariance> {
 	label?: string;
 	withLabel?: boolean;
-	ref?:MutableRefObject<HTMLInputElement> | RefCallBack
+	ref?: MutableRefObject<HTMLInputElement> | RefCallBack;
 }
 
-const Input = forwardRef<HTMLInputElement| InputProps>(
+const Input = forwardRef<HTMLInputElement | InputProps>(
 	(
-		{
-			className,
-			variant,
-			children,
-			label,
-			withLabel = false,
-			...props
-		}: InputProps,
+		{ className, variant, label, withLabel = false, ...props }: InputProps,
 		ref
 	) => {
 		return (
@@ -56,6 +54,6 @@ const Input = forwardRef<HTMLInputElement| InputProps>(
 		);
 	}
 ) as React.FC<InputProps>;
-Input.displayName = "Input"
+Input.displayName = 'Input';
 
 export default Input;

@@ -1,9 +1,9 @@
 import Button from '@/components/ui/Button';
 import { Edit, Trash2 } from 'lucide-react';
-import React from 'react'
+import React from 'react';
 
 function NotesList() {
-  return (
+	return (
 		<div className="flex flex-col w-full gap-1">
 			<div className="bg-gray-900 p-5 flex w-full gap-2">
 				<div className="text flex-1">
@@ -32,7 +32,6 @@ function NotesList() {
 						className="rounded-full hover:bg-black"
 					>
 						<Edit className="h-5 w-5 " />
-
 					</Button>
 				</div>
 			</div>
@@ -40,4 +39,4 @@ function NotesList() {
 	);
 }
 
-export default NotesList
+export default NotesList;

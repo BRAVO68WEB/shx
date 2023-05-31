@@ -1,15 +1,14 @@
-import Button from '@/components/ui/Button'
-import { ArrowUpRight, Delete, Trash } from 'lucide-react'
-import React from 'react'
+import Button from '@/components/ui/Button';
+import { ArrowUpRight, Trash } from 'lucide-react';
+import React from 'react';
 
 export default function LinearList() {
 	// parse a date from gmt format to iso format
-	const parseDate = (date:string) => {
-        return new Date(date).toISOString().split('T')[0]
-    }
+	const parseDate = (date: string) => {
+		return new Date(date).toISOString().split('T')[0];
+	};
 
-    
-  return (
+	return (
 		<div className="flex flex-col w-full gap-2 p-5">
 			<div className="listItem w-full p-2 px-4 bg-gray-900 flex items-center">
 				<p className="name">afdskfasdf.dsaf.png</p>
