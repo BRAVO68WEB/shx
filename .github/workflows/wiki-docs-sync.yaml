@@ -12,9 +12,9 @@ jobs:
     - name: Upload Docs to GH Wiki
       uses: docker://decathlon/wiki-page-creator-action:latest
       env:
-        GH_PAT: ${{ secrets.GITHUB_TOKEN }}
-        ACTION_MAIL: jbandyopadhayaya
-        ACTION_NAME: bravo68web
-        OWNER: bravo68web
+        GH_PAT: ${{ secrets.GH_PAT }}
+        ACTION_MAIL: jbandyopadhayaya@gmail.com
+        ACTION_NAME: BRAVO68WEB
+        OWNER: BRAVO68WEB
         REPO_NAME: shx
         MD_FOLDER: docs/
