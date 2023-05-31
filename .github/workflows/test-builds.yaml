@@ -18,7 +18,7 @@ jobs:
         echo -n ${{ secrets.ENV_FILE }} > packages/api/.env
 
     - name: Start containers
-      run: cd packages/api && docker compose -f "docker-compose.yml" up -d --build
+      run: cd packages/api && docker compose -f "docker-compose.yaml" up -d --build
 
     - name: Wait for containers
       run: sleep 30
@@ -28,4 +28,4 @@ jobs:
 
     - name: Stop containers
       if: always()
-      run: cd packages/api && docker-compose -f "docker-compose.yml" down
+      run: cd packages/api && docker-compose -f "docker-compose.yaml" down
