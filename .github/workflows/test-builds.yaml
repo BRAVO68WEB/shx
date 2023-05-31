@@ -1,0 +1,31 @@
+name: Test
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  docker:
+    timeout-minutes: 10
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v2
+
+    - name: Write ENV_FILE to packages/api/.env
+      run: |
+        echo -n ${{ secrets.ENV_FILE }} > packages/api/.env
+
+    - name: Start containers
+      run: cd packages/api && docker compose -f "docker-compose.yml" up -d --build
+
+    - name: Wait for containers
+      run: sleep 30
+
+    - name: Run tests
+      run: curl --location --request POST http://localhost:4006/apikey?masterkey=${{ secrets.DEMO_MASTER_KEY }}
+
+    - name: Stop containers
+      if: always()
+      run: cd packages/api && docker-compose -f "docker-compose.yml" down

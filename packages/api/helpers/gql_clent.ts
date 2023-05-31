@@ -208,6 +208,11 @@ export const hgqlInit = async () => {
 				console.log('🃏 Hasura Metadata Already Tracked');
 			} else {
 				console.log('🚨 Hasura Metadata Tracking Failed');
+
+				// Recursively retry every 10 seconds
+				setTimeout(() => {
+					hgqlInit();
+				}, 10000);
 			}
 		}
 	}
