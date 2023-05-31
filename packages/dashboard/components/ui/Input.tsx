@@ -1,6 +1,7 @@
-import React, { forwardRef, InputHTMLAttributes, LegacyRef } from 'react';
+import React, { forwardRef, InputHTMLAttributes, LegacyRef, MutableRefObject } from 'react';
 import { cva, VariantProps } from 'class-variance-authority';
 import { cn } from '@/lib/utils';
+import { RefCallBack } from 'react-hook-form';
 
 const inputVariance = cva(
 	'block my-2 bg-transparent w-full rounded-md border-0 py-1.5 shadow-sm ring-1 ring-inset placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-primary sm:text-sm sm:leading-6',
@@ -21,6 +22,7 @@ interface InputProps
 		VariantProps<typeof inputVariance> {
 	label?: string;
 	withLabel?: boolean;
+	ref?:MutableRefObject<HTMLInputElement> | RefCallBack
 }
 
 const Input = forwardRef<HTMLInputElement| InputProps>(
@@ -53,6 +55,7 @@ const Input = forwardRef<HTMLInputElement| InputProps>(
 			</div>
 		);
 	}
-);
+) as React.FC<InputProps>;
+Input.displayName = "Input"
 
 export default Input;
