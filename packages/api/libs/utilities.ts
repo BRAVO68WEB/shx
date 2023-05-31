@@ -143,3 +143,23 @@ export const is_uuid = (value: string) => {
 	const regex = /^()/;
 	return regex.test(value);
 };
+
+export const encapDataKeys = (data: any) => {
+	const new_data: [{ key: string; keyID: string }] = [{ key: '', keyID: '' }];
+	new_data.pop();
+	data.forEach((d: any) => {
+		const parts = d.key.split('-');
+
+		if (parts.length !== 3) {
+			return d.key;
+		}
+
+		const middlePart = parts[1];
+		const hiddenMiddlePart = middlePart.replace(/./g, '*');
+
+		const key = `${parts[0]}-${hiddenMiddlePart}-${parts[2]}`;
+		const keyID = d.keyID;
+		new_data.push({ key, keyID });
+	});
+	return new_data;
+};
