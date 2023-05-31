@@ -1,3 +1,6 @@
+import { NextFunction, Response } from 'express';
+import { ModRequest } from '../types';
+
 type IConfigStore = 'development' | 'production';
 
 export interface IConfigKeys {
@@ -20,3 +23,26 @@ export interface IConfigKeys {
 export interface IConfigClass {
 	getConfigStore(): Promise<Partial<IConfigKeys>>;
 }
+
+export interface IConfigController {
+	getAllConfig(
+		req: ModRequest,
+		res: Response,
+		next: NextFunction
+	): Promise<void>;
+	setConfig(req: ModRequest, res: Response, next: NextFunction): Promise<void>;
+	getConfig(req: ModRequest, res: Response, next: NextFunction): Promise<void>;
+}
+
+export interface IConfigService {
+	initConfig(): Promise<boolean>;
+	getAllConfigS(): Promise<any>;
+	setConfigS(key: ConfigKeysTypes, value: string): Promise<any>;
+	getConfigS(key: ConfigKeysTypes): Promise<any>;
+}
+
+export type ConfigKeysTypes =
+	| 'theme'
+	| 'language'
+	| 'imageExtensions'
+	| 'fileExtensions';

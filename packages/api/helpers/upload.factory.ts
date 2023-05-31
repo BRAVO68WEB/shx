@@ -1,6 +1,5 @@
 import multer from 'multer';
 import path from 'path';
-import { nanoid } from 'napi-nanoid';
 import { FileData } from '../types';
 import { IUploadFactory, UploaderConfig } from '../interfaces/upload.interface';
 
@@ -17,7 +16,7 @@ export class UploadFactory implements IUploadFactory {
 						file.originalname.split('.').length - 2
 					] +
 					'-' +
-					nanoid() +
+					Date.now() +
 					path.extname(file.originalname);
 				file.newName = fileName;
 				if (config?.mimeFilters?.length) {
