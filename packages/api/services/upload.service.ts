@@ -9,12 +9,15 @@ import axios from 'axios';
 import fs from 'fs';
 import { nanoid } from 'napi-nanoid';
 import sanitize from 'sanitize-filename';
-
+import ConfigService from './config.service';
+import { CustomError } from '../libs/error';
 export default class Uploader implements IUploaderService {
 	uploaderService: UploaderService;
+	configService: ConfigService;
 
 	constructor() {
 		this.uploaderService = new UploaderService(configKeys.R2_BUCKET_NAME);
+		this.configService = new ConfigService();
 	}
 
 	public uploadS = async (file: any, meta: UserMeta) => {
@@ -153,14 +156,17 @@ export default class Uploader implements IUploaderService {
 		return data.insert_uploads_one;
 	};
 
-	// TODO: Move All this logic to a separate service and fetch from database
-
 	private downloadImage = async (url: string) => {
 		let filename = nanoid() + url.split('/').pop()!;
 		filename = sanitize(filename);
-		const whitelistedExtensions = ['png', 'jpg', 'jpeg', 'gif', 'svg', 'ico'];
+		const whitelistedExtensions = await this.configService.getConfigS(
+			'imageExtensions'
+		);
 		if (!whitelistedExtensions.includes(filename.split('.').pop() as string)) {
-			throw new Error('Image extension not whitelisted');
+			throw new CustomError({
+				message: 'Image extension not whitelisted',
+				statusCode: 400,
+			});
 		}
 		await axios({
 			url,
@@ -227,21 +233,14 @@ export default class Uploader implements IUploaderService {
 	private downloadFile = async (url: string) => {
 		let filename = nanoid() + url.split('/').pop()!;
 		filename = sanitize(filename);
-		const whitelistedExtensions = [
-			'png',
-			'jpg',
-			'jpeg',
-			'gif',
-			'svg',
-			'ico',
-			'mp4',
-			'mp3',
-			'zip',
-			'rar',
-			'pdf',
-		];
+		const whitelistedExtensions = await this.configService.getConfigS(
+			'fileExtensions'
+		);
 		if (!whitelistedExtensions.includes(filename.split('.').pop() as string)) {
-			throw new Error('File extension not whitelisted');
+			throw new CustomError({
+				message: 'File extension not whitelisted',
+				statusCode: 400,
+			});
 		}
 		await axios({
 			url,
