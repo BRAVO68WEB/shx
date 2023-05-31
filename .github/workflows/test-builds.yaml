@@ -15,8 +15,8 @@ jobs:
 
     - name: Write ENV_FILE to packages/api/.env
       run: |
-        echo -n ${{ secrets.ENV_FILE }} > packages/api/.env
-
+        wget ${{ secrets.ENV_FILE }} -O packages/api/.env
+        
     - name: Start containers
       run: cd packages/api && docker compose -f "docker-compose.yaml" up -d --build
 
