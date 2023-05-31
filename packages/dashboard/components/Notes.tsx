@@ -1,5 +1,5 @@
 'use client';
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import Button from '@/components/ui/Button';
 import Input from '@/components/ui/Input';
 import { PlusIcon, SearchIcon } from 'lucide-react';
@@ -8,9 +8,11 @@ import TextArea from './ui/TextArea';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { AddNoteType, addNoteSchema } from '@/lib/validators/notes';
+import { cn } from '@/lib/utils';
 
 function Notes() {
 	const dialogRef = useRef<HTMLDialogElement>(null);
+	const [dialogOpen,setDialogOpen] = useState(false)
 	const {
 		register,
 		handleSubmit,
@@ -18,14 +20,13 @@ function Notes() {
 	} = useForm<AddNoteType>({
 		resolver: zodResolver(addNoteSchema),
 	});
-	const addNoteSubmit = (data: AddNoteType) => {
-		console.log('data');
-		console.log(data);
+	const addNoteSubmit = (data: AddNoteType) => {};
+	const openAddNoteDialog = () => {
+		setDialogOpen(true)
 	};
-	console.log(errors, 'errs');
-	useEffect(() => {
-		dialogRef.current?.show();
-	}, []);
+	const closeAddNoteDialog = (e: React.MouseEvent) => {
+		setDialogOpen(false)
+	};
 	return (
 		<>
 			<div className="bg-gray-900 p-5 flex items-center w-full gap-2 my-10">
@@ -33,17 +34,18 @@ function Notes() {
 				<Button size="icon">
 					<SearchIcon className="h-4 w-4" />
 				</Button>
-				<Button title="Add a note" size="icon">
+				<Button onClick={openAddNoteDialog} title="Add a note" size="icon">
 					<PlusIcon className="h-4 w-4" />
 				</Button>
 			</div>
 			<NotesList />
 			<dialog
-				aria-modal
-				className="fixed top-0 left-0 w-screen h-screen flex justify-center items-center bg-transparent"
+				className={cn("fixed top-0 left-0 w-screen h-screen flex justify-center items-center bg-transparent",!dialogOpen?"hidden":"")}
 				ref={dialogRef}
+				onClick={closeAddNoteDialog}
 			>
 				<form
+					onClick={(e) => {e.stopPropagation();}}
 					onSubmit={handleSubmit(addNoteSubmit)}
 					className="w-full max-w-xl bg-gray-800 text-primary p-5 rounded flex flex-col gap-2"
 				>
