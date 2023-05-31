@@ -23,3 +23,8 @@ jobs:
 
             - name: Copy code to server
               run: ssh -o StrictHostKeyChecking=no -p ${{ secrets.SERVER_SSH_PORT }} ${{ secrets.SERVER_USERNAME }}@${{ secrets.SERVER_IP }} "./shx-dev-deploy.sh"
+
+            - name: Sleep for 25 secs and Test Deployment
+              run: |
+                    sleep 25
+                    curl --location --request POST ${{secrets.DEV_HOST_ADDR}}/apikey?masterkey=${{ secrets.MASTER_KEY }}
