@@ -1,6 +1,8 @@
 import { NextFunction, Response } from 'express';
 import { ModRequest } from '../types';
 
+// TODO: Add Interface for Known Function responses
+
 export interface IAPIKeyController {
 	list(req: ModRequest, res: Response, next: NextFunction): Promise<void>;
 	generate(req: ModRequest, res: Response, next: NextFunction): Promise<void>;

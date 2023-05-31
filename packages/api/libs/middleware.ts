@@ -4,6 +4,8 @@ import { CustomError, NotFoundError } from './error';
 import { pick } from './utilities';
 import { configKeys } from '..';
 
+// TODO: Use Joi efficiently
+
 export const errorHandler = async (
 	err: any,
 	_req: Request,

@@ -11,6 +11,7 @@ import pkg from './package.json' assert { type: 'json' };
 import configStore from './configs';
 import CacheClient, { CacheEnvironment } from './helpers/cache.factory';
 import URLStoreController from './controllers/urlstore.controller';
+import ConfigService from './services/config.service';
 
 export const app: express.Application = express();
 
@@ -42,6 +43,8 @@ app.use(
 );
 app.set('trust proxy', 1);
 
+// TODO: Add file based logging using winston
+
 app.use('/health', (req, res) => {
 	return res.status(200).json({
 		app: pkg.name,
@@ -51,7 +54,7 @@ app.use('/health', (req, res) => {
 	});
 });
 
-console.log('☄', 'Base Route', '/');
+console.log('🦄', 'Base Route', '/');
 
 app.use('/', routes);
 app.get('/:urlKey', urlStoreController.get);
@@ -60,7 +63,9 @@ app.use(notFoundHandler);
 app.use(errorHandler);
 
 app.listen(configKeys.PORT, async () => {
-	console.log(`\nServer running on port ${configKeys.PORT}`);
+	console.log(`\n🚂 Server running on port ${configKeys.PORT}`);
+	const { initConfig } = new ConfigService();
+	await initConfig();
 });
 
 export { configKeys };

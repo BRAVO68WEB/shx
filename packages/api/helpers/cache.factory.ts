@@ -35,13 +35,13 @@ export default class CacheClient {
 		if (env === 'production') {
 			this._redisClient = redis.createClient({
 				url: redisUrl,
-				name: '<>', // TODO: add redis name
+				name: '<>',
 			});
 			this._redisClient.connect();
 		}
 
 		this._nodeClient = new NodeCache();
-		console.log(`Caching Client initialized in '${env}' environment`);
+		console.log(`🪣 Caching Client initialized in '${env}' environment`);
 	}
 
 	static async set(key: string, value: any) {
@@ -57,6 +57,70 @@ export default class CacheClient {
 			return await this._redisClient.get(key);
 		} else {
 			return (this._nodeClient.get(key) as string) || null;
+		}
+	}
+
+	static async keys(keysample: string): Promise<string[]> {
+		if (this._clientMode === 'production') {
+			return await this._redisClient.keys(keysample);
+		} else {
+			return this._nodeClient.keys().filter(key => key.includes(keysample));
+		}
+	}
+
+	static async delete(key: string) {
+		if (this._clientMode === 'production') {
+			await this._redisClient.del(key);
+		} else {
+			this._nodeClient.del(key);
+		}
+	}
+
+	static async hset(key: string, field: string, value: any) {
+		if (this._clientMode === 'production') {
+			await this._redisClient.HSET(key, field, value);
+		} else {
+			this._nodeClient.set(key + '.' + field, value);
+		}
+	}
+
+	static async hget(key: string, field: string) {
+		if (this._clientMode === 'production') {
+			return await this._redisClient.HGET(key, field);
+		} else {
+			return (this._nodeClient.get(key + '.' + field) as string) || null;
+		}
+	}
+
+	static async hgetall(key: string) {
+		if (this._clientMode === 'production') {
+			return await this._redisClient.HGETALL(key);
+		} else {
+			const keys = this._nodeClient.keys();
+			const filteredKeys = keys.filter(key => key.includes(key));
+			const values = filteredKeys.map(key => {
+				const value: any = this._nodeClient.get(key);
+				if (
+					typeof value === 'string' &&
+					value.startsWith('"[') &&
+					value.endsWith(']"')
+				)
+					return { [key.split('.')[1]]: JSON.parse(value) };
+				else if (
+					typeof value === 'string' &&
+					value.startsWith('"') &&
+					value.endsWith('"')
+				)
+					return { [key.split('.')[1]]: value.slice(1, -1) };
+				else if (
+					typeof value === 'string' &&
+					value.startsWith('"{') &&
+					value.endsWith('}"')
+				)
+					return { [key.split('.')[1]]: JSON.parse(value.slice(1, -1)) };
+				return { [key.split('.')[1]]: value };
+			});
+			return Object.assign({}, ...values);
 		}
 	}
 }

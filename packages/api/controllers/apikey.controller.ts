@@ -48,11 +48,16 @@ export default class APIKeyController
 		next: NextFunction
 	): Promise<any> => {
 		try {
-			const { masterkey, apikey } = req.query as {
+			const { masterkey, apikeyID } = req.query as {
 				masterkey: string;
-				apikey: string;
+				apikeyID: string;
 			};
-			await this.deleteS(apikey, masterkey);
+			const delKey = await this.deleteS(apikeyID, masterkey);
+			if (delKey === 0)
+				throw new CustomError({
+					message: 'API Key not found',
+					statusCode: 404,
+				});
 			res.status(200).json(makeResponse({ message: 'API Key revoked' }));
 		} catch (error) {
 			next(error);

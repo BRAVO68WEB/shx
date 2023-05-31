@@ -1,0 +1,20 @@
+name: 📊 Wiki Sync
+on:
+  workflow_dispatch: # Manual dispatch
+  schedule:
+    - cron: '0 1 * * 0' # At 01:00 on Sunday.
+jobs:
+  update-wiki:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout
+      uses: actions/checkout@master        
+    - name: Upload Docs to GH Wiki
+      uses: docker://decathlon/wiki-page-creator-action:latest
+      env:
+        GH_PAT: ${{ secrets.GH_PAT }}
+        ACTION_MAIL: jbandyopadhayaya@gmail.com
+        ACTION_NAME: BRAVO68WEB
+        OWNER: BRAVO68WEB
+        REPO_NAME: shx
+        MD_FOLDER: docs/

@@ -46,7 +46,7 @@ services:
       PORT: 4000
       NODE_ENV: ${NODE_ENV}
       HASURA_GRAPHQL_ADMIN_SECRET: ${HASURA_GRAPHQL_ADMIN_SECRET}
-      HASURA_GRAPHQL_ENDPOINT: http://hasura:8080/v1/graphql
+      HASURA_GRAPHQL_ENDPOINT: http://hasura:8080
       CACHE_ENV: ${CACHE_ENV}
       REDIS_URL: redis://redis:6379
       R2_CLIENT_ID: ${R2_CLIENT_ID}
@@ -59,7 +59,7 @@ services:
       MASTER_KEY: ${MASTER_KEY}
       DOCKER_ENV: true
     ports:
-      - 4000:4000
+      - ${DOCKER_PORT}:4000
     depends_on:
       - database
       - hasura
