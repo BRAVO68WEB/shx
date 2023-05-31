@@ -22,6 +22,9 @@ Shx is a platform ment to store and share files, images, text and URLs with ease
 - Cloudflare R2
 - Hasura Graphql (with PostgreSQL)
 - Commander.js
+- Next.js
+- Tailwind CSS
+- Storybook
 
 ## 🚀 Features
 
@@ -30,6 +33,7 @@ Shx is a platform ment to store and share files, images, text and URLs with ease
 - Text upload
 - URL shortener
 - CLI Support
+- Web Dashboard
 
 ## 🎁 Project Setup
 
@@ -40,6 +44,10 @@ The API package contains the server-side code responsible for handling file, ima
 ### @packages/cli
 
 The CLI package includes the command-line interface (CLI) for interacting with the ShareX server from the terminal. It allows users to perform various actions, such as uploading files, images, or text, and generating short URLs.
+
+### @packages/dashboard
+
+The dashboard package contains the web dashboard for the ShareX server. It allows users to view their uploaded files, images, and text, as well as manage their account and settings via a web interface.
 
 ## 📝 License
 
