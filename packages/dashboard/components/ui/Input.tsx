@@ -1,4 +1,4 @@
-import React, { ButtonHTMLAttributes, InputHTMLAttributes } from 'react';
+import React, { forwardRef, InputHTMLAttributes, LegacyRef } from 'react';
 import { cva, VariantProps } from 'class-variance-authority';
 import { cn } from '@/lib/utils';
 
@@ -23,27 +23,36 @@ interface InputProps
 	withLabel?: boolean;
 }
 
-const Input = ({
-	className,
-	variant,
-	children,
-	label,
-	withLabel = false,
-	...props
-}: InputProps) => {
-	return (
-		<div style={{width:'inherit'}}>
-			{withLabel && (
-				<label htmlFor="email" className="block text-sm font-medium leading-6">
-					{label}
-				</label>
-			)}
-			<input
-				className={cn(inputVariance({ variant, className }))}
-				{...props}
-			/>
-		</div>
-	);
-};
+const Input = forwardRef<HTMLInputElement| InputProps>(
+	(
+		{
+			className,
+			variant,
+			children,
+			label,
+			withLabel = false,
+			...props
+		}: InputProps,
+		ref
+	) => {
+		return (
+			<div style={{ width: 'inherit' }}>
+				{withLabel && (
+					<label
+						htmlFor="email"
+						className="block text-sm font-medium leading-6"
+					>
+						{label}
+					</label>
+				)}
+				<input
+					ref={ref as LegacyRef<HTMLInputElement>}
+					className={cn(inputVariance({ variant, className }))}
+					{...props}
+				/>
+			</div>
+		);
+	}
+);
 
 export default Input;

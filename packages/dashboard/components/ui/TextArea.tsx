@@ -1,4 +1,4 @@
-import React, { ButtonHTMLAttributes, InputHTMLAttributes, TextareaHTMLAttributes } from 'react';
+import React, { ButtonHTMLAttributes, InputHTMLAttributes, LegacyRef, TextareaHTMLAttributes, forwardRef } from 'react';
 import { cva, VariantProps } from 'class-variance-authority';
 import { cn } from '@/lib/utils';
 
@@ -23,14 +23,14 @@ interface TextAreaProps
 	withLabel?: boolean;
 }
 
-const TextArea = ({
+const TextArea = forwardRef<HTMLTextAreaElement | TextAreaProps>(({
 	className,
 	variant,
 	children,
 	label,
 	withLabel = false,
 	...props
-}: TextAreaProps) => {
+}: TextAreaProps,ref) => {
 	return (
 		<div style={{width:'inherit'}}>
 			{withLabel && (
@@ -38,9 +38,9 @@ const TextArea = ({
 					{label}
 				</label>
 			)}
-			<textarea className={cn(textAreaVariance({ variant, className }))} {...props} />
+			<textarea ref={ref as LegacyRef<HTMLTextAreaElement>} className={cn(textAreaVariance({ variant, className }))} {...props} />
 		</div>
 	);
-};
+})
 
 export default TextArea;
