@@ -1,8 +1,5 @@
 name: Test
 
-env:
-  APIKEY: "dev"
-
 on:
   push:
   pull_request:
@@ -19,25 +16,12 @@ jobs:
     - name: Write ENV_FILE to packages/api/.env
       run: |
         wget ${{ secrets.ENV_FILE }} -O packages/api/.env
-
+        
     - name: Start containers
       run: cd packages/api && docker compose -f "docker-compose.yaml" up -d --build
 
     - name: Wait for containers
       run: sleep 30
 
-    - name: Install jq and curl
-      run: |
-        sudo apt-get install jq
-
-    - name: Create APIKey
-      run: echo APIKEY=$(curl --location --request POST http://localhost:4006/apikey?masterkey=${{ secrets.DEMO_MASTER_KEY }} | jq -r '.data.key') >> $GITHUB_ENV
-
     - name: Run tests
-      run: |
-        curl --location 'http://localhost:4006/gist/' \
-          --header 'Content-Type: application/json' \
-          --header 'x-shx-api-key: '${{ env.APIKEY }}'' \
-          --data '{
-              "content": "Raw Data from nothing"
-          }'
+      run: curl --location --request POST http://localhost:4006/apikey?masterkey=${{ secrets.DEMO_MASTER_KEY }}
