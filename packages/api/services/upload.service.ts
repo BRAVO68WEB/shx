@@ -11,6 +11,7 @@ import { nanoid } from 'napi-nanoid';
 import sanitize from 'sanitize-filename';
 import ConfigService from './config.service';
 import { CustomError } from '../libs/error';
+import { logger } from '../libs';
 export default class Uploader implements IUploaderService {
 	uploaderService: UploaderService;
 	configService: ConfigService;
@@ -177,7 +178,7 @@ export default class Uploader implements IUploaderService {
 				return sharp(res.data).toFile(`uploads/${filename}`);
 			})
 			.catch(err => {
-				console.log(`Couldn't process: ${err}`);
+				logger.info(`Couldn't process: ${err}`);
 			});
 
 		return filename;
@@ -251,7 +252,7 @@ export default class Uploader implements IUploaderService {
 				return fs.writeFileSync(`uploads/${filename}`, res.data);
 			})
 			.catch(err => {
-				console.log(`Couldn't process: ${err}`);
+				logger.info(`Couldn't process: ${err}`);
 			});
 
 		return filename;
