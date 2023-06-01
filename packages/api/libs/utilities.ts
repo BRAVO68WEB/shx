@@ -1,4 +1,5 @@
 import { PaginationType } from '../types';
+import { createLogger, format, transports } from 'winston';
 
 export const makeResponse = (
 	data: any,
@@ -163,3 +164,32 @@ export const encapDataKeys = (data: any) => {
 	});
 	return new_data;
 };
+
+const { combine, timestamp, label, printf } = format;
+const formater = printf(({ level, message, label, timestamp }) => {
+	return `${timestamp} [${label}] ${level}: ${message}`;
+});
+
+export const logger = createLogger({
+	level: 'info',
+	format: combine(label({ label: '📢' }), timestamp(), formater),
+	transports: [
+		new transports.Console(),
+		new transports.File({ filename: 'error.log', level: 'error' }),
+		new transports.File({ filename: 'combined.log' }),
+	],
+});
+
+if (process.env.NODE_ENV !== 'production') {
+	logger.add(
+		new transports.Console({
+			format: format.simple(),
+		})
+	);
+}
+
+export class LogStream {
+	write(text: string) {
+		logger.info(text.replace(/\n$/, ''));
+	}
+}

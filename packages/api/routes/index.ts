@@ -2,6 +2,7 @@ import path from 'path';
 import { readdirSync } from 'fs';
 import { fileURLToPath } from 'url';
 import pkg from '../package.json' assert { type: 'json' };
+import { logger } from '../libs';
 import { execSync } from 'child_process';
 let gitHash = '';
 if (!process.env.DOCKER_ENV)
@@ -27,7 +28,7 @@ const loadRoutes = async (dirPath: string, prefix = '/') => {
 			if (isRouteMod) {
 				const route = f.name.replace(`.routes.${isCompiled ? 'js' : 'ts'}`, '');
 				const modRoute = path.join(prefix, route);
-				console.log('🛰️', 'Loaded', modRoute);
+				logger.info('🛰️ Loaded ' + modRoute);
 
 				const mod = await import(path.join(baseDir, prefix + f.name));
 				router.use(modRoute, mod.default);
