@@ -5,6 +5,10 @@
 ![GitHub code size in bytes](https://img.shields.io/github/languages/code-size/bravo68web/shx?style=for-the-badge)
 ![Snyk Vulnerabilities for GitHub Repo](https://img.shields.io/snyk/vulnerabilities/github/bravo68web/shx?style=for-the-badge)
 
+![CodeFactor Grade](https://img.shields.io/codefactor/grade/github/BRAVO68WEB/shx?logo=codefactor&style=for-the-badge)
+[![Quality gate](https://sonarcloud.io/api/project_badges/quality_gate?project=BRAVO68WEB_shx)](https://sonarcloud.io/summary/new_code?id=BRAVO68WEB_shx)
+![GitHub top language](https://img.shields.io/github/languages/top/bravo68web/shx?style=for-the-badge)
+
 [![forthebadge](https://forthebadge.com/images/badges/made-with-typescript.svg)](https://forthebadge.com)
 [![forthebadge](https://forthebadge.com/images/badges/powered-by-black-magic.svg)](https://forthebadge.com)
 [![forthebadge](https://forthebadge.com/images/badges/built-with-love.svg)](https://forthebadge.com)
