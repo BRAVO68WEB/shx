@@ -1,11 +1,12 @@
 import { GraphQLClient } from 'graphql-request';
 import { configKeys } from '..';
 import axios from 'axios';
+import { logger } from '../libs';
 
 export let client = new GraphQLClient('');
 
 export const hgqlInit = async () => {
-	console.log('\n🚀 GraphQL Client Initialized');
+	logger.info('🚀 GraphQL Client Initialized');
 
 	let HASURA_URL: string = configKeys.HASURA_GRAPHQL_ENDPOINT || '';
 	HASURA_URL += HASURA_URL.endsWith('/') ? 'v1/graphql' : '/v1/graphql';
@@ -178,7 +179,7 @@ export const hgqlInit = async () => {
 
 		const config = {
 			method: 'post',
-			url: 'http://hasura:8080/v1/metadata',
+			url: configKeys.HASURA_GRAPHQL_ENDPOINT + '/v1/metadata',
 			headers: {
 				'x-hasura-admin-secret': configKeys.HASURA_GRAPHQL_ADMIN_SECRET,
 			},
@@ -189,7 +190,7 @@ export const hgqlInit = async () => {
 				...config,
 				data: data,
 			}).then(res => {
-				console.log(
+				logger.info(
 					'🪄 Hasura Tables Metadata Tracked for ' + res.data.length + ' tables'
 				);
 			});
@@ -197,7 +198,7 @@ export const hgqlInit = async () => {
 				...config,
 				data: data2,
 			}).then(res => {
-				console.log(
+				logger.info(
 					'🪄 Hasura Relationships Metadata Tracked for ' +
 						res.data.length +
 						' relationships'
@@ -205,11 +206,10 @@ export const hgqlInit = async () => {
 			});
 		} catch (err: any) {
 			if (err.response?.data?.code == 'already-tracked') {
-				console.log('🃏 Hasura Metadata Already Tracked');
+				logger.info('🃏 Hasura Metadata Already Tracked');
 			} else {
-				console.log('🚨 Hasura Metadata Tracking Failed');
+				logger.info('🚨 Hasura Metadata Tracking Failed');
 
-				// Recursively retry every 10 seconds
 				setTimeout(() => {
 					hgqlInit();
 				}, 10000);

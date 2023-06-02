@@ -1,17 +1,16 @@
 import * as redis from 'redis';
 import NodeCache from 'node-cache';
 import { configKeys } from '..';
+import { logger } from '../libs';
 
-export type CacheEnvironment = 'development' | 'production';
+export type CacheEnvironment = 'inmemory' | 'redis';
 export default class CacheClient {
 	private static _clientMode: CacheEnvironment;
 	private static _redisClient: redis.RedisClientType;
 	private static _nodeClient: NodeCache;
 
 	static get client() {
-		return this._clientMode === 'production'
-			? this._redisClient
-			: this._nodeClient;
+		return this._clientMode === 'redis' ? this._redisClient : this._nodeClient;
 	}
 
 	static get env() {
@@ -19,12 +18,11 @@ export default class CacheClient {
 	}
 
 	static init(forceEnv?: CacheEnvironment) {
-		const env =
-			forceEnv || configKeys.CACHE_ENV || configKeys.NODE_ENV || 'development';
+		const env = forceEnv || configKeys.CACHE_ENV || 'inmemory';
 
-		if (!['development', 'production'].includes(env))
+		if (!['inmemory', 'redis'].includes(env))
 			throw new Error(
-				"Invalid Caching Environment, expected - ['development', 'production'], received - " +
+				"Invalid Caching Environment, expected - ['inmemory', 'redis'], received - " +
 					env
 			);
 
@@ -32,7 +30,7 @@ export default class CacheClient {
 
 		const redisUrl = configKeys.REDIS_URL || '';
 
-		if (env === 'production') {
+		if (env === 'redis') {
 			this._redisClient = redis.createClient({
 				url: redisUrl,
 				name: '<>',
@@ -41,11 +39,11 @@ export default class CacheClient {
 		}
 
 		this._nodeClient = new NodeCache();
-		console.log(`🪣 Caching Client initialized in '${env}' environment`);
+		logger.info(`🪣 Caching Client initialized in '${env}' mode`);
 	}
 
 	static async set(key: string, value: any) {
-		if (this._clientMode === 'production') {
+		if (this._clientMode === 'redis') {
 			await this._redisClient.set(key, value);
 		} else {
 			this._nodeClient.set(key, value);
@@ -53,7 +51,7 @@ export default class CacheClient {
 	}
 
 	static async get(key: string): Promise<string | null> {
-		if (this._clientMode === 'production') {
+		if (this._clientMode === 'redis') {
 			return await this._redisClient.get(key);
 		} else {
 			return (this._nodeClient.get(key) as string) || null;
@@ -61,7 +59,7 @@ export default class CacheClient {
 	}
 
 	static async keys(keysample: string): Promise<string[]> {
-		if (this._clientMode === 'production') {
+		if (this._clientMode === 'redis') {
 			return await this._redisClient.keys(keysample);
 		} else {
 			return this._nodeClient.keys().filter(key => key.includes(keysample));
@@ -69,7 +67,7 @@ export default class CacheClient {
 	}
 
 	static async delete(key: string) {
-		if (this._clientMode === 'production') {
+		if (this._clientMode === 'redis') {
 			await this._redisClient.del(key);
 		} else {
 			this._nodeClient.del(key);
@@ -77,7 +75,7 @@ export default class CacheClient {
 	}
 
 	static async hset(key: string, field: string, value: any) {
-		if (this._clientMode === 'production') {
+		if (this._clientMode === 'redis') {
 			await this._redisClient.HSET(key, field, value);
 		} else {
 			this._nodeClient.set(key + '.' + field, value);
@@ -85,7 +83,7 @@ export default class CacheClient {
 	}
 
 	static async hget(key: string, field: string) {
-		if (this._clientMode === 'production') {
+		if (this._clientMode === 'redis') {
 			return await this._redisClient.HGET(key, field);
 		} else {
 			return (this._nodeClient.get(key + '.' + field) as string) || null;
@@ -93,7 +91,7 @@ export default class CacheClient {
 	}
 
 	static async hgetall(key: string) {
-		if (this._clientMode === 'production') {
+		if (this._clientMode === 'redis') {
 			return await this._redisClient.HGETALL(key);
 		} else {
 			const keys = this._nodeClient.keys();

@@ -3,12 +3,13 @@ import {
 	IConfigService,
 	ConfigKeysTypes,
 } from '../interfaces/config.interface';
+import { logger } from '../libs';
 
 export default class ConfigService implements IConfigService {
 	public initConfig = async (): Promise<boolean> => {
 		const config = await CacheClient.keys('config');
 		if (config && config.length > 0) {
-			console.log('⚽ Config already initialized');
+			logger.info('⚽ Config already initialized');
 			return true;
 		} else {
 			await this.setConfigS('theme', 'dark');
@@ -44,7 +45,7 @@ export default class ConfigService implements IConfigService {
 					'html',
 				])
 			);
-			console.log('⚽ Config initialized successfully');
+			logger.info('⚽ Config initialized successfully');
 			return false;
 		}
 	};
