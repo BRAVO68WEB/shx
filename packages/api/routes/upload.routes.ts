@@ -2,6 +2,10 @@ import { Router } from 'express';
 import UploadController from '../controllers/upload.controller';
 import { UploadFactory } from '../helpers/upload.factory';
 import APIKeyAuth from '../middlewares/apikey_check';
+import {
+	deleteFileValidation,
+	urlUploadValidation,
+} from '../validators/upload.validation';
 
 const uploadController = new UploadController();
 const uploaderFactory = new UploadFactory();
@@ -30,12 +34,14 @@ router.post(
 router.post(
 	'/image-from-url',
 	apiKeyAuth.check as any,
+	urlUploadValidation as any,
 	uploadController.uploadImageFromURL as any
 );
 
 router.post(
 	'/file-from-url',
 	apiKeyAuth.check as any,
+	urlUploadValidation as any,
 	uploadController.uploadFileFromURL as any
 );
 
@@ -50,6 +56,7 @@ router.get(
 router.get(
 	'/delete/:fileID',
 	apiKeyAuth.check as any,
+	deleteFileValidation as any,
 	uploadController.deleteFile as any
 );
 

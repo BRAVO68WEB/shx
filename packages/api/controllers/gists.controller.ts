@@ -117,15 +117,15 @@ export default class GistController
 		next: NextFunction
 	): Promise<any> => {
 		try {
-			const { search, limit, skip } = req.query as {
+			const { search, limit, page } = req.query as {
 				search: string;
 				limit: string;
-				skip: string;
+				page: string;
 			};
 			const gists = await this.listGistsS(
 				search,
-				parseInt(limit),
-				parseInt(skip)
+				parseInt(page),
+				parseInt(limit)
 			);
 			res.status(200).json(makeResponse(gists));
 		} catch (error) {
