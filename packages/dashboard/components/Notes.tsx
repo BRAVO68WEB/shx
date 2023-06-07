@@ -20,7 +20,9 @@ function Notes() {
 	} = useForm<AddNoteType>({
 		resolver: zodResolver(addNoteSchema),
 	});
-	const addNoteSubmit = (data: AddNoteType) => {};
+	const addNoteSubmit = (data: AddNoteType) => {
+		console.log(data)
+	};
 	const openAddNoteDialog = () => {
 		setDialogOpen(true)
 	};
