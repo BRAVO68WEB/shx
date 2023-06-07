@@ -5,7 +5,7 @@ import { IAPIKeyService } from '../interfaces/apikey.interface';
 import { encapDataKeys } from '../libs';
 
 export default class APIKeyService implements IAPIKeyService {
-	public async checkS(apikey: string): Promise<any> {
+	public async checkS(apikey: string): Promise<string | null> {
 		const query = gql`
 			query checkAPIKey($apikey: String!) {
 				apikeys(where: { key: { _eq: $apikey } }) {
