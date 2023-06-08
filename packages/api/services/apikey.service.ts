@@ -3,9 +3,10 @@ import { client } from '../helpers';
 import { configKeys } from '..';
 import { IAPIKeyService } from '../interfaces/apikey.interface';
 import { encapDataKeys } from '../libs';
-
+import { Apikeys, Apikeys_Mutation_Response } from '../graphql/types';
+import { encapDataKey } from '../libs';
 export default class APIKeyService implements IAPIKeyService {
-	public async checkS(apikey: string): Promise<string | null> {
+	public async checkS(apikey: string): Promise<Apikeys | null> {
 		const query = gql`
 			query checkAPIKey($apikey: String!) {
 				apikeys(where: { key: { _eq: $apikey } }) {
@@ -17,7 +18,10 @@ export default class APIKeyService implements IAPIKeyService {
 		const variables = {
 			apikey,
 		};
-		const result: any = await client.request(query, variables);
+		const result: { apikeys: Apikeys[] } = await client.request(
+			query,
+			variables
+		);
 		if (result.apikeys.length === 0) {
 			return null;
 		} else {
@@ -25,7 +29,7 @@ export default class APIKeyService implements IAPIKeyService {
 		}
 	}
 
-	public async generateS(masterKey: string): Promise<any> {
+	public async generateS(masterKey: string): Promise<Apikeys> {
 		if (masterKey !== configKeys.MASTER_KEY)
 			throw new Error('Invalid master key');
 		const query = gql`
@@ -36,11 +40,11 @@ export default class APIKeyService implements IAPIKeyService {
 				}
 			}
 		`;
-		const result: any = await client.request(query);
+		const result: { insert_apikeys_one: Apikeys } = await client.request(query);
 		return result.insert_apikeys_one;
 	}
 
-	public async deleteS(apikeyID: string, masterKey: string): Promise<any> {
+	public async deleteS(apikeyID: string, masterKey: string): Promise<number> {
 		if (masterKey !== configKeys.MASTER_KEY)
 			throw new Error('Invalid master key');
 		const query = gql`
@@ -53,11 +57,13 @@ export default class APIKeyService implements IAPIKeyService {
 		const variables = {
 			apikeyID,
 		};
-		const result: any = await client.request(query, variables);
+		const result: {
+			delete_apikeys: Apikeys_Mutation_Response;
+		} = await client.request(query, variables);
 		return result.delete_apikeys.affected_rows;
 	}
 
-	public async listS(masterKey: string): Promise<any> {
+	public async listS(masterKey: string): Promise<encapDataKey[]> {
 		if (masterKey !== configKeys.MASTER_KEY)
 			throw new Error('Invalid master key');
 		const query = gql`
@@ -68,11 +74,13 @@ export default class APIKeyService implements IAPIKeyService {
 				}
 			}
 		`;
-		const result: any = await client.request(query);
+		const result: {
+			apikeys: Apikeys[];
+		} = await client.request(query);
 		return encapDataKeys(result.apikeys);
 	}
 
-	public async verifyS(apikey: string): Promise<any> {
+	public async verifyS(apikey: string): Promise<boolean> {
 		const query = gql`
 			query verifyAPIKey($apikey: String!) {
 				apikeys(where: { key: { _eq: $apikey } }) {
@@ -84,7 +92,9 @@ export default class APIKeyService implements IAPIKeyService {
 		const variables = {
 			apikey,
 		};
-		const result: any = await client.request(query, variables);
+		const result: {
+			apikeys: Apikeys[];
+		} = await client.request(query, variables);
 		if (result.apikeys.length === 0) {
 			return false;
 		} else {

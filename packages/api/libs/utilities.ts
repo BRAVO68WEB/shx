@@ -1,3 +1,4 @@
+import { Apikeys } from '../graphql/types';
 import { PaginationType } from '../types';
 import { createLogger, format, transports } from 'winston';
 
@@ -145,9 +146,10 @@ export const is_uuid = (value: string) => {
 	return regex.test(value);
 };
 
-export const encapDataKeys = (data: any) => {
-	const new_data: [{ key: string; keyID: string }] = [{ key: '', keyID: '' }];
-	new_data.pop();
+export type encapDataKey = { key: string; keyID: string };
+
+export const encapDataKeys = (data: Apikeys[]) => {
+	const new_data: encapDataKey[] = [];
 	data.forEach((d: any) => {
 		const parts = d.key.split('-');
 

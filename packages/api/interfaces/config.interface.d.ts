@@ -46,3 +46,13 @@ export type ConfigKeysTypes =
 	| 'language'
 	| 'imageExtensions'
 	| 'fileExtensions';
+
+export type ThemeType = 'light' | 'dark';
+export type LanguageType = 'en';
+
+export type Settings = {
+	theme: ThemeType;
+	language: LanguageType;
+	imageExtensions: [string];
+	fileExtensions: [string];
+};
