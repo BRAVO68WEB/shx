@@ -1,6 +1,8 @@
 import Button from '@/components/ui/Button';
-import { ArrowUpRight, Trash } from 'lucide-react';
-import React from 'react';
+import { ArrowUpRight, Edit, Plus, Trash } from 'lucide-react';
+import Input  from '@/components/ui/Input';
+import React, { useState } from 'react';
+import { cn } from '@/lib/utils';
 
 const files = [
 	{
@@ -10,17 +12,32 @@ const files = [
 ];
 
 export default function LinearList() {
+	const [edit,setEdit] = useState<boolean>(false)
 	// parse a date from gmt format to iso format
 	const parseDate = (date: string) => {
 		return new Date(date).toISOString().split('T')[0];
 	};
 
+	const toggleEdit = () =>  setEdit(!edit)
+
 	return (
 		<div className="flex flex-col w-full gap-2 p-5">
+			<div className="flex gap-6 items-cetner w-full">
+				<Input id="search" name="search" placeholder="Search" />
+
+				<div className="flex items-center">22/33</div>
+
+				<Button className="my-2 flex justify-between items-center w-auto gap-2">
+					<span>Add</span> <Plus />
+				</Button>
+				<Button onClick={toggleEdit} className="my-2 flex justify-between items-center w-auto gap-2">
+					<span>Edit</span> <Edit />
+				</Button>
+			</div>
 			<table className="min-w-full divide-y divide-gray-700">
 				<thead className="p-2">
 					<tr>
-						<th scope="col" className="relative py-2 ">
+						<th scope="col" className="relative p-4 px-6">
 							<span className="sr-only">Select</span>
 						</th>
 						<th
@@ -43,10 +60,11 @@ export default function LinearList() {
 				<tbody className="divide-y p-2">
 					{files.map((person, index) => (
 						<tr className="bg-gray-900 rounded" key={index}>
-							<td className="relative whitespace-nowrap p-2 text-right text-sm font-medium">
+							<td className="relative whitespace-nowrap p-4  text-right text-sm font-medium">
 								<input
 									type="checkbox"
-									className="h-4 w-4 rounded bg-transparent border-primary text-primary"
+									className={cn(
+										'h-4 w-4 rounded bg-transparent border-primary text-primary',{"hidden":!edit})}
 								/>
 							</td>
 							<td className="whitespace-nowrap  pl-4 text-sm font-medium text-white">
