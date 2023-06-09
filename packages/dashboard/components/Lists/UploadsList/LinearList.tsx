@@ -1,23 +1,38 @@
-import Button from '@/components/ui/Button'
-import { Delete, Trash } from 'lucide-react'
-import React from 'react'
+import Button from '@/components/ui/Button';
+import { ArrowUpRight, Trash } from 'lucide-react';
+import React from 'react';
 
 export default function LinearList() {
-  return (
+	// parse a date from gmt format to iso format
+	const parseDate = (date: string) => {
+		return new Date(date).toISOString().split('T')[0];
+	};
+
+	return (
 		<div className="flex flex-col w-full gap-2 p-5">
-			<div className="listItem w-full p-1 px-4 bg-gray-900 flex items-center justify-between">
+			<div className="listItem w-full p-2 px-4 bg-gray-900 flex items-center">
 				<p className="name">afdskfasdf.dsaf.png</p>
-				<div className="icons">
-					<Button variant="transparent" size={'icon'}>
-						<Trash className="h-4 w-4 text-red-200" />
-					</Button>
+				<div className="date ml-auto mr-20">
+					<p>{parseDate('2023-05-29T08:08:07.289624+00:00')}</p>
 				</div>
-			</div>
-			<div className="listItem w-full p-2 px-4 bg-gray-900 flex items-center justify-between">
-				<p className="name">afdskfasdf.dsaf.png</p>
-				<div className="icons">
-					<Button variant="transparent" size={'icon'} className='rounded-full p-2  hover:bg-red-50 hover:text-red-600 text-red-300'>
+				<div className="icons flex center items-center gap-3">
+					<Button
+						variant="transparent"
+						size={'icon'}
+						aria-label="Delete Image"
+						title="Delete Image"
+						className="rounded-full p-2  hover:bg-red-50 hover:text-red-600 text-red-300"
+					>
 						<Trash className="h-4 w-4 " />
+					</Button>
+					<Button
+						variant="transparent"
+						size={'icon'}
+						aria-label="Open Image"
+						title="Open Image"
+						className="rounded-full p-2 hover:bg-black"
+					>
+						<ArrowUpRight className="h-4 w-4 " />
 					</Button>
 				</div>
 			</div>

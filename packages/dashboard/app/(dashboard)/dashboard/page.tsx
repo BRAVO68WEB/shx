@@ -1,12 +1,11 @@
-import UploadsList from "@/components/Lists/UploadsList";
-import React from "react";
+import React from 'react';
 
 const Dashboard = () => {
-    return (
-        <>
-         <UploadsList />   
-        </>
-    )
-}
+	return (
+		<>
+			<h1 className="text-5xl">Dasbhboard</h1>
+		</>
+	);
+};
 
-export default Dashboard
+export default Dashboard;

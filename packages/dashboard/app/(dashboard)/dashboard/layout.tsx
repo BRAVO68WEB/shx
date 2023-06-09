@@ -21,7 +21,7 @@ const Layout = ({ children }: DashboardLayoutProps) => {
 										href={item.href}
 										className="p-2.5 block text-sm hover:bg-gray-900 w-full rounded-md"
 									>
-										item.name
+										{item.name}
 									</Link>
 								);
 							})}
@@ -29,7 +29,7 @@ const Layout = ({ children }: DashboardLayoutProps) => {
 					);
 				})}
 			</div>
-			<main className='w-full h-full overflow-y-auto'>{children}</main>
+			<main className='w-full h-full overflow-y-auto p-5'>{children}</main>
 		</div>
 	);
 };
