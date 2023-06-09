@@ -25,7 +25,7 @@ export default class Uploader implements IUploaderService {
 
 	public uploadS = async (file: any, meta: UserMeta): Promise<Uploads> => {
 		await this.uploaderService.uploadFile(
-			configKeys.R2_BUCKET_FOLDER!,
+			configKeys.R2_BUCKET_FOLDER as string,
 			file.newName,
 			file.buffer,
 			file.mimetype,
@@ -71,7 +71,7 @@ export default class Uploader implements IUploaderService {
 		await image.toFormat('jpeg');
 		const buffer = await image.toBuffer();
 		await this.uploaderService.uploadFile(
-			configKeys.R2_BUCKET_FOLDER!,
+			configKeys.R2_BUCKET_FOLDER as string,
 			file.newName,
 			buffer,
 			file.mimetype,
@@ -123,7 +123,7 @@ export default class Uploader implements IUploaderService {
 		await image.toFormat('jpeg');
 		const buffer = await image.toBuffer();
 		await this.uploaderService.uploadFile(
-			configKeys.R2_BUCKET_FOLDER!,
+			configKeys.R2_BUCKET_FOLDER as string,
 			filename,
 			buffer,
 			'image/jpeg',
@@ -202,7 +202,7 @@ export default class Uploader implements IUploaderService {
 		let filename = await this.downloadFile(url);
 		filename = sanitize(filename);
 		await this.uploaderService.uploadFile(
-			configKeys.R2_BUCKET_FOLDER!,
+			configKeys.R2_BUCKET_FOLDER as string,
 			filename,
 			fs.readFileSync(`uploads/${filename}`),
 			'application/octet-stream',
@@ -325,7 +325,7 @@ export default class Uploader implements IUploaderService {
 		const filename = data.delete_uploads_by_pk.upload_url.split('/').pop()!;
 
 		await this.uploaderService.deleteFile(
-			configKeys.R2_BUCKET_FOLDER!,
+			configKeys.R2_BUCKET_FOLDER as string,
 			filename
 		);
 
