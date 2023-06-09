@@ -29,16 +29,35 @@ export interface IConfigController {
 		req: ModRequest,
 		res: Response,
 		next: NextFunction
-	): Promise<void>;
-	setConfig(req: ModRequest, res: Response, next: NextFunction): Promise<void>;
-	getConfig(req: ModRequest, res: Response, next: NextFunction): Promise<void>;
+	): Promise<Response | void>;
+	setConfig(
+		req: ModRequest,
+		res: Response,
+		next: NextFunction
+	): Promise<Response | void>;
+	getConfig(
+		req: ModRequest,
+		res: Response,
+		next: NextFunction
+	): Promise<Response | void>;
 }
 
 export interface IConfigService {
 	initConfig(): Promise<boolean>;
-	getAllConfigS(): Promise<any>;
-	setConfigS(key: ConfigKeysTypes, value: string): Promise<any>;
-	getConfigS(key: ConfigKeysTypes): Promise<any>;
+	getAllConfigS(): Promise<Settings>;
+	setConfigS(key: ConfigKeysTypes, value: string): Promise<void>;
+	getConfigS(
+		key: ConfigKeysTypes
+	): Promise<
+		| string[]
+		| string
+		| boolean
+		| number
+		| ThemeType
+		| LanguageType
+		| Settings
+		| any
+	>;
 }
 
 export type ConfigKeysTypes =

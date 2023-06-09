@@ -11,7 +11,7 @@ export default class SxcuController
 		req: ModRequest,
 		res: Response,
 		next: NextFunction
-	): Promise<any> => {
+	): Promise<Response | void> => {
 		try {
 			const fileData = await this.createUploadImageSxcu(
 				req.user.apiKey,
@@ -27,7 +27,7 @@ export default class SxcuController
 		req: ModRequest,
 		res: Response,
 		next: NextFunction
-	): Promise<any> => {
+	): Promise<Response | void> => {
 		try {
 			const fileData = await this.createUploadFileSxcu(
 				req.user.apiKey,
@@ -39,7 +39,11 @@ export default class SxcuController
 		}
 	};
 
-	public url = async (req: ModRequest, res: Response, next: NextFunction) => {
+	public url = async (
+		req: ModRequest,
+		res: Response,
+		next: NextFunction
+	): Promise<Response | void> => {
 		try {
 			const fileData = await this.createURLShrinkSxcu(
 				req.user.apiKey,
@@ -51,7 +55,11 @@ export default class SxcuController
 		}
 	};
 
-	public text = async (req: ModRequest, res: Response, next: NextFunction) => {
+	public text = async (
+		req: ModRequest,
+		res: Response,
+		next: NextFunction
+	): Promise<Response | void> => {
 		try {
 			const fileData = await this.createPasteSxcu(
 				req.user.apiKey,
