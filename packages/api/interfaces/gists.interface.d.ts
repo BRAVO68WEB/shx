@@ -1,9 +1,18 @@
 import { NextFunction, Response, Request } from 'express';
 import { ModRequest, UserMeta } from '../types';
+import { Gists } from '../graphql/types';
 
 export interface IGistController {
-	create(req: ModRequest, res: Response, next: NextFunction): Promise<void>;
-	get(req: Request, res: Response, next: NextFunction): Promise<void>;
+	create(
+		req: ModRequest,
+		res: Response,
+		next: NextFunction
+	): Promise<Response | void>;
+	get(
+		req: Request,
+		res: Response,
+		next: NextFunction
+	): Promise<Response | void>;
 }
 
 export interface IGistService {
@@ -12,11 +21,22 @@ export interface IGistService {
 		meta: UserMeta,
 		privateMeta?: IPrivate,
 		isOneTimeOnly?: boolean
-	): Promise<void>;
-	getGistS(gistKey: string, passkey?: string): Promise<void>;
+	): Promise<Gists>;
+	getGistS(gistKey: string, passkey?: string): Promise<Gists | null>;
+	updateGistS(gistKey: string, content: string): Promise<number>;
+	deleteGistS(gistKey: string): Promise<number>;
+	listGistsS(
+		searchString: string,
+		pageNo: number,
+		pageSize: number
+	): Promise<Gists[]>;
 }
 
 export interface IPrivate {
 	isPrivate: boolean;
 	passkey?: string;
+}
+
+export interface GistRep extends Gists {
+	gist_url?: string;
 }

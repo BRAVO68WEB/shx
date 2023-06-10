@@ -2,7 +2,11 @@ import { NextFunction, Response, Request } from 'express';
 import GistService from '../services/gist.service';
 import { ModRequest } from '../types';
 import { makeResponse } from '../libs';
-import { IGistController, IPrivate } from '../interfaces/gists.interface';
+import {
+	GistRep,
+	IGistController,
+	IPrivate,
+} from '../interfaces/gists.interface';
 
 export default class GistController
 	extends GistService
@@ -12,14 +16,14 @@ export default class GistController
 		req: ModRequest,
 		res: Response,
 		next: NextFunction
-	): Promise<any> => {
+	): Promise<Response | void> => {
 		try {
 			const { content, isOneTimeOnly, passkey } = req.body;
 			const priavte: IPrivate = {
 				isPrivate: passkey ? true : false,
 				passkey: passkey || null,
 			};
-			let gist = await this.createGistS(
+			let gist: GistRep = await this.createGistS(
 				content,
 				req.user,
 				priavte,
@@ -29,9 +33,9 @@ export default class GistController
 				...gist,
 				gist_url: `${req.protocol}://${req.hostname}/gist/${gist.gist_url_key}`,
 			};
-			res.status(201).json(makeResponse(gist));
+			return res.status(201).json(makeResponse(gist));
 		} catch (error) {
-			next(error);
+			return next(error);
 		}
 	};
 
@@ -39,22 +43,22 @@ export default class GistController
 		req: Request,
 		res: Response,
 		next: NextFunction
-	): Promise<any> => {
+	): Promise<Response | void> => {
 		try {
 			const { gistID } = req.params;
 			const { passkey } = req.query as { passkey: string };
 			const gist = await this.getGistS(gistID, passkey);
 			if (gist === null) {
-				res.status(404).json(
+				return res.status(404).json(
 					makeResponse({
 						message: 'Gist not found or Invalid passkey passed !!',
 					})
 				);
 			} else {
-				res.status(200).json(makeResponse(gist));
+				return res.status(200).json(makeResponse(gist));
 			}
 		} catch (error) {
-			next(error);
+			return next(error);
 		}
 	};
 
@@ -62,7 +66,7 @@ export default class GistController
 		req: ModRequest,
 		res: Response,
 		next: NextFunction
-	): Promise<any> => {
+	): Promise<Response | void> => {
 		try {
 			const { gistID } = req.params;
 			const gist = await this.deleteGistS(gistID);
@@ -88,7 +92,7 @@ export default class GistController
 		req: ModRequest,
 		res: Response,
 		next: NextFunction
-	): Promise<any> => {
+	): Promise<Response | void> => {
 		try {
 			const { gistID } = req.params;
 			const { content } = req.body;
@@ -115,7 +119,7 @@ export default class GistController
 		req: ModRequest,
 		res: Response,
 		next: NextFunction
-	): Promise<any> => {
+	): Promise<Response | void> => {
 		try {
 			const { search, limit, page } = req.query as {
 				search: string;
@@ -137,7 +141,7 @@ export default class GistController
 		req: Request,
 		res: Response,
 		next: NextFunction
-	): Promise<any> => {
+	): Promise<Response | void> => {
 		try {
 			const { gistID } = req.params;
 			const { passkey } = req.query as { passkey: string };

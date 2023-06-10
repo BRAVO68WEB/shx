@@ -16,20 +16,21 @@ export default class ConfigController
 		req: ModRequest,
 		res: Response,
 		next: NextFunction
-	): Promise<void> => {
+	): Promise<Response | void> => {
+		let config;
 		try {
-			const config = await this.getAllConfigS();
-			res.status(200).json(makeResponse(config));
+			config = await this.getAllConfigS();
 		} catch (error) {
-			next(error);
+			return next(error);
 		}
+		return res.status(200).json(makeResponse(config));
 	};
 
 	public setConfig = async (
 		req: ModRequest,
 		res: Response,
 		next: NextFunction
-	): Promise<void> => {
+	): Promise<Response | void> => {
 		try {
 			const { key, value } = req.body;
 			if (!key || !value)
@@ -52,7 +53,7 @@ export default class ConfigController
 		req: ModRequest,
 		res: Response,
 		next: NextFunction
-	): Promise<void> => {
+	): Promise<Response | void> => {
 		try {
 			const { key } = req.params as { key: ConfigKeysTypes };
 			if (!key)

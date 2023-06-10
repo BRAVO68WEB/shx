@@ -5,7 +5,7 @@ import {
 	DeleteObjectCommand,
 } from '@aws-sdk/client-s3';
 import { configKeys } from '..';
-import { IUploadStrategy } from '../interfaces/upload.interface';
+import { IUploadStrategy, UploaderRep } from '../interfaces/upload.interface';
 
 export default class UploadStrategy implements IUploadStrategy {
 	private static _s3Client;
@@ -37,7 +37,7 @@ export default class UploadStrategy implements IUploadStrategy {
 		file: Buffer,
 		fileType: string,
 		acl?: string
-	): Promise<any> {
+	): Promise<UploaderRep> {
 		const key = [entity, id].join('/');
 		const uploadParams = {
 			Bucket: UploadStrategy._s3Opts.bucket,
@@ -48,13 +48,13 @@ export default class UploadStrategy implements IUploadStrategy {
 		};
 		await UploadStrategy._s3Client.send(new PutObjectCommand(uploadParams));
 		return {
-			url: configKeys.R2_BUCKET_URL,
-			bucket_name: configKeys.R2_BUCKET_NAME,
-			folder: configKeys.R2_BUCKET_FOLDER,
+			url: configKeys.R2_BUCKET_URL as string,
+			bucket_name: configKeys.R2_BUCKET_NAME as string,
+			folder: configKeys.R2_BUCKET_FOLDER as string,
 		};
 	}
 
-	async deleteFile(entity: string, id: string): Promise<any> {
+	async deleteFile(entity: string, id: string): Promise<UploaderRep> {
 		const key = [entity, id].join('/');
 		const deleteParams = {
 			Bucket: UploadStrategy._s3Opts.bucket,
@@ -63,9 +63,9 @@ export default class UploadStrategy implements IUploadStrategy {
 		await UploadStrategy._s3Client.send(new DeleteObjectCommand(deleteParams));
 
 		return {
-			url: configKeys.R2_BUCKET_URL,
-			bucket_name: configKeys.R2_BUCKET_NAME,
-			folder: configKeys.R2_BUCKET_FOLDER,
+			url: configKeys.R2_BUCKET_URL as string,
+			bucket_name: configKeys.R2_BUCKET_NAME as string,
+			folder: configKeys.R2_BUCKET_FOLDER as string,
 		};
 	}
 }

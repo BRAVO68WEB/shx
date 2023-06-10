@@ -12,6 +12,8 @@ import sanitize from 'sanitize-filename';
 import ConfigService from './config.service';
 import { CustomError } from '../libs/error';
 import { logger } from '../libs';
+import { Uploads } from '../graphql/types';
+
 export default class Uploader implements IUploaderService {
 	uploaderService: UploaderService;
 	configService: ConfigService;
@@ -21,9 +23,9 @@ export default class Uploader implements IUploaderService {
 		this.configService = new ConfigService();
 	}
 
-	public uploadS = async (file: any, meta: UserMeta) => {
+	public uploadS = async (file: any, meta: UserMeta): Promise<Uploads> => {
 		await this.uploaderService.uploadFile(
-			configKeys.R2_BUCKET_FOLDER!,
+			configKeys.R2_BUCKET_FOLDER as string,
 			file.newName,
 			file.buffer,
 			file.mimetype,
@@ -58,16 +60,18 @@ export default class Uploader implements IUploaderService {
 				apikeyUsed: meta.apiKeyID,
 			},
 		};
-		const data: any = await client.request(query, variables);
+		const data: {
+			insert_uploads_one: Uploads;
+		} = await client.request(query, variables);
 		return data.insert_uploads_one;
 	};
 
-	public uploadImageS = async (file: any, meta: UserMeta) => {
-		const image: any = sharp(file.buffer);
+	public uploadImageS = async (file: any, meta: UserMeta): Promise<Uploads> => {
+		const image = sharp(file.buffer);
 		await image.toFormat('jpeg');
-		const buffer: any = await image.toBuffer();
+		const buffer = await image.toBuffer();
 		await this.uploaderService.uploadFile(
-			configKeys.R2_BUCKET_FOLDER!,
+			configKeys.R2_BUCKET_FOLDER as string,
 			file.newName,
 			buffer,
 			file.mimetype,
@@ -102,19 +106,24 @@ export default class Uploader implements IUploaderService {
 				apikeyUsed: meta.apiKeyID,
 			},
 		};
-		const data: any = await client.request(query, variables);
+		const data: {
+			insert_uploads_one: Uploads;
+		} = await client.request(query, variables);
 		return data.insert_uploads_one;
 	};
 
-	public uploadImageViaURLS = async (url: string, meta: UserMeta) => {
+	public uploadImageViaURLS = async (
+		url: string,
+		meta: UserMeta
+	): Promise<Uploads> => {
 		let filename = await this.downloadImage(url);
 		filename = sanitize(filename);
 		const rawImage = fs.readFileSync(`uploads/${filename}`);
-		const image: any = sharp(rawImage);
+		const image = sharp(rawImage);
 		await image.toFormat('jpeg');
-		const buffer: any = await image.toBuffer();
+		const buffer = await image.toBuffer();
 		await this.uploaderService.uploadFile(
-			configKeys.R2_BUCKET_FOLDER!,
+			configKeys.R2_BUCKET_FOLDER as string,
 			filename,
 			buffer,
 			'image/jpeg',
@@ -153,11 +162,13 @@ export default class Uploader implements IUploaderService {
 			},
 		};
 
-		const data: any = await client.request(query, variables);
+		const data: {
+			insert_uploads_one: Uploads;
+		} = await client.request(query, variables);
 		return data.insert_uploads_one;
 	};
 
-	private downloadImage = async (url: string) => {
+	public downloadImage = async (url: string): Promise<string> => {
 		let filename = nanoid() + url.split('/').pop()!;
 		filename = sanitize(filename);
 		const whitelistedExtensions = await this.configService.getConfigS(
@@ -184,11 +195,14 @@ export default class Uploader implements IUploaderService {
 		return filename;
 	};
 
-	public uploadFileViaURLS = async (url: string, meta: UserMeta) => {
+	public uploadFileViaURLS = async (
+		url: string,
+		meta: UserMeta
+	): Promise<Uploads> => {
 		let filename = await this.downloadFile(url);
 		filename = sanitize(filename);
 		await this.uploaderService.uploadFile(
-			configKeys.R2_BUCKET_FOLDER!,
+			configKeys.R2_BUCKET_FOLDER as string,
 			filename,
 			fs.readFileSync(`uploads/${filename}`),
 			'application/octet-stream',
@@ -227,11 +241,13 @@ export default class Uploader implements IUploaderService {
 			},
 		};
 
-		const data: any = await client.request(query, variables);
+		const data: {
+			insert_uploads_one: Uploads;
+		} = await client.request(query, variables);
 		return data.insert_uploads_one;
 	};
 
-	private downloadFile = async (url: string) => {
+	public downloadFile = async (url: string): Promise<string> => {
 		let filename = nanoid() + url.split('/').pop()!;
 		filename = sanitize(filename);
 		const whitelistedExtensions = await this.configService.getConfigS(
@@ -258,7 +274,10 @@ export default class Uploader implements IUploaderService {
 		return filename;
 	};
 
-	public deleteFileS = async (fileID: string, delToken: string) => {
+	public deleteFileS = async (
+		fileID: string,
+		delToken: string
+	): Promise<Uploads> => {
 		const findQuery = gql`
 			query findFile($fileID: uuid!) {
 				uploads_by_pk(fileID: $fileID) {
@@ -274,7 +293,9 @@ export default class Uploader implements IUploaderService {
 			fileID: fileID,
 		};
 
-		const findData: any = await client.request(findQuery, findVariables);
+		const findData: {
+			uploads_by_pk: Uploads;
+		} = await client.request(findQuery, findVariables);
 
 		if (!findData.uploads_by_pk) {
 			throw new Error('File not found');
@@ -297,12 +318,14 @@ export default class Uploader implements IUploaderService {
 			fileID: fileID,
 		};
 
-		const data: any = await client.request(delquery, variables);
+		const data: {
+			delete_uploads_by_pk: Uploads;
+		} = await client.request(delquery, variables);
 
 		const filename = data.delete_uploads_by_pk.upload_url.split('/').pop()!;
 
 		await this.uploaderService.deleteFile(
-			configKeys.R2_BUCKET_FOLDER!,
+			configKeys.R2_BUCKET_FOLDER as string,
 			filename
 		);
 
@@ -313,7 +336,7 @@ export default class Uploader implements IUploaderService {
 		searchQuery: any,
 		limit: number,
 		offset: number
-	) => {
+	): Promise<Uploads[]> => {
 		const query = gql`
 			query listFiles($searchQuery: String!, $limit: Int!, $offset: Int!) {
 				uploads(
@@ -354,12 +377,14 @@ export default class Uploader implements IUploaderService {
 			offset: offset,
 		};
 
-		const data: any = await client.request(query, variables);
+		const data: {
+			uploads: Uploads[];
+		} = await client.request(query, variables);
 
 		return data.uploads;
 	};
 
-	public getFileS = async (fileID: string) => {
+	public getFileS = async (fileID: string): Promise<Uploads> => {
 		const query = gql`
 			query getFile($fileID: uuid!) {
 				uploads_by_pk(fileID: $fileID) {
@@ -376,7 +401,9 @@ export default class Uploader implements IUploaderService {
 			fileID: fileID,
 		};
 
-		const data: any = await client.request(query, variables);
+		const data: {
+			uploads_by_pk: Uploads;
+		} = await client.request(query, variables);
 
 		return data.uploads_by_pk;
 	};

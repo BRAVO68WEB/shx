@@ -1,4 +1,4 @@
-import { Request } from 'express';
+import { Request, IRouter, RequestHandler } from 'express';
 import Multer from 'multer';
 export interface PaginationType {
 	page: number;
