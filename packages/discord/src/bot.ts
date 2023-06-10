@@ -5,15 +5,13 @@ import {
 	Snowflake,
 } from 'discord.js';
 
-import './server';
-
 import { loadSlashCommand, loadTextCommand } from './loaders/command';
 import { loadDiscordEvent } from './loaders/event';
 import type { SlashCommand, TextCommand } from './sturctures/command';
 import { Command } from './interfaces/Command';
 
 export class Bot {
-	public prefix = 'h!';
+	public prefix = 'x!';
 	public commands = new Collection<string, Command>();
 	public slashCommands = new Array<ApplicationCommandDataResolvable>();
 	public slashCommandsMap = new Collection<string, Command>();

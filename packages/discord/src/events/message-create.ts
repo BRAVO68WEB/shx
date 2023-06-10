@@ -10,6 +10,7 @@ import { isDev } from '../utils/constants';
 import { parseMsToVisibleText } from '../utils/formatters';
 import { callbackEmbed } from '../utils/messages';
 import MYGuildConfig from '../utils/guild.config';
+import { handleAttachmentUpload } from '../commands/mentions/uploader';
 
 async function reject(message: Message, usage: string, missing: string) {
 	const postMessage = await message.reply({
@@ -26,8 +27,17 @@ export const event: DiscordEvent = {
 	name: 'messageCreate',
 	// eslint-disable-next-line
 	run: async (message: Message) => {
-		const { content, channel, author, webhookId, member, guild, client } =
-			message;
+		console.log('----------------------------');
+		const {
+			content,
+			channel,
+			author,
+			webhookId,
+			member,
+			guild,
+			client,
+			attachments,
+		} = message;
 
 		if (
 			author.bot ||
@@ -47,6 +57,12 @@ export const event: DiscordEvent = {
 
 		const mentionReg = new RegExp(`^(<@!?${client.user.id}>)`);
 		const mentionTest = mentionReg.test(content);
+
+		if (attachments) {
+			await handleAttachmentUpload(message);
+			return;
+		}
+
 		if (mentionTest) {
 			await channel.send(`Hey! My prefix is \`${prefix}\``);
 			return;

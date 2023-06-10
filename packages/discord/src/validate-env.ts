@@ -11,9 +11,9 @@ declare global {
 const ZodEnvironmentVariables = z.object({
 	TOKEN: z.string(),
 	CLIENT_ID: z.string(),
-	DEV_GUILD_ID: z.string().optional(),
-	SHX_API_TOKEN: z.string().optional(),
-	SHX_API_URL: z.string().optional(),
+	DEV_GUILD_ID: z.string(),
+	SHX_API_TOKEN: z.string(),
+	SHX_API_URL: z.string(),
 });
 
 ZodEnvironmentVariables.parse(process.env);
