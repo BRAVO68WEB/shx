@@ -13,8 +13,8 @@ const files: UploadsListFile[] = [
 export default function GridList() {
   return (
 		<div className="w-full grid grid-cols-3 gap-2 p-4">
-			{files.map(file => (
-				<div className="grid-item overflow-hidden rounded-md w-full aspect-square flex items-center justify-center bg-gray-900 relative group">
+			{files.map((file,index) => (
+				<div key={index} className="grid-item overflow-hidden rounded-md w-full aspect-square flex items-center justify-center bg-gray-900 relative group">
 					<img
 						src={file.src}
 						alt=""
