@@ -1,13 +1,19 @@
 # 🚀 **Project SHX**
 
+![GitHub package.json version](https://img.shields.io/github/package-json/v/BRAVO68WEB/shx?logo=npm&style=for-the-badge)
 ![GitHub Workflow Status](https://img.shields.io/github/actions/workflow/status/bravo68web/shx/build-image.yaml?style=for-the-badge)
 ![GitHub last commit](https://img.shields.io/github/last-commit/bravo68web/shx?style=for-the-badge)
 ![GitHub code size in bytes](https://img.shields.io/github/languages/code-size/bravo68web/shx?style=for-the-badge)
 ![Snyk Vulnerabilities for GitHub Repo](https://img.shields.io/snyk/vulnerabilities/github/bravo68web/shx?style=for-the-badge)
 
+![CodeFactor Grade](https://img.shields.io/codefactor/grade/github/BRAVO68WEB/shx?logo=codefactor&style=for-the-badge)
+![GitHub top language](https://img.shields.io/github/languages/top/bravo68web/shx?style=for-the-badge)
+
 [![forthebadge](https://forthebadge.com/images/badges/made-with-typescript.svg)](https://forthebadge.com)
 [![forthebadge](https://forthebadge.com/images/badges/powered-by-black-magic.svg)](https://forthebadge.com)
 [![forthebadge](https://forthebadge.com/images/badges/built-with-love.svg)](https://forthebadge.com)
+
+[![Quality gate](https://sonarcloud.io/api/project_badges/quality_gate?project=BRAVO68WEB_shx)](https://sonarcloud.io/summary/new_code?id=BRAVO68WEB_shx)
 
 ## 📝 Description
 
@@ -39,13 +45,19 @@ Shx is a platform ment to store and share files, images, text and URLs with ease
 
 ### @packages/api
 
+![GitHub package.json version (subfolder of monorepo)](https://img.shields.io/github/package-json/v/BRAVO68WEB/shx?filename=packages%2Fapi%2Fpackage.json&logo=npm&style=for-the-badge)
+
 The API package contains the server-side code responsible for handling file, image, and text uploads, as well as URL shortening. It provides the core functionality of the ShareX server.
 
 ### @packages/cli
 
+![GitHub package.json version (subfolder of monorepo)](https://img.shields.io/github/package-json/v/BRAVO68WEB/shx?filename=packages%2Fcli%2Fpackage.json&logo=npm&style=for-the-badge)
+
 The CLI package includes the command-line interface (CLI) for interacting with the ShareX server from the terminal. It allows users to perform various actions, such as uploading files, images, or text, and generating short URLs.
 
 ### @packages/dashboard
+
+![GitHub package.json version (subfolder of monorepo)](https://img.shields.io/github/package-json/v/BRAVO68WEB/shx?filename=packages%2Fdashboard%2Fpackage.json&logo=npm&style=for-the-badge)
 
 The dashboard package contains the web dashboard for the ShareX server. It allows users to view their uploaded files, images, and text, as well as manage their account and settings via a web interface.
 
