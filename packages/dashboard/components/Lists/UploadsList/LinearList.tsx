@@ -1,24 +1,26 @@
 import Button from '@/components/ui/Button';
 import { ArrowUpRight, Edit, Plus, Trash } from 'lucide-react';
-import Input  from '@/components/ui/Input';
+import Input from '@/components/ui/Input';
 import React, { useState } from 'react';
 import { cn } from '@/lib/utils';
 
-const files = [
+const files: UploadsListFile[] = [
 	{
 		name: 'Lindsay Walton',
 		date: '2023-05-29T08:08:07.289624+00:00',
+		src: 'https://cdn.pixabay.com/photo/2015/12/01/20/28/road-1072821_1280.jpg',
 	},
 ];
 
 export default function LinearList() {
-	const [edit,setEdit] = useState<boolean>(false)
+	const [edit, setEdit] = useState<boolean>(false);
+
 	// parse a date from gmt format to iso format
 	const parseDate = (date: string) => {
 		return new Date(date).toISOString().split('T')[0];
 	};
 
-	const toggleEdit = () =>  setEdit(!edit)
+	const toggleEdit = () => setEdit(!edit);
 
 	return (
 		<div className="flex flex-col w-full gap-2 p-5">
@@ -30,7 +32,10 @@ export default function LinearList() {
 				<Button className="my-2 flex justify-between items-center w-auto gap-2">
 					<span>Add</span> <Plus />
 				</Button>
-				<Button onClick={toggleEdit} className="my-2 flex justify-between items-center w-auto gap-2">
+				<Button
+					onClick={toggleEdit}
+					className="my-2 flex justify-between items-center w-auto gap-2"
+				>
 					<span>Edit</span> <Edit />
 				</Button>
 			</div>
@@ -64,7 +69,9 @@ export default function LinearList() {
 								<input
 									type="checkbox"
 									className={cn(
-										'h-4 w-4 rounded bg-transparent border-primary text-primary',{"hidden":!edit})}
+										'h-4 w-4 rounded bg-transparent border-primary text-primary',
+										{ hidden: !edit }
+									)}
 								/>
 							</td>
 							<td className="whitespace-nowrap  pl-4 text-sm font-medium text-white">
