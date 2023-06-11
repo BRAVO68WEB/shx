@@ -11,9 +11,8 @@ export const command: TextCommand = {
 	},
 	run: async ({ message }) => {
 		const { client } = message;
-
 		if (isDev || client.application.botPublic) {
-			const link = `https://discord.com/api/oauth2/authorize?client_id=${client.application.id}&permissions=1636381879799&scope=applications.commands%20bot`;
+			const link = `https://discord.com/api/oauth2/authorize?client_id=${client.application.id}&permissions=${process.env.PERMISSION_INTEGER}&scope=applications.commands%20bot`;
 
 			const embed = new EmbedBuilder().setDescription(
 				`Invite to your server: [HERE](${link})`
@@ -21,6 +20,10 @@ export const command: TextCommand = {
 
 			await message.reply({
 				embeds: [embed],
+			});
+		} else {
+			await message.reply({
+				content: 'Sorry, I am not public yet!',
 			});
 		}
 	},

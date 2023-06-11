@@ -2,7 +2,6 @@ import { SlashCommandBuilder } from '@discordjs/builders';
 import type { TextChannel } from 'discord.js';
 import { EmbedBuilder } from 'discord.js';
 
-import { githubLink, name as botname } from '../../../config/bot.json';
 import type { SlashCommand, TextCommand } from '../../sturctures/command';
 import { getCommandHelpInfo } from '../../utils/cmds';
 import { callbackEmbed } from '../../utils/messages';
@@ -29,7 +28,7 @@ export const command: SlashCommand = {
 			const commandsCatagories = client.commandsCatagories;
 
 			embed.setDescription(
-				`Hello🙋‍♂️!\nOur source code: [Here](${githubLink})\nTurely appreciate that you are supporting us.`
+				`Hello🙋‍♂️!\nOur source code: [Here](https://github.com/bravo68web/shx))\nTurely appreciate that you are supporting us.`
 			);
 
 			for (const catagory of commandsCatagories) {
@@ -49,7 +48,7 @@ export const command: SlashCommand = {
 			const avatarURL = client.user.defaultAvatarURL;
 
 			embed.setTitle('Bot Assistance Centre').setFooter({
-				text: `© ${new Date().getFullYear()} ${botname}`,
+				text: `© ${new Date().getFullYear()} SHX Bot`,
 				iconURL: avatarURL,
 			});
 

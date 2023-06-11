@@ -14,6 +14,9 @@ const ZodEnvironmentVariables = z.object({
 	DEV_GUILD_ID: z.string(),
 	SHX_API_TOKEN: z.string(),
 	SHX_API_URL: z.string(),
+	PERMISSION_INTEGER: z.string(),
+	SHX_DASH_URL: z.string(),
+	DISCORD_OWNER_ID: z.string(),
 });
 
 ZodEnvironmentVariables.parse(process.env);

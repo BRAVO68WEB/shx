@@ -1,6 +1,5 @@
 import type { Message, PermissionResolvable, TextChannel } from 'discord.js';
 
-import { ownerId } from '../../config/bot.json';
 import type { TextCommand } from '../sturctures/command';
 import type { GuildConfig } from '../sturctures/database';
 import type { DiscordEvent } from '../sturctures/event';
@@ -125,7 +124,11 @@ export const event: DiscordEvent = {
 				return;
 			}
 
-			if (cmdData.ownerOnly === true && author.id !== ownerId) return;
+			if (
+				cmdData.ownerOnly === true &&
+				author.id !== process.env.DISCORD_OWNER_ID
+			)
+				return;
 
 			// Reject if dm mode while configurated to guild.
 			if (!guild && !cmdData.directMessageAllowed) return;
