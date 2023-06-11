@@ -6,3 +6,15 @@ cli:
 
 dashboard:
 - packages/dashboard/**/*
+
+discord:
+- packages/discord/**/*
+
+docs:
+- docs
+
+github-actions:
+- .github/workflows/*
+
+github-meta:
+- .github/**/*
