@@ -11,7 +11,6 @@ import type {
 import { Routes } from 'discord-api-types/v9';
 import { glob } from 'glob';
 
-import { disabledCommandCatagories } from '../../config/bot.json';
 import type { SlashCommand, TextCommand } from '../sturctures/command';
 import { isDev } from '../utils/constants';
 
@@ -51,7 +50,7 @@ export async function loadTextCommand(client: Client) {
 
 		const catagory = basename(dirname(filePath));
 
-		const disabledCatagories: string[] = disabledCommandCatagories;
+		const disabledCatagories: string[] = [];
 
 		if (!disabledCatagories.includes(catagory)) {
 			if (catagory) {

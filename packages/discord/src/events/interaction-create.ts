@@ -1,6 +1,5 @@
 import type { CommandInteraction } from 'discord.js';
 
-import { ownerId } from '../../config/bot.json';
 import type { DiscordEvent } from '../sturctures/event';
 import { cooldownCache } from '../utils/cache';
 import { isDev } from '../utils/constants';
@@ -34,7 +33,10 @@ export const event: DiscordEvent = {
 				return returnOfInter('This command is not enabled to execute.');
 			}
 
-			if (slash.data?.ownerOnly === true && user.id !== ownerId) {
+			if (
+				slash.data?.ownerOnly === true &&
+				user.id !== process.env.DISCORD_OWNER_ID
+			) {
 				return returnOfInter('This command is not enabled to execute.');
 			}
 
