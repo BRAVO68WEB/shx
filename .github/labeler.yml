@@ -10,7 +10,7 @@ dashboard:
 discord:
 - packages/discord/**/*
 
-docs:
+documentation:
 - docs
 
 github-actions:
@@ -18,3 +18,8 @@ github-actions:
 
 github-meta:
 - .github/**/*
+
+dependencies:
+- package.json
+- yarn.lock
+- packages/*/package.json
