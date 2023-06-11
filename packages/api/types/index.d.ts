@@ -1,5 +1,4 @@
 import { Request } from 'express';
-import Multer from 'multer';
 export interface PaginationType {
 	page: number;
 	limit: number;

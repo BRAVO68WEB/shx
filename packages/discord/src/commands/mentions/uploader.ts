@@ -1,4 +1,4 @@
-import { Message, Embed, EmbedBuilder } from 'discord.js';
+import { Message, EmbedBuilder } from 'discord.js';
 import axios from 'axios';
 
 export const handleAttachmentUpload = async (message: Message) => {
