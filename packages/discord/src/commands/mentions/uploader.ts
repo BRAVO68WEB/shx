@@ -40,18 +40,11 @@ export const handleAttachmentUpload = async (message: Message) => {
 			.setColor('#00ff00')
 			.setTimestamp()
 			.addFields(
-				// {
-				//     name: 'File ID',
-				//     value: data.data.fileID,
-				// },
 				{
 					name: 'File Name',
 					value: message.attachments.first()?.name ?? 'Unknown',
+					inline: true,
 				},
-				// {
-				//     name: 'File Upload URL',
-				//     value: data.data.url,
-				// },
 				{
 					name: 'File Delete URL',
 					value:
@@ -69,11 +62,40 @@ export const handleAttachmentUpload = async (message: Message) => {
 
 		await message.reply({
 			embeds: [statementMsg],
+			components: [
+				{
+					type: 1,
+					components: [
+						{
+							style: 5,
+							label: `Delete`,
+							url:
+								process.env.SHX_API_URL +
+								'/upload/delete/' +
+								data.data.fileID +
+								'?token=' +
+								data.data.deleteToken,
+							emoji: {
+								name: `🏮`,
+							},
+							type: 2,
+						},
+						{
+							style: 5,
+							label: `Open`,
+							disabled: false,
+							url: data.data.url,
+							emoji: {
+								name: `↗`,
+							},
+							type: 2,
+						},
+					],
+				},
+			],
 		});
 	} catch (error: any) {
-		console.log(error.response.data);
-		await message.reply(
-			'```' + JSON.stringify(error.response.data.message, null, 2) + '```'
-		);
+		console.log(error);
+		await message.reply('```' + JSON.stringify(error, null, 2) + '```');
 	}
 };

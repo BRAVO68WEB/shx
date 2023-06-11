@@ -27,7 +27,6 @@ export const event: DiscordEvent = {
 	name: 'messageCreate',
 	// eslint-disable-next-line
 	run: async (message: Message) => {
-		console.log('----------------------------');
 		const {
 			content,
 			channel,
@@ -47,7 +46,7 @@ export const event: DiscordEvent = {
 		)
 			return;
 
-		const prefix = 'd!';
+		const prefix = 'x!';
 
 		if (guild) {
 			if (!member) await guild.members.fetch(author.id);
@@ -58,7 +57,7 @@ export const event: DiscordEvent = {
 		const mentionReg = new RegExp(`^(<@!?${client.user.id}>)`);
 		const mentionTest = mentionReg.test(content);
 
-		if (attachments) {
+		if (attachments && mentionTest) {
 			await handleAttachmentUpload(message);
 			return;
 		}
