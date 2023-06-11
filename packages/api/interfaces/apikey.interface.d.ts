@@ -1,7 +1,7 @@
 import { NextFunction, Response } from 'express';
 import { ModRequest } from '../types';
 import { Apikeys } from '../graphql/types';
-import { encapDataKey } from '../libs';
+import { encapDataKey } from '../libs'
 
 export interface IAPIKeyController {
 	list(

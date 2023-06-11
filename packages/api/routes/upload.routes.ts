@@ -55,7 +55,6 @@ router.get(
 
 router.get(
 	'/delete/:fileID',
-	apiKeyAuth.check as any,
 	deleteFileValidation as any,
 	uploadController.deleteFile as any
 );
