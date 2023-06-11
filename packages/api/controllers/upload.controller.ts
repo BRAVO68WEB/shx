@@ -2,7 +2,7 @@ import { NextFunction, Response } from 'express';
 import { ModRequest } from '../types';
 import Uploader from '../services/upload.service';
 import { makeResponse } from '../libs';
-import { IUploaderController } from '../interfaces/upload.interface';
+import { IUploaderController, UploadRep } from '../interfaces/upload.interface';
 
 export default class UploadController
 	extends Uploader
@@ -12,7 +12,7 @@ export default class UploadController
 		req: ModRequest,
 		res: Response,
 		next: NextFunction
-	): Promise<any> => {
+	): Promise<Response | void> => {
 		try {
 			const { file } = req;
 			if (!file) {
@@ -20,7 +20,7 @@ export default class UploadController
 				next(error);
 				return;
 			}
-			let data = await this.uploadS(file, req.user);
+			let data: UploadRep = await this.uploadS(file, req.user);
 			data = {
 				...data,
 				url: data.upload_url,
@@ -35,7 +35,7 @@ export default class UploadController
 		req: ModRequest,
 		res: Response,
 		next: NextFunction
-	): Promise<any> => {
+	): Promise<Response | void> => {
 		try {
 			const { file } = req;
 			if (!file) {
@@ -43,7 +43,7 @@ export default class UploadController
 				next(error);
 				return;
 			}
-			let data = await this.uploadImageS(file, req.user);
+			let data: UploadRep = await this.uploadImageS(file, req.user);
 			data = {
 				...data,
 				url: data.upload_url,
@@ -58,7 +58,7 @@ export default class UploadController
 		req: ModRequest,
 		res: Response,
 		next: NextFunction
-	): Promise<any> => {
+	): Promise<Response | void> => {
 		try {
 			const { url } = req.body;
 			if (!url) {
@@ -66,7 +66,7 @@ export default class UploadController
 				next(error);
 				return;
 			}
-			let data = await this.uploadImageViaURLS(url, req.user);
+			let data: UploadRep = await this.uploadImageViaURLS(url, req.user);
 			data = {
 				...data,
 				url: data.upload_url,
@@ -81,7 +81,7 @@ export default class UploadController
 		req: ModRequest,
 		res: Response,
 		next: NextFunction
-	): Promise<any> => {
+	): Promise<Response | void> => {
 		try {
 			const { url } = req.body;
 			if (!url) {
@@ -89,7 +89,7 @@ export default class UploadController
 				next(error);
 				return;
 			}
-			let data = await this.uploadFileViaURLS(url, req.user);
+			let data: UploadRep = await this.uploadFileViaURLS(url, req.user);
 			data = {
 				...data,
 				url: data.upload_url,
@@ -104,7 +104,7 @@ export default class UploadController
 		req: ModRequest,
 		res: Response,
 		next: NextFunction
-	): Promise<any> => {
+	): Promise<Response | void> => {
 		try {
 			const { fileID } = req.params;
 			if (!fileID) {
@@ -123,7 +123,7 @@ export default class UploadController
 		req: ModRequest,
 		res: Response,
 		next: NextFunction
-	): Promise<any> => {
+	): Promise<Response | void> => {
 		try {
 			const { limit, offset, query = '' } = req.query;
 			const data = await this.listFilesS(query, Number(limit), Number(offset));
@@ -137,7 +137,7 @@ export default class UploadController
 		req: ModRequest,
 		res: Response,
 		next: NextFunction
-	): Promise<any> => {
+	): Promise<Response | void> => {
 		try {
 			const { fileID } = req.params as { fileID: string };
 			const { token } = req.query as { token: string };
@@ -148,7 +148,7 @@ export default class UploadController
 			}
 			const data = await this.deleteFileS(fileID, token);
 			res.status(200).json(makeResponse(data));
-		} catch (error: any) {
+		} catch (error) {
 			next(error);
 		}
 	};

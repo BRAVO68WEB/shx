@@ -2,6 +2,9 @@ import CacheClient from '../helpers/cache.factory';
 import {
 	IConfigService,
 	ConfigKeysTypes,
+	Settings,
+	ThemeType,
+	LanguageType,
 } from '../interfaces/config.interface';
 import { logger } from '../libs';
 
@@ -50,24 +53,37 @@ export default class ConfigService implements IConfigService {
 		}
 	};
 
-	public getAllConfigS = async (): Promise<any> => {
-		const settings = await CacheClient.hgetall('config');
+	public getAllConfigS = async (): Promise<Settings> => {
+		const settings: Partial<Settings | any> = await CacheClient.hgetall(
+			'config'
+		);
 		settings.imageExtensions = JSON.parse(settings['imageExtensions']);
 		settings.fileExtensions = JSON.parse(settings['fileExtensions']);
-		return settings;
+		return settings as Settings;
 	};
 
 	public setConfigS = async (
 		key: ConfigKeysTypes,
-		value: any
-	): Promise<any> => {
+		value: string[] | string | boolean | number | ThemeType | LanguageType
+	): Promise<void> => {
 		if (key === 'imageExtensions' || key === 'fileExtensions')
 			value = JSON.stringify(value);
 		return await CacheClient.hset('config', key, value);
 	};
 
-	public getConfigS = async (key: ConfigKeysTypes): Promise<any> => {
-		const setting = (await CacheClient.hget('config', key)) as string;
+	public getConfigS = async (
+		key: ConfigKeysTypes
+	): Promise<
+		| string[]
+		| string
+		| boolean
+		| number
+		| ThemeType
+		| LanguageType
+		| Settings
+		| any
+	> => {
+		const setting = (await CacheClient.hget('config', key)) as any;
 		if (key === 'imageExtensions' || key === 'fileExtensions')
 			return JSON.parse(setting);
 		return setting;
