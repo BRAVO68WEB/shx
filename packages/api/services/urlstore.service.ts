@@ -2,9 +2,10 @@ import { gql } from 'graphql-request';
 import { client } from '../helpers';
 import { UserMeta } from '../types';
 import { IURLStoreService } from '../interfaces/urlstore.interface';
+import { Shorturls, Shorturls_Mutation_Response } from '../graphql/types';
 
 export default class URLStore implements IURLStoreService {
-	public async storeURLS(url: string, meta: UserMeta) {
+	public async storeURLS(url: string, meta: UserMeta): Promise<Shorturls> {
 		const query = gql`
 			mutation insertURL($object: shorturls_insert_input!) {
 				insert_shorturls_one(object: $object) {
@@ -20,11 +21,13 @@ export default class URLStore implements IURLStoreService {
 				apikeyUsed: meta.apiKeyID,
 			},
 		};
-		const result: any = await client.request(query, variables);
+		const result: {
+			insert_shorturls_one: Shorturls;
+		} = await client.request(query, variables);
 		return result.insert_shorturls_one;
 	}
 
-	public async getURLS(short_key: string) {
+	public async getURLS(short_key: string): Promise<Shorturls> {
 		const query = gql`
 			query getURL($short_key: String!) {
 				shorturls(where: { short_key: { _eq: $short_key } }) {
@@ -35,11 +38,13 @@ export default class URLStore implements IURLStoreService {
 		const variables = {
 			short_key,
 		};
-		const result: any = await client.request(query, variables);
+		const result: {
+			shorturls: Shorturls;
+		} = await client.request(query, variables);
 		return result.shorturls[0];
 	}
 
-	public async deleteURLS(urlID: string) {
+	public async deleteURLS(urlID: string): Promise<number> {
 		const query = gql`
 			mutation deleteURL($urlID: uuid!) {
 				delete_shorturls(where: { urlID: { _eq: $urlID } }) {
@@ -50,11 +55,17 @@ export default class URLStore implements IURLStoreService {
 		const variables = {
 			urlID,
 		};
-		const result: any = await client.request(query, variables);
+		const result: {
+			delete_shorturls: Shorturls_Mutation_Response;
+		} = await client.request(query, variables);
 		return result.delete_shorturls.affected_rows;
 	}
 
-	public async getAllURLS(searchQuery = '', limit = 10, offset = 0) {
+	public async getAllURLS(
+		searchQuery = '',
+		limit = 10,
+		offset = 0
+	): Promise<Shorturls[]> {
 		const query = gql`
 			query getAllURLS($searchQuery: String!, $limit: Int!, $offset: Int!) {
 				shorturls(
@@ -79,11 +90,13 @@ export default class URLStore implements IURLStoreService {
 			limit,
 			offset,
 		};
-		const result: any = await client.request(query, variables);
+		const result: {
+			shorturls: Shorturls[];
+		} = await client.request(query, variables);
 		return result.shorturls;
 	}
 
-	public async getaURLS(urlID: string) {
+	public async getaURLS(urlID: string): Promise<Shorturls> {
 		const query = gql`
 			query getaURLS($urlID: uuid!) {
 				shorturls(where: { urlID: { _eq: $urlID } }) {
@@ -97,11 +110,13 @@ export default class URLStore implements IURLStoreService {
 		const variables = {
 			urlID,
 		};
-		const result: any = await client.request(query, variables);
+		const result: {
+			shorturls: Shorturls[];
+		} = await client.request(query, variables);
 		return result.shorturls[0];
 	}
 
-	public async updateURLS(urlID: string, updateObject: any) {
+	public async updateURLS(urlID: string, updateObject: any): Promise<number> {
 		const query = gql`
 			mutation updateURLS($urlID: uuid!, $updateObject: shorturls_set_input!) {
 				update_shorturls(
@@ -116,7 +131,9 @@ export default class URLStore implements IURLStoreService {
 			urlID,
 			updateObject,
 		};
-		const result: any = await client.request(query, variables);
+		const result: {
+			update_shorturls: Shorturls_Mutation_Response;
+		} = await client.request(query, variables);
 		return result.update_shorturls.affected_rows;
 	}
 }

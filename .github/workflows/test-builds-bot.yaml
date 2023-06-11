@@ -1,0 +1,27 @@
+name: Test Bot (Docker)
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  docker:
+    timeout-minutes: 10
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v2
+
+    - name: Write ENV_DISCORD to packages/discord/.env
+      run: |
+        wget ${{ secrets.ENV_DISCORD }} -O packages/discord/.env
+        
+    - name: Start containers
+      run: cd packages/discord && docker compose -f "docker-compose.yaml" up -d --build
+
+    - name: Wait for containers
+      run: sleep 30
+
+    - name: Check for running containers
+      run: docker ps

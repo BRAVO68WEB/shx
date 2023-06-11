@@ -2,9 +2,13 @@ import { gql } from 'graphql-request';
 import { client } from '../helpers';
 import { IGistService, IPrivate } from '../interfaces/gists.interface';
 import { UserMeta } from '../types';
+import { Gists, Gists_Mutation_Response } from '../graphql/types';
 
 export default class GistService implements IGistService {
-	public async getGistS(gistKey: string, passkey?: string): Promise<any> {
+	public async getGistS(
+		gistKey: string,
+		passkey?: string
+	): Promise<Gists | null> {
 		const query = gql`
 			query getGist($gistKey: String!) {
 				gists(where: { gist_url_key: { _eq: $gistKey } }) {
@@ -21,7 +25,9 @@ export default class GistService implements IGistService {
 		const variables = {
 			gistKey,
 		};
-		const result: any = await client.request(query, variables);
+		const result: {
+			gists: Gists[];
+		} = await client.request(query, variables);
 		if (result.gists.length === 0) {
 			return null;
 		} else {
@@ -67,7 +73,7 @@ export default class GistService implements IGistService {
 		meta: UserMeta,
 		privateMeta: IPrivate,
 		isOneTimeOnly = false
-	): Promise<any> {
+	): Promise<Gists> {
 		const query = gql`
 			mutation createGist($object: gists_insert_input!) {
 				insert_gists_one(object: $object) {
@@ -94,11 +100,13 @@ export default class GistService implements IGistService {
 			passkey: privateMeta.isPrivate ? privateMeta.passkey : null,
 		};
 
-		const result: any = await client.request(query, variables);
+		const result: {
+			insert_gists_one: Gists;
+		} = await client.request(query, variables);
 		return result.insert_gists_one;
 	}
 
-	public async deleteGistS(gistID: string): Promise<any> {
+	public async deleteGistS(gistID: string): Promise<number> {
 		const query = gql`
 			mutation deleteGist($gistID: uuid!) {
 				delete_gists(where: { gistID: { _eq: $gistID } }) {
@@ -109,7 +117,9 @@ export default class GistService implements IGistService {
 		const variables = {
 			gistID,
 		};
-		const result: any = await client.request(query, variables);
+		const result: {
+			delete_gists: Gists_Mutation_Response;
+		} = await client.request(query, variables);
 		return result.delete_gists.affected_rows;
 	}
 
@@ -117,7 +127,7 @@ export default class GistService implements IGistService {
 		searchString = '',
 		pageNo = 1,
 		pageSize = 10
-	): Promise<any> {
+	): Promise<Gists[]> {
 		const query = gql`
 			query listGists($searchString: String!, $pageNo: Int!, $pageSize: Int!) {
 				gists(
@@ -145,11 +155,13 @@ export default class GistService implements IGistService {
 			pageNo: (pageNo - 1) * pageSize,
 			pageSize,
 		};
-		const result: any = await client.request(query, variables);
+		const result: {
+			gists: Gists[];
+		} = await client.request(query, variables);
 		return result.gists;
 	}
 
-	public async updateGistS(gistID: string, content: string): Promise<any> {
+	public async updateGistS(gistID: string, content: string): Promise<number> {
 		const query = gql`
 			mutation updateGist($gistID: uuid!, $content: String!) {
 				update_gists(
@@ -164,7 +176,9 @@ export default class GistService implements IGistService {
 			gistID,
 			content,
 		};
-		const result: any = await client.request(query, variables);
+		const result: {
+			update_gists: Gists_Mutation_Response;
+		} = await client.request(query, variables);
 		return result.update_gists.affected_rows;
 	}
 }

@@ -6,3 +6,20 @@ cli:
 
 dashboard:
 - packages/dashboard/**/*
+
+discord:
+- packages/discord/**/*
+
+documentation:
+- docs
+
+github-actions:
+- .github/workflows/*
+
+github-meta:
+- .github/**/*
+
+dependencies:
+- package.json
+- yarn.lock
+- packages/*/package.json

@@ -1,4 +1,4 @@
-import { NextFunction, Response, Request } from 'express';
+import { NextFunction, Response } from 'express';
 import Joi from 'joi';
 import { CustomError } from '../libs/error';
 import { ErrorMsg } from '../interfaces/message.enums';

@@ -9,7 +9,7 @@ export default class InfoController extends InfoService {
 		req: ModRequest,
 		res: Response,
 		next: NextFunction
-	): Promise<any> => {
+	): Promise<Response | void> => {
 		try {
 			const data = await this.getSystemInfo();
 			res.status(200).json(makeResponse(data));
