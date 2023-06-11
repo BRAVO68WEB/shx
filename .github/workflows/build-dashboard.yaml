@@ -1,4 +1,4 @@
-name: Build Checks for API
+name: Build Checks for Dashboard
 
 on:
   push:
