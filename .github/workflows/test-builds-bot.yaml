@@ -24,4 +24,4 @@ jobs:
       run: sleep 30
 
     - name: Check for running containers
-      run: docker ps 
+      run: docker ps
