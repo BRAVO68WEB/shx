@@ -50,36 +50,32 @@ export async function loadTextCommand(client: Client) {
 
 		const catagory = basename(dirname(filePath));
 
-		const disabledCatagories: string[] = [];
-
-		if (!disabledCatagories.includes(catagory)) {
-			if (catagory) {
-				command.data.catagory = catagory;
-				if (command.data.publicLevel !== 'None') {
-					if (!catagories[String(catagory)]) {
-						catagories[String(catagory)] = [];
-					}
-					catagories[String(catagory)].push(cmdName);
+		if (catagory) {
+			command.data.catagory = catagory;
+			if (command.data.publicLevel !== 'None') {
+				if (!catagories[String(catagory)]) {
+					catagories[String(catagory)] = [];
 				}
+				catagories[String(catagory)].push(cmdName);
 			}
+		}
 
-			if (command.data.intervalLimit) {
-				const list = command.data.intervalLimit;
-				if (list.minute! > list.hour! || list.hour! > list.day!) {
-					throw 'Impolitic Custom Interval style!';
-				}
+		if (command.data.intervalLimit) {
+			const list = command.data.intervalLimit;
+			if (list.minute! > list.hour! || list.hour! > list.day!) {
+				throw 'Impolitic Custom Interval style!';
 			}
+		}
 
-			client.commands.set(cmdName, command);
+		client.commands.set(cmdName, command);
 
-			if (command.data.aliases) {
-				for (const alias of command.data.aliases) {
-					if (client.aliases.has(alias)) {
-						throw new Error('Duplicated alias is found!');
-					}
-					// Store aliase(s) to memory if exists.
-					client.aliases.set(alias, command.data.name);
+		if (command.data.aliases) {
+			for (const alias of command.data.aliases) {
+				if (client.aliases.has(alias)) {
+					throw new Error('Duplicated alias is found!');
 				}
+				// Store aliase(s) to memory if exists.
+				client.aliases.set(alias, command.data.name);
 			}
 		}
 	}
