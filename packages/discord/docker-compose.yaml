@@ -1,0 +1,14 @@
+version: '3.1'
+
+services:
+  api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    restart: always
+    environment:
+      TOKEN: ${TOKEN}
+      CLIENT_ID: ${CLIENT_ID}
+      DEV_GUILD_ID: ${DEV_GUILD_ID}
+      SHX_API_TOKEN: ${SHX_API_TOKEN}
+      SHX_API_URL: ${SHX_API_URL}

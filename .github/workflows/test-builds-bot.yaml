@@ -13,15 +13,15 @@ jobs:
     - name: Checkout
       uses: actions/checkout@v2
 
-    - name: Write ENV_FILE to packages/api/.env
+    - name: Write ENV_DISCORD to packages/discord/.env
       run: |
-        wget ${{ secrets.ENV_FILE }} -O packages/api/.env
+        wget ${{ secrets.ENV_DISCORD }} -O packages/discord/.env
         
     - name: Start containers
-      run: cd packages/api && docker compose -f "docker-compose.yaml" up -d --build
+      run: cd packages/discord && docker compose -f "docker-compose.yaml" up -d --build
 
     - name: Wait for containers
       run: sleep 30
 
-    - name: Run tests
-      run: curl --location --request POST http://localhost:4006/apikey?masterkey=${{ secrets.DEMO_MASTER_KEY }}
+    - name: Check for running containers
+      run: docker ps
