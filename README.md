@@ -1,5 +1,7 @@
 # 🚀 **Project SHX**
 
+![SHX Banner](https://safe.b68dev.xyz/SHOJJQKU.png)
+
 ![GitHub package.json version](https://img.shields.io/github/package-json/v/BRAVO68WEB/shx?logo=npm&style=for-the-badge)
 ![GitHub Workflow Status](https://img.shields.io/github/actions/workflow/status/bravo68web/shx/build-image.yaml?style=for-the-badge)
 ![GitHub last commit](https://img.shields.io/github/last-commit/bravo68web/shx?style=for-the-badge)
