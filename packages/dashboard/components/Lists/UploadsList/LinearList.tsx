@@ -3,6 +3,7 @@ import { ArrowUpRight, Edit, Plus, Trash } from 'lucide-react';
 import Input from '@/components/ui/Input';
 import React, { useState } from 'react';
 import { cn } from '@/lib/utils';
+import Modal from '@/components/Modal';
 
 const files: UploadsListFile[] = [
 	{
@@ -14,6 +15,7 @@ const files: UploadsListFile[] = [
 
 export default function LinearList() {
 	const [edit, setEdit] = useState<boolean>(false);
+	const [uploadModalOpen, setUploadModalOpen] = useState(false)
 
 	// parse a date from gmt format to iso format
 	const parseDate = (date: string) => {
@@ -29,7 +31,7 @@ export default function LinearList() {
 
 				<div className="flex items-center">22/33</div>
 
-				<Button className="my-2 flex justify-between items-center w-auto gap-2">
+				<Button onClick={() => {setUploadModalOpen(true)}} className="my-2 flex justify-between items-center w-auto gap-2">
 					<span>Add</span> <Plus />
 				</Button>
 				<Button
@@ -104,6 +106,9 @@ export default function LinearList() {
 					))}
 				</tbody>
 			</table>
+			<Modal open={uploadModalOpen} onClose={() => setUploadModalOpen(false)}>
+				hello
+			</Modal>
 		</div>
 	);
 }
