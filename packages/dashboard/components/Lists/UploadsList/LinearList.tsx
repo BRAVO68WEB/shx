@@ -1,5 +1,5 @@
 import Button from '@/components/ui/Button';
-import { ArrowUpCircle, ArrowUpRight, Edit, Plus, RotateCcw, Trash } from 'lucide-react';
+import { ArrowUpCircle, ArrowUpRight, Cross, Edit, Plus, RotateCcw, Trash, X } from 'lucide-react';
 import Input from '@/components/ui/Input';
 import React, { useState } from 'react';
 import { cn } from '@/lib/utils';
@@ -127,8 +127,8 @@ export default function LinearList() {
 			<Modal open={uploadModalOpen} onClose={() => setUploadModalOpen(false)}>
 				<div className="flex-col flex items-center  p-2 gap-3">
 					<div className="controls w-full flex items-center justify-end">
-						<Button onClick={resetFileUpload} size={'icon'} aria-label="Reset" title="Reset">
-							<RotateCcw className="h-4 w-4 " />
+						<Button onClick={() => setUploadModalOpen(false)} size={'icon'} aria-label="Reset" title="Reset">
+							<X className="h-4 w-4 " />
 						</Button>
 					</div>
 
@@ -139,10 +139,6 @@ export default function LinearList() {
 						{fileUpload?<img src={URL.createObjectURL(fileUpload)} alt="file" className='w-full h-full object-contain object-center' />:<p>Upload</p>}
 					</label>
 					<input onChange={fileInputChange} type="file" hidden multiple={false} id='fileUpload'  />
-					<div className="buttons w-full flex gap-2 items-center justify-between">
-						<Button className='bg-red-100 text-red-600'>Cancel</Button>
-						<Button disabled={!!fileUpload}>Upload</Button>
-					</div>
 				</div>
 			</Modal>
 		</div>
