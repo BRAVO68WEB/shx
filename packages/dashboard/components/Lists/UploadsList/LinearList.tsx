@@ -13,52 +13,23 @@ const files: UploadsListFile[] = [
 	},
 ];
 
-export default function LinearList() {
-	const [edit, setEdit] = useState<boolean>(false);
-	const [uploadModalOpen, setUploadModalOpen] = useState(false)
-	const [fileUpload,setFileUpload] = useState<File | null>(null)
-	
+interface LinearListProps{
+	edit: boolean
+}
 
+export default function LinearList({edit}:LinearListProps) {
 
-	const fileInputChange:React.ChangeEventHandler<HTMLInputElement> = (evt) => {
-		if(evt.target.value) {
-			setFileUpload(evt.target.files?evt.target.files[0]:null)
-		}
-	}
-
-	const resetFileUpload = () => {
-		setFileUpload(null)
-	}
 
 	// parse a date from gmt format to iso format
 	const parseDate = (date: string) => {
 		return new Date(date).toISOString().split('T')[0];
 	};
 
-	const toggleEdit = () => setEdit(!edit);
+
+
 
 	return (
-		<div className="flex flex-col w-full gap-2 p-5">
-			<div className="flex gap-6 items-cetner w-full">
-				<Input id="search" name="search" placeholder="Search" />
-
-				<div className="flex items-center">22/33</div>
-
-				<Button
-					onClick={() => {
-						setUploadModalOpen(true);
-					}}
-					className="my-2 flex justify-between items-center w-auto gap-2"
-				>
-					<span>Add</span> <Plus />
-				</Button>
-				<Button
-					onClick={toggleEdit}
-					className="my-2 flex justify-between items-center w-auto gap-2"
-				>
-					<span>Edit</span> <Edit />
-				</Button>
-			</div>
+		<div className="flex flex-col w-full gap-2 ">
 			<table className="min-w-full divide-y divide-gray-700">
 				<thead className="p-2">
 					<tr>
@@ -124,23 +95,6 @@ export default function LinearList() {
 					))}
 				</tbody>
 			</table>
-			<Modal open={uploadModalOpen} onClose={() => setUploadModalOpen(false)}>
-				<div className="flex-col flex items-center  p-2 gap-3">
-					<div className="controls w-full flex items-center justify-end">
-						<Button onClick={() => setUploadModalOpen(false)} size={'icon'} aria-label="Reset" title="Reset">
-							<X className="h-4 w-4 " />
-						</Button>
-					</div>
-
-					<label
-						htmlFor='fileUpload'
-						className="input w-full h-20 border-primary border flex justify-center items-center"
-					>
-						{fileUpload?<img src={URL.createObjectURL(fileUpload)} alt="file" className='w-full h-full object-contain object-center' />:<p>Upload</p>}
-					</label>
-					<input onChange={fileInputChange} type="file" hidden multiple={false} id='fileUpload'  />
-				</div>
-			</Modal>
 		</div>
 	);
 }
