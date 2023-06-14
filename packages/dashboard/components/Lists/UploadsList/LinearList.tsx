@@ -7,8 +7,13 @@ import Modal from '@/components/Modal';
 
 const files: UploadsListFile[] = [
 	{
-		name: 'Lindsay Walton',
+		name: 'Lindsay Walton.png',
 		date: '2023-05-29T08:08:07.289624+00:00',
+		src: 'https://cdn.pixabay.com/photo/2015/12/01/20/28/road-1072821_1280.jpg',
+	},
+	{
+		name: 'Wlaton Lindsay.jpg',
+		date: '2023-05-30T08:08:07.289624+00:00',
 		src: 'https://cdn.pixabay.com/photo/2015/12/01/20/28/road-1072821_1280.jpg',
 	},
 ];
