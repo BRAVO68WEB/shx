@@ -25,7 +25,7 @@ function Notes() {
 	const openAddNoteDialog = () => {
 		setDialogOpen(true)
 	};
-	const closeAddNoteDialog = (_e: React.MouseEvent) => {
+	const closeAddNoteDialog = () => {
 		setDialogOpen(false)
 	};
 	return (
