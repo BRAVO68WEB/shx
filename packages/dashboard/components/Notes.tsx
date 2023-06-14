@@ -1,5 +1,5 @@
 'use client';
-import React, { useEffect, useRef, useState } from 'react';
+import React, {  useRef, useState } from 'react';
 import Button from '@/components/ui/Button';
 import Input from '@/components/ui/Input';
 import { PlusIcon, SearchIcon } from 'lucide-react';
@@ -16,7 +16,6 @@ function Notes() {
 	const {
 		register,
 		handleSubmit,
-		formState: { errors },
 	} = useForm<AddNoteType>({
 		resolver: zodResolver(addNoteSchema),
 	});
@@ -26,7 +25,7 @@ function Notes() {
 	const openAddNoteDialog = () => {
 		setDialogOpen(true)
 	};
-	const closeAddNoteDialog = (e: React.MouseEvent) => {
+	const closeAddNoteDialog = () => {
 		setDialogOpen(false)
 	};
 	return (

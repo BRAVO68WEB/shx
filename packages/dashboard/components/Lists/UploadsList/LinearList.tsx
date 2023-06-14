@@ -1,39 +1,38 @@
 import Button from '@/components/ui/Button';
-import { ArrowUpRight, Edit, Plus, Trash } from 'lucide-react';
-import Input  from '@/components/ui/Input';
-import React, { useState } from 'react';
+import { ArrowUpRight, Trash } from 'lucide-react';
+import React from 'react';
 import { cn } from '@/lib/utils';
 
-const files = [
+const files: UploadsListFile[] = [
 	{
-		name: 'Lindsay Walton',
+		name: 'Lindsay Walton.png',
 		date: '2023-05-29T08:08:07.289624+00:00',
+		src: 'https://cdn.pixabay.com/photo/2015/12/01/20/28/road-1072821_1280.jpg',
+	},
+	{
+		name: 'Wlaton Lindsay.jpg',
+		date: '2023-05-30T08:08:07.289624+00:00',
+		src: 'https://cdn.pixabay.com/photo/2015/12/01/20/28/road-1072821_1280.jpg',
 	},
 ];
 
-export default function LinearList() {
-	const [edit,setEdit] = useState<boolean>(false)
+interface LinearListProps{
+	edit: boolean
+}
+
+export default function LinearList({edit}:LinearListProps) {
+
+
 	// parse a date from gmt format to iso format
 	const parseDate = (date: string) => {
 		return new Date(date).toISOString().split('T')[0];
 	};
 
-	const toggleEdit = () =>  setEdit(!edit)
+
+
 
 	return (
-		<div className="flex flex-col w-full gap-2 p-5">
-			<div className="flex gap-6 items-cetner w-full">
-				<Input id="search" name="search" placeholder="Search" />
-
-				<div className="flex items-center">22/33</div>
-
-				<Button className="my-2 flex justify-between items-center w-auto gap-2">
-					<span>Add</span> <Plus />
-				</Button>
-				<Button onClick={toggleEdit} className="my-2 flex justify-between items-center w-auto gap-2">
-					<span>Edit</span> <Edit />
-				</Button>
-			</div>
+		<div className="flex flex-col w-full gap-2 ">
 			<table className="min-w-full divide-y divide-gray-700">
 				<thead className="p-2">
 					<tr>
@@ -64,7 +63,9 @@ export default function LinearList() {
 								<input
 									type="checkbox"
 									className={cn(
-										'h-4 w-4 rounded bg-transparent border-primary text-primary',{"hidden":!edit})}
+										'h-4 w-4 rounded bg-transparent border-primary text-primary',
+										{ hidden: !edit }
+									)}
 								/>
 							</td>
 							<td className="whitespace-nowrap  pl-4 text-sm font-medium text-white">
