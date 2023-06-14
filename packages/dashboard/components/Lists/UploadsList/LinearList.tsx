@@ -1,9 +1,7 @@
 import Button from '@/components/ui/Button';
-import { ArrowUpCircle, ArrowUpRight, Cross, Edit, Plus, RotateCcw, Trash, X } from 'lucide-react';
-import Input from '@/components/ui/Input';
-import React, { useState } from 'react';
+import { ArrowUpRight, Trash } from 'lucide-react';
+import React from 'react';
 import { cn } from '@/lib/utils';
-import Modal from '@/components/Modal';
 
 const files: UploadsListFile[] = [
 	{
