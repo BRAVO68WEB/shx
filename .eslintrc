@@ -13,7 +13,8 @@
 	"rules": {
 		"@typescript-eslint/no-unused-vars": "warn",
 		"@typescript-eslint/no-explicit-any": "off",
-		"@next/next/no-img-element": "off"
+		"@typescript-eslint/no-namespace": "off",
+		"@typescript-eslint/no-empty-interface": "off"
 	},
 	"env": {
 		"browser": true,
