@@ -1,5 +1,4 @@
 import Button from '@/components/ui/Button';
-import { Trash } from 'lucide-react';
 import React from 'react';
 
 const apiKeys = [
