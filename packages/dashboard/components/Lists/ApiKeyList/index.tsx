@@ -5,7 +5,12 @@ const apiKeys = [
 	{
 		key: 'asdfasd****fsadf',
 		enabled: true,
-        lastUsed:"asdfasdfasdf"
+		lastUsed: 'asdfasdfasdf',
+	},
+	{
+		key: 'disabled****fsadf',
+		enabled: false,
+		lastUsed: 'asdfasdfasdf',
 	},
 ];
 
