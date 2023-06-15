@@ -14,6 +14,10 @@ export const sidebarGroups: SidebarGroup[] = [
 				name: 'Notes',
 				href: '/dashboard/notes',
 			},
+			{
+				name: 'Api Keys',
+                href: '/dashboard/apiKeys',
+			}
 		],
 	},
 ];
