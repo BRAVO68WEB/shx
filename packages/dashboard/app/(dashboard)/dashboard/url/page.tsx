@@ -1,5 +1,4 @@
 import ShortenUrlList from '@/components/Lists/ShortenUrlList'
-import Button from '@/components/ui/Button'
 import React from 'react'
 
 function Page() {

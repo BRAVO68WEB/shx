@@ -3,14 +3,10 @@
 import Modal from '@/components/Modal';
 import Button from '@/components/ui/Button';
 import Input from '@/components/ui/Input';
-import { Edit, Plus, X } from 'lucide-react';
+import { Plus, X } from 'lucide-react';
 import React, { useState } from 'react';
 
-interface URLControlProps {
-	
-}
-
-function ULRControls(props:URLControlProps) {
+function ULRControls() {
 	const [addModalOpen, setAddModalOpen] = useState(false);
 	
 
