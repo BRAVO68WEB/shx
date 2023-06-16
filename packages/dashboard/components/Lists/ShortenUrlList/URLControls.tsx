@@ -10,7 +10,7 @@ interface URLControlProps {
 	
 }
 
-function ULRControls({}:URLControlProps) {
+function ULRControls(props:URLControlProps) {
 	const [addModalOpen, setAddModalOpen] = useState(false);
 	
 
