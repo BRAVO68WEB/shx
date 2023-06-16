@@ -3,6 +3,7 @@ import React, {
 	InputHTMLAttributes,
 	LegacyRef,
 	MutableRefObject,
+	RefObject,
 } from 'react';
 import { cva, VariantProps } from 'class-variance-authority';
 import { cn } from '@/lib/utils';
@@ -27,7 +28,7 @@ interface InputProps
 		VariantProps<typeof inputVariance> {
 	label?: string;
 	withLabel?: boolean;
-	ref?: MutableRefObject<HTMLInputElement> | RefCallBack;
+	ref?: MutableRefObject<HTMLInputElement> |RefObject<HTMLInputElement>| RefCallBack;
 }
 
 const Input = forwardRef<HTMLInputElement | InputProps>(
