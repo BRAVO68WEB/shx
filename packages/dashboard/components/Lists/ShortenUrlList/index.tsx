@@ -47,6 +47,7 @@ function ShortenUrlList() {
 								<div className="flex items-center gap-3">
 									{originalURL}
 									<a
+										referrerPolicy="no-referrer"
 										href={originalURL}
 										target="_blank"
 										className="p-2 bg-white bg-opacity-10 rounded cursor-pointer"
@@ -59,6 +60,7 @@ function ShortenUrlList() {
 								<div className="flex items-center gap-3">
 									{shortenedURL}
 									<a
+										referrerPolicy="no-referrer"
 										href={shortenedURL}
 										target="_blank"
 										className="p-2 bg-white bg-opacity-10 rounded cursor-pointer"
@@ -83,7 +85,7 @@ function ShortenUrlList() {
 									aria-label="Edit URl Slug"
 									title="Edit URL Slug"
 									className="rounded-full p-2 hover:bg-black"
-                                    onClick={() => setEditURLModal(true)}
+									onClick={() => setEditURLModal(true)}
 								>
 									<Edit2 className="h-4 w-4 " />
 								</Button>
