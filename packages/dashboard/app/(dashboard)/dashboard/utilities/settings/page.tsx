@@ -12,8 +12,21 @@ interface Tag{
 
 const tagsD = ['fasfasdf', 'asdfadsfas', 'asdfadsf'];
 function Page() {
-	const [tags, setTags] = useState(tagsD)
+	const [imageExts, setImageExts] = useState<string[]>([]);
+	const [fileExts, setFileExts] = useState<string[]>([]);
 	
+    const addImageExt = (tag: string) => {
+			setImageExts(old => {
+				return [...old, tag];
+			});
+		};
+    const addFileExt = (tag: string) => {
+			setFileExts(old => {
+				return [...old, tag];
+			});
+		};
+    
+
 	return (
 		<div className="flex flex-col gap-8 w-full mt-10">
 			<div>
@@ -57,7 +70,16 @@ function Page() {
 					className="w-full"
 				/>
 			</div>
-            <TagInput tags={tags} onAddTags={(tg) => {setTags([...tags,tg])}} />
+			<TagInput
+				tags={imageExts}
+				onAddTags={addImageExt}
+				placeholder="Image Extensions"
+			/>
+			<TagInput
+				tags={fileExts}
+				onAddTags={addFileExt}
+				placeholder="File Extensions"
+			/>
 			<Button>Save</Button>
 		</div>
 	);
