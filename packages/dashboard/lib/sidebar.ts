@@ -16,8 +16,12 @@ export const sidebarGroups: SidebarGroup[] = [
 			},
 			{
 				name: 'Api Keys',
-                href: '/dashboard/apiKeys',
-			}
+				href: '/dashboard/apiKeys',
+			},
+			{
+				name: 'Url Shortener',
+				href: '/dashboard/url',
+			},
 		],
 	},
 ];

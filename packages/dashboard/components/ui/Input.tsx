@@ -32,20 +32,18 @@ interface InputProps
 
 const Input = forwardRef<HTMLInputElement | InputProps>(
 	(
-		{ className, variant, label, withLabel = false, ...props }: InputProps,
+		{ className, variant, label, withLabel = false, id, ...props }: InputProps,
 		ref
 	) => {
 		return (
 			<div style={{ width: 'inherit' }}>
 				{withLabel && (
-					<label
-						htmlFor="email"
-						className="block text-sm font-medium leading-6"
-					>
+					<label htmlFor={id} className="block text-sm font-medium leading-6">
 						{label}
 					</label>
 				)}
 				<input
+					id={id}
 					ref={ref as LegacyRef<HTMLInputElement>}
 					className={cn(inputVariance({ variant, className }))}
 					{...props}
