@@ -2,18 +2,19 @@ import React, { FormEventHandler, useRef } from 'react';
 import Input from './ui/Input';
 import Button from './ui/Button';
 
-interface TagInput{
-    tags: string[];
-    onAddTags: (value: string) => void;
-    placeholder?:string;
+interface TagInput {
+	tags: string[];
+	onAddTags: (value: string) => void;
+	placeholder?: string;
 }
 
-function TagInput({tags,placeholder,onAddTags}:TagInput) {
-    const inputRef =useRef<HTMLInputElement>(null)
-    const onSubmit:FormEventHandler<HTMLFormElement> = (evt) => {
-        evt.preventDefault();
-        onAddTags(inputRef.current?.value??"")
-    }
+function TagInput({ tags, placeholder, onAddTags }: TagInput) {
+	const inputRef = useRef<HTMLInputElement>(null);
+	const onSubmit: FormEventHandler<HTMLFormElement> = evt => {
+		evt.preventDefault();
+		onAddTags(inputRef.current?.value ?? '');
+		inputRef.current!.value = '';
+	};
 	return (
 		<div className="w-full flex flex-wrap gap-2">
 			{tags.map((tag, index) => (
@@ -24,7 +25,7 @@ function TagInput({tags,placeholder,onAddTags}:TagInput) {
 
 			<form onSubmit={onSubmit} className="w-40">
 				<Input
-                    ref={inputRef}
+					ref={inputRef}
 					type="text"
 					placeholder={placeholder}
 					className="text-lg h-full my-0 p-2"
