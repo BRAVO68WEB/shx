@@ -12,8 +12,10 @@ function TagInput({ tags, placeholder, onAddTags }: TagInput) {
 	const inputRef = useRef<HTMLInputElement>(null);
 	const onSubmit: FormEventHandler<HTMLFormElement> = evt => {
 		evt.preventDefault();
-		onAddTags(inputRef.current?.value ?? '');
-		inputRef.current!.value = '';
+		if (inputRef.current?.value && inputRef.current.value.trim() !== '') {
+			onAddTags(inputRef.current.value);
+			inputRef.current.value = '';
+		}
 	};
 	return (
 		<div className="w-full flex flex-wrap gap-2">
