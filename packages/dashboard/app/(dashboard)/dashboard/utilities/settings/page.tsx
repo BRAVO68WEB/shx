@@ -5,12 +5,6 @@ import Button from '@/components/ui/Button';
 import Input from '@/components/ui/Input';
 import TagInput from '@/components/TagInput';
 
-interface Tag{
-    id:string;
-    text:string;
-}
-
-const tagsD = ['fasfasdf', 'asdfadsfas', 'asdfadsf'];
 function Page() {
 	const [imageExts, setImageExts] = useState<string[]>([]);
 	const [fileExts, setFileExts] = useState<string[]>([]);
