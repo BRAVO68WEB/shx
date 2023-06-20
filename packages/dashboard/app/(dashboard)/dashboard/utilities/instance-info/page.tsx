@@ -11,27 +11,27 @@ function Page() {
 
 	return (
 		<div>
-			<table className="min-w-full divide-y divide-gray-700">
+			<table className="min-w-full divide-y divide-gray-700 mt-4">
 				<thead className="p-2">
 					<tr>
 						<th
 							scope="col"
 							className="py-3.5 pl-4 pr-5 text-left text-lg font-semibold text-white"
 						>
-							Original URL
+							Name
 						</th>
 						<th
 							scope="col"
-							className="py-3.5 pl-4 pr-3 w-full text-left text-lg font-semibold text-white"
+							className="py-3.5 pl-4 pr-3 text-left text-lg font-semibold text-white"
 						>
-							Shortened URL
+							Value
 						</th>
 					</tr>
 				</thead>
 				<tbody className="divide-y p-2">
 					{urls.map(({ originalURL, shortenedURL, id }) => (
 						<tr className="bg-gray-900 rounded" key={id}>
-							<td className="whitespace-nowrap  pl-4 pr-20 text-sm font-medium text-white">
+							<td className="whitespace-nowrap py-5  pl-4 pr-20 text-sm font-medium text-white">
 								<div className="flex items-center gap-3">
 									{originalURL}
 									
