@@ -24,4 +24,21 @@ export const sidebarGroups: SidebarGroup[] = [
 			},
 		],
 	},
+	{
+		name: 'Utilities',
+		items: [
+			{
+				name: 'Instance Info',
+				href: '/dashboard/utitilities/instance-info',
+			},
+			{
+				name: 'Uploads',
+				href: '/dashboard/utitilities/settings',
+			},
+			{
+				name: 'Notes',
+				href: '/dashboard/utitilites/download-config',
+			},
+		],
+	},
 ];
