@@ -29,15 +29,15 @@ export const sidebarGroups: SidebarGroup[] = [
 		items: [
 			{
 				name: 'Instance Info',
-				href: '/dashboard/utitilities/instance-info',
+				href: '/dashboard/utilities/instance-info',
 			},
 			{
 				name: 'Uploads',
-				href: '/dashboard/utitilities/settings',
+				href: '/dashboard/utilities/settings',
 			},
 			{
 				name: 'Notes',
-				href: '/dashboard/utitilites/download-config',
+				href: '/dashboard/utilites/download-config',
 			},
 		],
 	},
