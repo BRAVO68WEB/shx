@@ -37,11 +37,11 @@
     "zod": "^3.21.4"
   },
   "devDependencies": {
-    "@storybook/addon-essentials": "^7.0.17",
+    "@storybook/addon-essentials": "^7.0.22",
     "@storybook/addon-interactions": "^7.0.20",
     "@storybook/addon-links": "^7.0.17",
     "@storybook/blocks": "^7.0.17",
-    "@storybook/nextjs": "^7.0.17",
+    "@storybook/nextjs": "^7.0.22",
     "@storybook/react": "^7.0.17",
     "@storybook/testing-library": "^0.0.14-next.2",
     "eslint-plugin-storybook": "^0.6.12",

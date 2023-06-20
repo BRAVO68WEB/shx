@@ -14,7 +14,7 @@
   "dependencies": {
     "axios": "^1.4.0",
     "clipboardy": "2.3.0",
-    "commander": "^10.0.1",
+    "commander": "^11.0.0",
     "configstore": "5.0.1",
     "copy-to-clipboard": "^3.3.3",
     "inquirer": "^8.0.0"
