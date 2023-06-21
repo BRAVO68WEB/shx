@@ -15,7 +15,7 @@ class ApiSdk {
 	}
 	private _setAxios() {
 		this._axios.defaults.baseURL = this._instanceUrl
-		let headers:any = this._axios.defaults.headers
+		const headers:any = this._axios.defaults.headers
 		headers['x-shx-api-key'] = this._apiKey
 	}
 	getAxios() {
