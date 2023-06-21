@@ -1,6 +1,5 @@
 import axios, { Axios } from 'axios';
 import Uploads from './uploads';
-import { headers } from 'next/dist/client/components/headers';
 
 class ApiSdk {
 	private _axios: Axios;
