@@ -2,6 +2,7 @@ import Button from '@/components/ui/Button';
 import { ArrowUpRight, Trash } from 'lucide-react';
 import React from 'react';
 import { cn } from '@/lib/utils';
+import { UploadsListComponentProps } from '@/types/list';
 
 const files: UploadsListFile[] = [
 	{
@@ -16,20 +17,12 @@ const files: UploadsListFile[] = [
 	},
 ];
 
-interface LinearListProps{
-	edit: boolean
-}
 
-export default function LinearList({edit}:LinearListProps) {
-
-
+export default function LinearList({ edit, data }: UploadsListComponentProps) {
 	// parse a date from gmt format to iso format
 	const parseDate = (date: string) => {
 		return new Date(date).toISOString().split('T')[0];
 	};
-
-
-
 
 	return (
 		<div className="flex flex-col w-full gap-2 ">
@@ -57,8 +50,8 @@ export default function LinearList({edit}:LinearListProps) {
 					</tr>
 				</thead>
 				<tbody className="divide-y p-2">
-					{files.map((person, index) => (
-						<tr className="bg-gray-900 rounded" key={index}>
+					{data.map(({ fileID, filename, uploaded_at,upload_url }) => (
+						<tr className="bg-gray-900 rounded" key={fileID}>
 							<td className="relative whitespace-nowrap p-4  text-right text-sm font-medium">
 								<input
 									type="checkbox"
@@ -69,10 +62,10 @@ export default function LinearList({edit}:LinearListProps) {
 								/>
 							</td>
 							<td className="whitespace-nowrap  pl-4 text-sm font-medium text-white">
-								{person.name}
+								{filename}
 							</td>
 							<td className="whitespace-nowrap px-9 py-4 text-sm text-gray-300">
-								{parseDate(person.date)}
+								{parseDate(uploaded_at)}
 							</td>
 							<td className="relative whitespace-nowrap py-4 px-4 text-right text-sm font-medium icons flex center items-center gap-3">
 								<Button

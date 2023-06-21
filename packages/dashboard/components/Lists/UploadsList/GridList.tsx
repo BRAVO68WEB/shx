@@ -1,4 +1,5 @@
 import Button from '@/components/ui/Button';
+import { UploadsListComponentProps } from '@/types/list';
 import { ArrowUpRight, Trash } from 'lucide-react';
 import React from 'react';
 
@@ -9,8 +10,7 @@ const files: UploadsListFile[] = [
 		src: 'https://cdn.pixabay.com/photo/2015/12/01/20/28/road-1072821_1280.jpg',
 	},
 ];
-
-export default function GridList() {
+const GridList:React.FC<UploadsListComponentProps> = () => {
 	return (
 		<div className="w-full grid grid-cols-3 gap-2 p-4">
 			{files.map((file, index) => (
@@ -51,3 +51,5 @@ export default function GridList() {
 		</div>
 	);
 }
+
+export default GridList

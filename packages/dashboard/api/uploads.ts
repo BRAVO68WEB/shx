@@ -7,7 +7,7 @@ export class Uploads {
 	}
 	async getAllUploads() {
 		const res = await this.axios.get('/upload');
-		const data = res.data as IFile[];
+		const data = res.data.data as IFile[];
 		return data;
 	}
 }
