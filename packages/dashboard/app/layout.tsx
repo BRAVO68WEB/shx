@@ -16,6 +16,7 @@ export default function RootLayout({
 }) {
   api.setInstanceUrl("http://localhost:4000")
   api.setApiKey('SHX-uyblf-ixuiz');
+  console.log(api.getAxios().defaults)
   return (
 		<html lang="en">
 			<body className={`${inter.className} bg-black text-white min-h-screen`}>{children}</body>

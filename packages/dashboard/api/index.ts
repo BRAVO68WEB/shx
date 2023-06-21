@@ -1,5 +1,6 @@
 import axios, { Axios } from 'axios';
 import Uploads from './uploads';
+import { headers } from 'next/dist/client/components/headers';
 
 class ApiSdk {
 	private _axios: Axios;
@@ -9,18 +10,13 @@ class ApiSdk {
 	constructor() {
 		this._instanceUrl = process.env.NEXT_APP_API_URL as string;
 		this._apiKey = '';
-		this._axios = this._setAxios();
+		this._axios = axios.create()
 		this.uploads = new Uploads(this._axios);
 	}
-	private _setAxios(): Axios {
-		this._axios = axios.create({
-			baseURL: this._instanceUrl,
-			headers: {
-				'x-shx-api-key': 'SHX-uyblf-ixuiz',
-			},
-		});
-        this.uploads = new Uploads(this._axios);
-		return this._axios;
+	private _setAxios() {
+		this._axios.defaults.baseURL = this._instanceUrl
+		let headers:any = this._axios.defaults.headers
+		headers['x-shx-api-key'] = this._apiKey
 	}
 	getAxios() {
 		return this._axios;
