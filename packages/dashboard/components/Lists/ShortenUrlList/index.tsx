@@ -1,11 +1,13 @@
-"use client"
+'use client';
 
-import React,{useState} from 'react';
+import React, { useState } from 'react';
 import Button from '@/components/ui/Button';
-import { Trash, Edit2, ArrowUpRight,X } from 'lucide-react';
-import ULRControls from './URLControls';
+import { Trash, Edit2, ArrowUpRight, X } from 'lucide-react';
+import URLControls from './URLControls';
 import Modal from '@/components/Modal';
 import Input from '@/components/ui/Input';
+import api from '@/api';
+import { useRouter } from 'next/navigation';
 
 const urls = [
 	{
@@ -15,17 +17,28 @@ const urls = [
 	},
 ];
 
-function ShortenUrlList() {
-    const [editURLModal,setEditURLModal] = useState(false)
+interface ShortenUrlListProps {
+	data: IUrl[];
+}
+
+function ShortenUrlList({ data }: ShortenUrlListProps) {
+	const router = useRouter();
+	const [editURLModal, setEditURLModal] = useState(false);
+	const onAddURL = async (url: string) => {
+		try {
+			await api.url.uploadUrl(url);
+			router.refresh();
+		} catch {}
+	};
 	return (
 		<>
-			<ULRControls />
+			<URLControls onAddURL={onAddURL} />
 			<table className="min-w-full divide-y divide-gray-700">
 				<thead className="p-2">
 					<tr>
 						<th
 							scope="col"
-							className="py-3.5 pl-4 pr-5 text-left text-lg font-semibold text-white"
+							className="py-3.5 pl-4 pr-5 text-left text-lg font-semibold  text-white"
 						>
 							Original URL
 						</th>
@@ -41,14 +54,14 @@ function ShortenUrlList() {
 					</tr>
 				</thead>
 				<tbody className="divide-y p-2">
-					{urls.map(({ originalURL, shortenedURL, id }) => (
-						<tr className="bg-gray-900 rounded" key={id}>
-							<td className="whitespace-nowrap  pl-4 pr-20 text-sm font-medium text-white">
+					{data.map(({ original_url, urlID }) => (
+						<tr className="bg-gray-900 rounded" key={urlID}>
+							<td className="whitespace-nowrap  pl-4 pr-20 truncate text-sm font-medium text-white">
 								<div className="flex items-center gap-3">
-									{originalURL}
+									<p className="w-80 truncate">{original_url}</p>
 									<a
 										referrerPolicy="no-referrer"
-										href={originalURL}
+										href={original_url}
 										target="_blank"
 										className="p-2 bg-white bg-opacity-10 rounded cursor-pointer"
 									>
@@ -58,10 +71,10 @@ function ShortenUrlList() {
 							</td>
 							<td className="whitespace-nowrap  pl-4 text-sm font-medium text-white">
 								<div className="flex items-center gap-3">
-									{shortenedURL}
+									<p className="w-80 truncate">{original_url}</p>
 									<a
 										referrerPolicy="no-referrer"
-										href={shortenedURL}
+										href={original_url}
 										target="_blank"
 										className="p-2 bg-white bg-opacity-10 rounded cursor-pointer"
 									>
