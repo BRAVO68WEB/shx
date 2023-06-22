@@ -11,6 +11,7 @@ import { AddNoteType, addNoteSchema } from '@/lib/validators/notes';
 import { cn } from '@/lib/utils';
 import api from '@/api';
 import { toast } from 'react-hot-toast';
+import { useDebounce } from '@/hooks/useDebounce';
 
 interface NotesProps {
 	data: INote[];
@@ -23,7 +24,15 @@ function Notes({ data }: NotesProps) {
 	const { register, handleSubmit } = useForm<AddNoteType>({
 		resolver: zodResolver(addNoteSchema),
 	});
-	
+	const search = useDebounce(async (input: string) => {
+		try {
+			const res = await api.notes.getAllNotes(input);
+			setNotes(res);
+		} catch (err) {
+			console.error(err);
+			toast.error('A error occurred while searching');
+		}
+	}, 500);
 	const addNoteSubmit = async (data: AddNoteType) => {
 		try {
 			const res = await api.notes.uploadSingleNote(data);
@@ -35,16 +44,31 @@ function Notes({ data }: NotesProps) {
 			setDialogOpen(false);
 		}
 	};
+	const onDeleteNote = async (noteID: string) => {
+		try {
+			api.notes.deleteSingleNote({ noteID });
+			setNotes(old => old.filter(note => note.gistID !== noteID));
+		} catch (err) {
+			console.error(err);
+			toast.error('Error Deleting Note');
+		}
+	};
 	const openAddNoteDialog = () => {
 		setDialogOpen(true);
 	};
 	const closeAddNoteDialog = () => {
 		setDialogOpen(false);
 	};
+
 	return (
 		<>
 			<div className="bg-gray-900 p-5 flex items-center w-full gap-2 my-10">
-				<Input type={'text'} placeholder="Search Notes" className="flex-1" />
+				<Input
+					onChange={evt => search(evt.target.value)}
+					type={'text'}
+					placeholder="Search Notes"
+					className="flex-1"
+				/>
 				<Button size="icon">
 					<SearchIcon className="h-4 w-4" />
 				</Button>
@@ -52,7 +76,7 @@ function Notes({ data }: NotesProps) {
 					<PlusIcon className="h-4 w-4" />
 				</Button>
 			</div>
-			<NotesList data={notes} />
+			<NotesList data={notes} onDeleteNote={onDeleteNote} />
 			<dialog
 				className={cn(
 					'fixed top-0 left-0 w-screen h-screen flex justify-center items-center bg-transparent',

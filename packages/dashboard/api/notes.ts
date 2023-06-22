@@ -6,8 +6,8 @@ export class Uploads {
 	constructor(axios: Axios) {
 		this.axios = axios;
 	}
-	async getAllNotes() {
-		const res = await this.axios.get('/gist');
+	async getAllNotes(search?:string) {
+		const res = await this.axios.get('/gist',{params:{search}});
 		const data = res.data.data as INote[];
 		return data;
 	}
