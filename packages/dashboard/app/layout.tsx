@@ -1,4 +1,3 @@
-import api from '@/api'
 import './globals.css'
 import { Source_Code_Pro } from 'next/font/google'
 
