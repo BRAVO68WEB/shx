@@ -1,9 +1,9 @@
 "use client"
 
-function Error() {
+function ErrorPage() {
   return (
-    <div>Error</div>
+    <div>ErrorPage</div>
   )
 }
 
-export default Error
+export default ErrorPage
