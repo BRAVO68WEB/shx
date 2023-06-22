@@ -69,9 +69,9 @@ function Notes({ data }: NotesProps) {
 					placeholder="Search Notes"
 					className="flex-1"
 				/>
-				<Button size="icon">
+				{/* <Button size="icon">
 					<SearchIcon className="h-4 w-4" />
-				</Button>
+				</Button> */}
 				<Button onClick={openAddNoteDialog} title="Add a note" size="icon">
 					<PlusIcon className="h-4 w-4" />
 				</Button>
