@@ -5,8 +5,8 @@ export class Uploads {
 	constructor(axios: Axios) {
 		this.axios = axios;
 	}
-	async getAllUploads() {
-		const res = await this.axios.get('/upload');
+	async getAllUploads(search?: string){
+		const res = await this.axios.get('/upload',{params:{query:search}});
 		const data = res.data.data as IFile[];
 		return data;
 	}

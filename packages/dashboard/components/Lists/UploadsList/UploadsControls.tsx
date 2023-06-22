@@ -9,9 +9,14 @@ import { toast } from 'react-hot-toast';
 interface UploadControlsProps {
 	onEditClick: () => void;
 	onAddFile: (file: IFile) => void;
+	onSearchInputChange: (input: string) => void;
 }
 
-function UploadsControls({ onEditClick, onAddFile }: UploadControlsProps) {
+function UploadsControls({
+	onEditClick,
+	onAddFile,
+	onSearchInputChange,
+}: UploadControlsProps) {
 	const [uploadModalOpen, setUploadModalOpen] = useState(false);
 	const [fileUpload, setFileUpload] = useState<File | null>(null);
 
@@ -27,9 +32,9 @@ function UploadsControls({ onEditClick, onAddFile }: UploadControlsProps) {
 				onAddFile(res);
 			} catch {
 				toast.error('Error Uploading File');
-			} finally{
+			} finally {
 				setFileUpload(null);
-				setUploadModalOpen(false)
+				setUploadModalOpen(false);
 			}
 		}
 	};
@@ -37,7 +42,12 @@ function UploadsControls({ onEditClick, onAddFile }: UploadControlsProps) {
 	return (
 		<>
 			<div className="flex gap-6 items-cetner w-full">
-				<Input id="search" name="search" placeholder="Search" />
+				<Input
+					id="search"
+					name="search"
+					placeholder="Search"
+					onChange={evt => onSearchInputChange(evt.target.value)}
+				/>
 
 				<div className="flex items-center">22/33</div>
 

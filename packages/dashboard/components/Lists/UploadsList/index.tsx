@@ -9,6 +9,7 @@ import UploadsControls from './UploadsControls';
 import { UploadsListComponentProps } from '@/types/list';
 import { toast } from 'react-hot-toast';
 import api from '@/api';
+import { useDebounce } from '@/hooks/useDebounce';
 
 type ListOption = 0 | 1;
 
@@ -32,6 +33,11 @@ const UploadsList: React.FC<UploadsListProps> = ({ data }) => {
 	const [files, setFiles] = useState<IFile[]>(data);
 	const [edit, setEdit] = useState<boolean>(false);
 
+	const searchFiles = useDebounce(async (search: string) => {
+		const res = await api.uploads.getAllUploads(search);
+		setFiles(res);
+	}, 500);
+
 	const toggleEdit = () => setEdit(!edit);
 
 	const ListComponent = listOptions[listOption].List;
@@ -48,12 +54,16 @@ const UploadsList: React.FC<UploadsListProps> = ({ data }) => {
 		try {
 			await api.uploads.deleteSingleFile({ fileID, deleteToken });
 			setFiles(old => {
-				return old.filter(file => file.fileID !== fileID)
-			})
+				return old.filter(file => file.fileID !== fileID);
+			});
 		} catch (e) {
 			console.error(e);
 			toast.error('Error deleting file');
 		}
+	};
+
+	const onSearchChange = (input: string) => {
+		searchFiles(input);
 	};
 
 	return (
@@ -74,7 +84,11 @@ const UploadsList: React.FC<UploadsListProps> = ({ data }) => {
 					);
 				})}
 			</div>
-			<UploadsControls onEditClick={toggleEdit} onAddFile={onAddFile} />
+			<UploadsControls
+				onEditClick={toggleEdit}
+				onAddFile={onAddFile}
+				onSearchInputChange={onSearchChange}
+			/>
 			<ListComponent edit={edit} data={files} onDelete={onDelete} />
 		</div>
 	);
