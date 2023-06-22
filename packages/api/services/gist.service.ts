@@ -128,6 +128,7 @@ export default class GistService implements IGistService {
 		pageNo = 1,
 		pageSize = 10
 	): Promise<Gists[]> {
+		console.log(searchString, pageNo, pageSize);
 		const query = gql`
 			query listGists($searchString: String!, $pageNo: Int!, $pageSize: Int!) {
 				gists(
