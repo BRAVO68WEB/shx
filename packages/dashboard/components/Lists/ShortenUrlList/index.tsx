@@ -8,27 +8,44 @@ import Modal from '@/components/Modal';
 import Input from '@/components/ui/Input';
 import api from '@/api';
 import { useRouter } from 'next/navigation';
-
-const urls = [
-	{
-		id: 'afdas',
-		originalURL: 'https://www.google.com',
-		shortenedURL: 'https://www.google.com',
-	},
-];
+import { toast } from 'react-hot-toast';
 
 interface ShortenUrlListProps {
 	data: IUrl[];
 }
 
+interface EditUrlModal {
+	state: boolean;
+	id?: string;
+	url?: string;
+}
+
 function ShortenUrlList({ data }: ShortenUrlListProps) {
 	const router = useRouter();
-	const [editURLModal, setEditURLModal] = useState(false);
+	const [editURLModal, setEditURLModal] = useState<EditUrlModal>({
+		state: false,
+	});
+	const [input, setInput] = useState('');
 	const onAddURL = async (url: string) => {
 		try {
 			await api.url.uploadUrl(url);
 			router.refresh();
-		} catch {}
+		} catch (e) {
+			console.error(e);
+			toast.error('Error adding url');
+		}
+	};
+	const onEditUrl = async (url: string, id: string) => {
+		if (!input.trim()) return;
+		try {
+			await api.url.editUrl({ original_url: url, id: id, short_key: input });
+			router.refresh();
+		} catch (e) {
+			console.error(e);
+			toast.error('Error updating url');
+		}finally{
+			setEditURLModal({state:false})
+		}
 	};
 	return (
 		<>
@@ -98,7 +115,13 @@ function ShortenUrlList({ data }: ShortenUrlListProps) {
 									aria-label="Edit URl Slug"
 									title="Edit URL Slug"
 									className="rounded-full p-2 hover:bg-black"
-									onClick={() => setEditURLModal(true)}
+									onClick={() =>
+										setEditURLModal({
+											state: true,
+											id: urlID,
+											url: original_url,
+										})
+									}
 								>
 									<Edit2 className="h-4 w-4 " />
 								</Button>
@@ -107,11 +130,14 @@ function ShortenUrlList({ data }: ShortenUrlListProps) {
 					))}
 				</tbody>
 			</table>
-			<Modal open={editURLModal} onClose={() => setEditURLModal(false)}>
+			<Modal
+				open={editURLModal.state}
+				onClose={() => setEditURLModal({ state: false })}
+			>
 				<div className="p-2">
 					<div className="controls w-full flex items-center justify-end mb-4">
 						<Button
-							onClick={() => setEditURLModal(false)}
+							onClick={() => setEditURLModal({ state: false })}
 							size={'icon'}
 							aria-label="Reset"
 							title="Reset"
@@ -125,8 +151,14 @@ function ShortenUrlList({ data }: ShortenUrlListProps) {
 						name="new_slug"
 						withLabel={true}
 						label="New Slug"
+						value={input}
+						onChange={evt => setInput(evt.target.value)}
 					/>
-					<Button onClick={() => setEditURLModal(false)}>Modify URl</Button>
+					<Button
+						onClick={() => onEditUrl(editURLModal.url!, editURLModal.id!)}
+					>
+						Modify URl
+					</Button>
 				</div>
 			</Modal>
 		</>
