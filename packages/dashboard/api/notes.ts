@@ -1,3 +1,4 @@
+import { AddNoteType } from '@/lib/validators/notes';
 import { Axios } from 'axios';
 
 export class Uploads {
@@ -6,26 +7,20 @@ export class Uploads {
 		this.axios = axios;
 	}
 	async getAllNotes() {
-		const res = await this.axios.get('/upload');
-		const data = res.data.data as IFile[];
+		const res = await this.axios.get('/gist');
+		const data = res.data.data as INote[];
 		return data;
 	}
-	async uploadSingleNote({ file }: { file: File }) {
-		const data = new FormData();
-		data.append('file', file);
-		const res = await this.axios.post('/upload/file', data);
-		return res.data.data as IFile;
+	async uploadSingleNote(data: AddNoteType) {
+		const res = await this.axios.post('/gist', data);
+		return res.data.data as INote;
 	}
 	async deleteSingleNote({
-		fileID,
-		deleteToken,
+		noteID,
 	}: {
-		fileID: string;
-		deleteToken: string;
+		noteID: string;
 	}) {
-		const res = await this.axios.get(`/upload/delete/${fileID}`, {
-			params: { token: deleteToken },
-		});
+		const res = await this.axios.delete(`/gist/${noteID}`);
 		return res;
 	}
 }
