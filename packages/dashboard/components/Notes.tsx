@@ -8,7 +8,6 @@ import TextArea from './ui/TextArea';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { AddNoteType, addNoteSchema } from '@/lib/validators/notes';
-import { cn } from '@/lib/utils';
 import api from '@/api';
 import { toast } from 'react-hot-toast';
 import { useDebounce } from '@/hooks/useDebounce';

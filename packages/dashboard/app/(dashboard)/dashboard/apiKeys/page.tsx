@@ -3,7 +3,7 @@ import Button from '@/components/ui/Button'
 import { Plus } from 'lucide-react'
 import React from 'react'
 
-function Page() {
+async function Page() {
   return (
     <div className=''>
         <h1 className='text-4xl'>

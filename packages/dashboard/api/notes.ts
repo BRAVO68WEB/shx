@@ -1,7 +1,7 @@
 import { AddNoteType } from '@/lib/validators/notes';
 import { Axios } from 'axios';
 
-export class Uploads {
+export class Notes {
 	axios: Axios;
 	constructor(axios: Axios) {
 		this.axios = axios;
@@ -29,4 +29,4 @@ export class Uploads {
 	}
 }
 
-export default Uploads;
+export default Notes;
