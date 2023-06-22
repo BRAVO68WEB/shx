@@ -14,6 +14,7 @@ export const gistCreationValidation = async (
 			content: Joi.string().required(),
 			isOneTimeOnly: Joi.boolean().optional().default(false),
 			passkey: Joi.string().optional(),
+			isPrivate: Joi.boolean().optional().default(false),
 		});
 		req.body = await schema.validateAsync(req.body);
 		next();
@@ -60,7 +61,7 @@ export const gistListValidation = async (
 	try {
 		const schema = Joi.object().keys({
 			search: Joi.string().optional(),
-			page: Joi.number().optional().default(0),
+			page: Joi.number().optional().default(1),
 			limit: Joi.number().optional().default(10),
 		});
 		req.query = await schema.validateAsync(req.query);
