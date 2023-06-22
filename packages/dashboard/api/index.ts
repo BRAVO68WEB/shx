@@ -7,15 +7,20 @@ class ApiSdk {
 	private _instanceUrl: string;
 	uploads: Uploads;
 	constructor() {
-		this._instanceUrl = process.env.NEXT_APP_API_URL as string;
-		this._apiKey = '';
-		this._axios = axios.create()
+		this._instanceUrl = process.env.NEXT_PUBLIC_API_URL as string;
+		this._apiKey = process.env.NEXT_PUBLIC_API_KEY as string;
+		this._axios = axios.create({
+			baseURL: this._instanceUrl,
+			headers: {
+				'x-shx-api-key': this._apiKey,
+			},
+		});
 		this.uploads = new Uploads(this._axios);
 	}
 	private _setAxios() {
-		this._axios.defaults.baseURL = this._instanceUrl
-		const headers:any = this._axios.defaults.headers
-		headers['x-shx-api-key'] = this._apiKey
+		this._axios.defaults.baseURL = this._instanceUrl;
+		const headers: any = this._axios.defaults.headers;
+		headers['x-shx-api-key'] = this._apiKey;
 	}
 	getAxios() {
 		return this._axios;

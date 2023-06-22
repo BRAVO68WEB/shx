@@ -14,8 +14,6 @@ export default function RootLayout({
 }: {
   children: React.ReactNode
 }) {
-  api.setInstanceUrl("http://localhost:4000")
-  api.setApiKey('SHX-uyblf-ixuiz');
   
   return (
 		<html lang="en">

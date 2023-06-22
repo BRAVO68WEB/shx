@@ -7,6 +7,8 @@ import LinearList from './LinearList';
 import GridList from './GridList';
 import UploadsControls from './UploadsControls';
 import { UploadsListComponentProps } from '@/types/list';
+import { toast } from 'react-hot-toast';
+import api from '@/api';
 
 type ListOption = 0 | 1;
 
@@ -25,18 +27,35 @@ interface UploadsListProps {
 	data: IFile[];
 }
 
-const UploadsList: React.FC<UploadsListProps> = ({data}) => {
+const UploadsList: React.FC<UploadsListProps> = ({ data }) => {
 	const [listOption, setListOption] = useState<ListOption>(0);
+	const [files, setFiles] = useState<IFile[]>(data);
 	const [edit, setEdit] = useState<boolean>(false);
 
 	const toggleEdit = () => setEdit(!edit);
 
-	const ListComponent= listOptions[listOption].List;
+	const ListComponent = listOptions[listOption].List;
 
 	function changeListOption(option: ListOption) {
 		return () => setListOption(option);
 	}
-	console.log(data)
+
+	const onAddFile = (file: IFile) => {
+		setFiles([file, ...files]);
+	};
+
+	const onDelete = async (fileID: string, deleteToken: string) => {
+		try {
+			await api.uploads.deleteSingleFile({ fileID, deleteToken });
+			setFiles(old => {
+				return old.filter(file => file.fileID !== fileID)
+			})
+		} catch (e) {
+			console.error(e);
+			toast.error('Error deleting file');
+		}
+	};
+
 	return (
 		<div className="p-5">
 			<div className="toolbar flex py-2 bg-primary items-center justify-center gap-5 mb-10 rounded-md">
@@ -55,8 +74,8 @@ const UploadsList: React.FC<UploadsListProps> = ({data}) => {
 					);
 				})}
 			</div>
-			<UploadsControls onEditClick={toggleEdit} />
-			<ListComponent edit={edit} data={data} />
+			<UploadsControls onEditClick={toggleEdit} onAddFile={onAddFile} />
+			<ListComponent edit={edit} data={files} onDelete={onDelete} />
 		</div>
 	);
 };
