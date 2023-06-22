@@ -12,27 +12,28 @@ import { cn } from '@/lib/utils';
 import api from '@/api';
 import { toast } from 'react-hot-toast';
 
-interface NotesProps{
-	data:INote[]
+interface NotesProps {
+	data: INote[];
 }
 
-function Notes({data}:NotesProps) {
+function Notes({ data }: NotesProps) {
 	const dialogRef = useRef<HTMLDialogElement>(null);
 	const [dialogOpen, setDialogOpen] = useState(false);
-	const [notes,setNotes] = useState<INote[]>(data)
+	const [notes, setNotes] = useState<INote[]>(data);
 	const { register, handleSubmit } = useForm<AddNoteType>({
 		resolver: zodResolver(addNoteSchema),
 	});
+	
 	const addNoteSubmit = async (data: AddNoteType) => {
-		try{
-			const res = await api.notes.uploadSingleNote(data)
-		}catch(err){
+		try {
+			const res = await api.notes.uploadSingleNote(data);
+			setNotes(old => [res, ...old]);
+		} catch (err) {
 			console.error(err);
-			toast.error("Error Uploading Data");
-		}finally{
+			toast.error('Error Uploading Data');
+		} finally {
 			setDialogOpen(false);
 		}
-		
 	};
 	const openAddNoteDialog = () => {
 		setDialogOpen(true);
@@ -90,7 +91,7 @@ function Notes({data}:NotesProps) {
 								type="checkbox"
 								className="h-4 w-4 rounded border-primary bg-transparent text-primary"
 							/>
-						</div>	
+						</div>
 						<label htmlFor="burn" className="ml-3 text-sm leading-6">
 							<p className="font-medium text-primary">Burn</p>
 							<p id="offers-description" className="text-white">

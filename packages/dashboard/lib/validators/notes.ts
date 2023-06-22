@@ -2,7 +2,7 @@ import { z } from 'zod';
 
 export const addNoteSchema = z.object({
 	content: z.string().min(1),
-	passkey: z.string(),
+	passkey: z.string().optional(),
 	isOneTimeOnly: z.boolean(),
 });
 

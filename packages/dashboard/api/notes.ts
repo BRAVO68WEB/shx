@@ -12,6 +12,10 @@ export class Uploads {
 		return data;
 	}
 	async uploadSingleNote(data: AddNoteType) {
+        console.log("uploading")
+        if(!data.passkey){
+            delete data.passkey
+        }
 		const res = await this.axios.post('/gist', data);
 		return res.data.data as INote;
 	}
