@@ -86,7 +86,7 @@ export const event: DiscordEvent = {
 
 				if (commandMatching) {
 					cmd = commandMatching;
-					cmdName = cmd.data.name;
+					cmdName = cmd?.data.name;
 					break;
 				} else if (aliasesMatching) {
 					cmd = client.commands.get(aliasesMatching);
