@@ -12,13 +12,13 @@ import { cn } from '@/lib/utils';
 import api from '@/api';
 import { toast } from 'react-hot-toast';
 import { useDebounce } from '@/hooks/useDebounce';
+import Modal from './Modal';
 
 interface NotesProps {
 	data: INote[];
 }
 
 function Notes({ data }: NotesProps) {
-	const dialogRef = useRef<HTMLDialogElement>(null);
 	const [dialogOpen, setDialogOpen] = useState(false);
 	const [notes, setNotes] = useState<INote[]>(data);
 	const { register, handleSubmit } = useForm<AddNoteType>({
@@ -56,9 +56,6 @@ function Notes({ data }: NotesProps) {
 	const openAddNoteDialog = () => {
 		setDialogOpen(true);
 	};
-	const closeAddNoteDialog = () => {
-		setDialogOpen(false);
-	};
 
 	return (
 		<>
@@ -77,14 +74,7 @@ function Notes({ data }: NotesProps) {
 				</Button>
 			</div>
 			<NotesList data={notes} onDeleteNote={onDeleteNote} />
-			<dialog
-				className={cn(
-					'fixed top-0 left-0 w-screen h-screen flex justify-center items-center bg-transparent',
-					!dialogOpen ? 'hidden' : ''
-				)}
-				ref={dialogRef}
-				onClick={closeAddNoteDialog}
-			>
+			<Modal open={dialogOpen} onClose={() => setDialogOpen(false)}>
 				<form
 					onClick={e => {
 						e.stopPropagation();
@@ -126,7 +116,7 @@ function Notes({ data }: NotesProps) {
 
 					<Button>Add Note</Button>
 				</form>
-			</dialog>
+			</Modal>
 		</>
 	);
 }
