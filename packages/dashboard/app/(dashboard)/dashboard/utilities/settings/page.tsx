@@ -1,25 +1,27 @@
-"use client"
+'use client';
 
 import React, { useState } from 'react';
 import Button from '@/components/ui/Button';
 import Input from '@/components/ui/Input';
 import TagInput from '@/components/TagInput';
+import api from '@/api';
 
 function Page() {
 	const [imageExts, setImageExts] = useState<string[]>([]);
 	const [fileExts, setFileExts] = useState<string[]>([]);
+
+	const addImageExt = (tag: string) => {
+		setImageExts(old => {
+			return [...old, tag];
+		});
+	};
+	const addFileExt = (tag: string) => {
+		setFileExts(old => {
+			return [...old, tag];
+		});
+	};
+
 	
-    const addImageExt = (tag: string) => {
-			setImageExts(old => {
-				return [...old, tag];
-			});
-		};
-    const addFileExt = (tag: string) => {
-			setFileExts(old => {
-				return [...old, tag];
-			});
-		};
-    
 
 	return (
 		<div className="flex flex-col gap-8 w-full mt-10">

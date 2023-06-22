@@ -3,6 +3,7 @@ import Uploads from './uploads';
 import Notes from './notes';
 import ApiKeys from './apiKeys';
 import Url from './url';
+import Settings from './settings';
 
 class ApiSdk {
 	private _axios: Axios;
@@ -12,6 +13,7 @@ class ApiSdk {
 	notes: Notes;
 	apiKeys: ApiKeys;
 	url: Url;
+	settings:Settings
 	constructor() {
 		this._instanceUrl = process.env.NEXT_PUBLIC_API_URL as string;
 		this._apiKey = process.env.NEXT_PUBLIC_API_KEY as string;
@@ -25,6 +27,7 @@ class ApiSdk {
 		this.notes = new Notes(this._axios);
 		this.apiKeys = new ApiKeys(this._axios);
 		this.url = new Url(this._axios);
+		this.settings = new Settings(this._axios);
 	}
 	private _setAxios() {
 		this._axios.defaults.baseURL = this._instanceUrl;
