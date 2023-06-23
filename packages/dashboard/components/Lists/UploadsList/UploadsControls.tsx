@@ -1,30 +1,53 @@
+import api from '@/api';
 import Modal from '@/components/Modal';
 import Button from '@/components/ui/Button';
-import Input from "@/components/ui/Input"
+import Input from '@/components/ui/Input';
 import { Edit, Plus, X } from 'lucide-react';
-import React, { useState } from 'react'
+import React, { useState } from 'react';
+import { toast } from 'react-hot-toast';
 
-interface UploadControlsProps{
-    onEditClick: () => void;
+interface UploadControlsProps {
+	onEditClick: () => void;
+	onAddFile: (file: IFile) => void;
+	onSearchInputChange: (input: string) => void;
 }
 
-function UploadsControls({onEditClick}:UploadControlsProps) {
-
-
+function UploadsControls({
+	onEditClick,
+	onAddFile,
+	onSearchInputChange,
+}: UploadControlsProps) {
 	const [uploadModalOpen, setUploadModalOpen] = useState(false);
 	const [fileUpload, setFileUpload] = useState<File | null>(null);
-	
 
-	const fileInputChange: React.ChangeEventHandler<HTMLInputElement> = evt => {
+	const fileInputChange: React.ChangeEventHandler<
+		HTMLInputElement
+	> = async evt => {
 		if (evt.target.value) {
-			setFileUpload(evt.target.files ? evt.target.files[0] : null);
+			try {
+				const file = evt.target.files ? evt.target.files[0] : null;
+				setFileUpload(file);
+				if (!file) return;
+				const res = await api.uploads.uploadSingleFile({ file });
+				onAddFile(res);
+			} catch {
+				toast.error('Error Uploading File');
+			} finally {
+				setFileUpload(null);
+				setUploadModalOpen(false);
+			}
 		}
 	};
 
-  return (
+	return (
 		<>
 			<div className="flex gap-6 items-cetner w-full">
-				<Input id="search" name="search" placeholder="Search" />
+				<Input
+					id="search"
+					name="search"
+					placeholder="Search"
+					onChange={evt => onSearchInputChange(evt.target.value)}
+				/>
 
 				<div className="flex items-center">22/33</div>
 
@@ -37,7 +60,9 @@ function UploadsControls({onEditClick}:UploadControlsProps) {
 					<span>Add</span> <Plus />
 				</Button>
 				<Button
-					onClick={() => {onEditClick()}}
+					onClick={() => {
+						onEditClick();
+					}}
 					className="my-2 flex justify-between items-center w-auto gap-2"
 				>
 					<span>Edit</span> <Edit />
@@ -59,7 +84,7 @@ function UploadsControls({onEditClick}:UploadControlsProps) {
 
 					<label
 						htmlFor="fileUpload"
-						className="input w-full h-20 border-primary border flex justify-center items-center"
+						className="input w-full h-40 border-primary border flex justify-center items-center"
 					>
 						{fileUpload ? (
 							<img
@@ -84,4 +109,4 @@ function UploadsControls({onEditClick}:UploadControlsProps) {
 	);
 }
 
-export default UploadsControls
+export default UploadsControls;

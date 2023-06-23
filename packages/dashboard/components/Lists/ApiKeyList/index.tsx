@@ -1,20 +1,25 @@
+'use client';
+
+import api from '@/api';
 import Button from '@/components/ui/Button';
-import React from 'react';
+import React, { useState } from 'react';
+import { toast } from 'react-hot-toast';
 
-const apiKeys = [
-	{
-		key: 'asdfasd****fsadf',
-		enabled: true,
-		lastUsed: 'asdfasdfasdf',
-	},
-	{
-		key: 'disabled****fsadf',
-		enabled: false,
-		lastUsed: 'asdfasdfasdf',
-	},
-];
+interface ApiKeyListProps {
+	data: IApiKey[];
+}
 
-function ApiKeyList() {
+function ApiKeyList({ data }: ApiKeyListProps) {
+	const [apiKeys, setApiKeys] = useState(data);
+	const onDisableApiKey = async (id: string) => {
+		try {
+			await api.apiKeys.disableApiKey(id);
+			setApiKeys(old => old.filter(key => key.keyID !== id));
+		} catch (err) {
+			console.error('Error Deleting api key');
+			toast.error('Error deleting api key');
+		}
+	};
 	return (
 		<div>
 			<table className="min-w-full divide-y divide-gray-700">
@@ -32,34 +37,22 @@ function ApiKeyList() {
 					</tr>
 				</thead>
 				<tbody className="divide-y p-2">
-					{apiKeys.map(({ key, enabled,lastUsed }, index) => (
-						<tr className="bg-gray-900 rounded" key={index}>
+					{apiKeys.map(({ key, keyID }) => (
+						<tr className="bg-gray-900 rounded" key={keyID}>
 							<td className="whitespace-nowrap  pl-4 text-sm font-medium text-white">
-								<p className='text-xl'>{key}</p>
-                                <p className='text-xs text-gray-400'>Last Used: {lastUsed}</p>
+								<p className="text-xl">{key}</p>
 							</td>
 							<td className="relative whitespace-nowrap py-4 px-4 text-right text-sm font-medium icons flex center items-center gap-3">
-								{enabled ? (
-									<Button
-										variant="transparent"
-										size={'icon'}
-										aria-label="Disable Api Key"
-										title="Disable Api Key"
-										className="rounded-full p-2 bg-red-100 text-red-600"
-									>
-										Disable
-									</Button>
-								) : (
-									<Button
-										variant="transparent"
-										size={'icon'}
-										aria-label="Enable Api Key"
-										title="Enable Api Key"
-										className="rounded-full p-2 text-green-600 bg-green-100"
-									>
-										Enable
-									</Button>
-								)}
+								<Button
+									variant="transparent"
+									size={'icon'}
+									aria-label="Disable Api Key"
+									title="Disable Api Key"
+									className="rounded-full p-2 bg-red-100 text-red-600"
+									onClick={() => onDisableApiKey(keyID)}
+								>
+									Disable
+								</Button>
 							</td>
 						</tr>
 					))}

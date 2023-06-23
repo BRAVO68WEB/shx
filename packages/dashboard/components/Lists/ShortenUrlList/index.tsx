@@ -1,31 +1,76 @@
-"use client"
+'use client';
 
-import React,{useState} from 'react';
+import React, { useEffect, useState } from 'react';
 import Button from '@/components/ui/Button';
-import { Trash, Edit2, ArrowUpRight,X } from 'lucide-react';
-import ULRControls from './URLControls';
+import { Trash, Edit2, ArrowUpRight, X } from 'lucide-react';
+import URLControls from './URLControls';
 import Modal from '@/components/Modal';
 import Input from '@/components/ui/Input';
+import api from '@/api';
+import { useRouter } from 'next/navigation';
+import { toast } from 'react-hot-toast';
+import Cookies from 'js-cookie';
 
-const urls = [
-	{
-		id: 'afdas',
-		originalURL: 'https://www.google.com',
-		shortenedURL: 'https://www.google.com',
-	},
-];
+interface ShortenUrlListProps {
+	data: IUrl[];
+}
 
-function ShortenUrlList() {
-    const [editURLModal,setEditURLModal] = useState(false)
+interface EditUrlModal {
+	state: boolean;
+	id?: string;
+	url?: string;
+}
+
+function ShortenUrlList({ data }: ShortenUrlListProps) {
+	const router = useRouter();
+	const [editURLModal, setEditURLModal] = useState<EditUrlModal>({
+		state: false,
+	});
+	const [input, setInput] = useState('');
+	const [instanceUrl, setInstanceURL] = useState('');
+	const onAddURL = async (url: string) => {
+		try {
+			await api.url.uploadUrl(url);
+			router.refresh();
+		} catch (e) {
+			console.error(e);
+			toast.error('Error adding url');
+		}
+	};
+	const onEditUrl = async (url: string, id: string) => {
+		if (!input.trim()) return;
+		try {
+			await api.url.editUrl({ original_url: url, id: id, short_key: input });
+			router.refresh();
+		} catch (e) {
+			console.error(e);
+			toast.error('Error updating url');
+		} finally {
+			setEditURLModal({ state: false });
+		}
+	};
+	const onDeleteUrl = async (id: string) => {
+		try {
+			await api.url.deleteUrl(id);
+			router.refresh();
+		} catch (e) {
+			console.error(e);
+			toast.error('Error deleting url');
+		}
+	};
+
+	useEffect(() => {
+		setInstanceURL(Cookies.get('instanceUrl') ?? '');
+	}, []);
 	return (
 		<>
-			<ULRControls />
+			<URLControls onAddURL={onAddURL} />
 			<table className="min-w-full divide-y divide-gray-700">
 				<thead className="p-2">
 					<tr>
 						<th
 							scope="col"
-							className="py-3.5 pl-4 pr-5 text-left text-lg font-semibold text-white"
+							className="py-3.5 pl-4 pr-5 text-left text-lg font-semibold  text-white"
 						>
 							Original URL
 						</th>
@@ -41,14 +86,14 @@ function ShortenUrlList() {
 					</tr>
 				</thead>
 				<tbody className="divide-y p-2">
-					{urls.map(({ originalURL, shortenedURL, id }) => (
-						<tr className="bg-gray-900 rounded" key={id}>
-							<td className="whitespace-nowrap  pl-4 pr-20 text-sm font-medium text-white">
+					{data.map(({ original_url, urlID, short_key }) => (
+						<tr className="bg-gray-900 rounded" key={urlID}>
+							<td className="whitespace-nowrap  pl-4 pr-20 truncate text-sm font-medium text-white">
 								<div className="flex items-center gap-3">
-									{originalURL}
+									<p className="w-80 truncate">{original_url}</p>
 									<a
 										referrerPolicy="no-referrer"
-										href={originalURL}
+										href={original_url}
 										target="_blank"
 										className="p-2 bg-white bg-opacity-10 rounded cursor-pointer"
 									>
@@ -58,10 +103,10 @@ function ShortenUrlList() {
 							</td>
 							<td className="whitespace-nowrap  pl-4 text-sm font-medium text-white">
 								<div className="flex items-center gap-3">
-									{shortenedURL}
+									<p className="w-80 truncate">{`${instanceUrl}/${short_key}`}</p>
 									<a
 										referrerPolicy="no-referrer"
-										href={shortenedURL}
+										href={`${instanceUrl}/${short_key}`}
 										target="_blank"
 										className="p-2 bg-white bg-opacity-10 rounded cursor-pointer"
 									>
@@ -76,6 +121,7 @@ function ShortenUrlList() {
 									aria-label="Delete URL"
 									title="Delete URL"
 									className="rounded-full p-2 bg-red-100 text-red-600"
+									onClick={() => onDeleteUrl(urlID)}
 								>
 									<Trash className="h-4 w-4 " />
 								</Button>
@@ -85,7 +131,13 @@ function ShortenUrlList() {
 									aria-label="Edit URl Slug"
 									title="Edit URL Slug"
 									className="rounded-full p-2 hover:bg-black"
-									onClick={() => setEditURLModal(true)}
+									onClick={() =>
+										setEditURLModal({
+											state: true,
+											id: urlID,
+											url: original_url,
+										})
+									}
 								>
 									<Edit2 className="h-4 w-4 " />
 								</Button>
@@ -94,11 +146,14 @@ function ShortenUrlList() {
 					))}
 				</tbody>
 			</table>
-			<Modal open={editURLModal} onClose={() => setEditURLModal(false)}>
+			<Modal
+				open={editURLModal.state}
+				onClose={() => setEditURLModal({ state: false })}
+			>
 				<div className="p-2">
 					<div className="controls w-full flex items-center justify-end mb-4">
 						<Button
-							onClick={() => setEditURLModal(false)}
+							onClick={() => setEditURLModal({ state: false })}
 							size={'icon'}
 							aria-label="Reset"
 							title="Reset"
@@ -112,8 +167,16 @@ function ShortenUrlList() {
 						name="new_slug"
 						withLabel={true}
 						label="New Slug"
+						value={input}
+						onChange={evt => setInput(evt.target.value)}
 					/>
-					<Button onClick={() => setEditURLModal(false)}>Modify URl</Button>
+					<Button
+						onClick={() =>
+							onEditUrl(editURLModal.url ?? '', editURLModal.id ?? '')
+						}
+					>
+						Modify URl
+					</Button>
 				</div>
 			</Modal>
 		</>

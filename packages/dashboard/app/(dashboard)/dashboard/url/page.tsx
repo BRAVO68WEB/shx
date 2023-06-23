@@ -1,11 +1,14 @@
+import api from '@/api'
 import ShortenUrlList from '@/components/Lists/ShortenUrlList'
 import React from 'react'
 
-function Page() {
+async function Page() {
+  const res = await api.url.getAllUrls()
+
   return (
     <>
       <h1 className="text-4xl">URL Shortener</h1>
-      <ShortenUrlList />
+      <ShortenUrlList data={res} />
     </>
   )
 }

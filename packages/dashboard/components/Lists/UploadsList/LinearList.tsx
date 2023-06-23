@@ -2,34 +2,17 @@ import Button from '@/components/ui/Button';
 import { ArrowUpRight, Trash } from 'lucide-react';
 import React from 'react';
 import { cn } from '@/lib/utils';
+import { UploadsListComponentProps } from '@/types/list';
 
-const files: UploadsListFile[] = [
-	{
-		name: 'Lindsay Walton.png',
-		date: '2023-05-29T08:08:07.289624+00:00',
-		src: 'https://cdn.pixabay.com/photo/2015/12/01/20/28/road-1072821_1280.jpg',
-	},
-	{
-		name: 'Wlaton Lindsay.jpg',
-		date: '2023-05-30T08:08:07.289624+00:00',
-		src: 'https://cdn.pixabay.com/photo/2015/12/01/20/28/road-1072821_1280.jpg',
-	},
-];
-
-interface LinearListProps{
-	edit: boolean
-}
-
-export default function LinearList({edit}:LinearListProps) {
-
-
+export default function LinearList({
+	edit,
+	data,
+	onDelete,
+}: UploadsListComponentProps) {
 	// parse a date from gmt format to iso format
 	const parseDate = (date: string) => {
 		return new Date(date).toISOString().split('T')[0];
 	};
-
-
-
 
 	return (
 		<div className="flex flex-col w-full gap-2 ">
@@ -57,45 +40,48 @@ export default function LinearList({edit}:LinearListProps) {
 					</tr>
 				</thead>
 				<tbody className="divide-y p-2">
-					{files.map((person, index) => (
-						<tr className="bg-gray-900 rounded" key={index}>
-							<td className="relative whitespace-nowrap p-4  text-right text-sm font-medium">
-								<input
-									type="checkbox"
-									className={cn(
-										'h-4 w-4 rounded bg-transparent border-primary text-primary',
-										{ hidden: !edit }
-									)}
-								/>
-							</td>
-							<td className="whitespace-nowrap  pl-4 text-sm font-medium text-white">
-								{person.name}
-							</td>
-							<td className="whitespace-nowrap px-9 py-4 text-sm text-gray-300">
-								{parseDate(person.date)}
-							</td>
-							<td className="relative whitespace-nowrap py-4 px-4 text-right text-sm font-medium icons flex center items-center gap-3">
-								<Button
-									variant="transparent"
-									size={'icon'}
-									aria-label="Delete Image"
-									title="Delete Image"
-									className="rounded-full p-2  hover:bg-red-50 hover:text-red-600 text-red-300"
-								>
-									<Trash className="h-4 w-4 " />
-								</Button>
-								<Button
-									variant="transparent"
-									size={'icon'}
-									aria-label="Open Image"
-									title="Open Image"
-									className="rounded-full p-2 hover:bg-black"
-								>
-									<ArrowUpRight className="h-4 w-4 " />
-								</Button>
-							</td>
-						</tr>
-					))}
+					{data.map(
+						({ fileID, filename, uploaded_at, upload_url, deleteToken }) => (
+							<tr className="bg-gray-900 rounded" key={fileID}>
+								<td className="relative whitespace-nowrap p-4  text-right text-sm font-medium">
+									<input
+										type="checkbox"
+										className={cn(
+											'h-4 w-4 rounded bg-transparent border-primary text-primary',
+											{ hidden: !edit }
+										)}
+									/>
+								</td>
+								<td className="whitespace-nowrap  pl-4 text-sm font-medium text-white">
+									{filename}
+								</td>
+								<td className="whitespace-nowrap px-9 py-4 text-sm text-gray-300">
+									{parseDate(uploaded_at)}
+								</td>
+								<td className="relative whitespace-nowrap py-4 px-4 text-right text-sm font-medium icons flex center items-center gap-3">
+									<Button
+										variant="transparent"
+										size={'icon'}
+										aria-label="Delete Image"
+										title="Delete Image"
+										className="rounded-full p-2  hover:bg-red-50 hover:text-red-600 text-red-300"
+										onClick={() => onDelete(fileID, deleteToken)}
+									>
+										<Trash className="h-4 w-4 " />
+									</Button>
+									<a
+										href={upload_url}
+										target="_blank"
+										download={false}
+										referrerPolicy="no-referrer"
+										className="rounded-full p-2 hover:bg-black"
+									>
+										<ArrowUpRight className="h-4 w-4 " />
+									</a>
+								</td>
+							</tr>
+						)
+					)}
 				</tbody>
 			</table>
 		</div>

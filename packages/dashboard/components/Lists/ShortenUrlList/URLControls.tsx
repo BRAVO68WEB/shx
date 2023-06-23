@@ -1,4 +1,4 @@
-"use client"
+'use client';
 
 import Modal from '@/components/Modal';
 import Button from '@/components/ui/Button';
@@ -6,10 +6,19 @@ import Input from '@/components/ui/Input';
 import { Plus, X } from 'lucide-react';
 import React, { useState } from 'react';
 
-function ULRControls() {
-	const [addModalOpen, setAddModalOpen] = useState(false);
-	
+interface URLContrlProps {
+	onAddURL: (url: string) => Promise<void>;
+}
 
+function URLControls({ onAddURL }: URLContrlProps) {
+	const [addModalOpen, setAddModalOpen] = useState(false);
+	const [input, setInput] = useState('');
+
+	const onClick = async () => {
+		if (input.trim() === '') return;
+		await onAddURL(input);
+		setAddModalOpen(false);
+	};
 	return (
 		<>
 			<div className="flex gap-6 items-cetner w-full">
@@ -41,18 +50,18 @@ function ULRControls() {
 					</div>
 					<Input
 						type="text"
-                        id='url'
-                        name="url"
-                        withLabel={true}
-                        label='Original URL'
+						id="url"
+						name="url"
+						withLabel={true}
+						label="Original URL"
+						value={input}
+						onChange={evt => setInput(evt.target.value)}
 					/>
-                    <Button onClick={() => setAddModalOpen(false)} >
-                        Add URl
-                    </Button>
+					<Button onClick={onClick}>Add URl</Button>
 				</div>
 			</Modal>
 		</>
 	);
 }
 
-export default ULRControls;
+export default URLControls;

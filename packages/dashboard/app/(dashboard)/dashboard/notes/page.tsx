@@ -1,14 +1,15 @@
-
+import api from '@/api';
 import Notes from '@/components/Notes';
-import React from 'react'
+import React from 'react';
 
-function Page() {
-  return (
+async function Page() {
+	const data = await api.notes.getAllNotes();
+	return (
 		<>
 			<h1 className="text-4xl">Notes</h1>
-            <Notes />
+			<Notes data={data} />
 		</>
 	);
 }
 
-export default Page
+export default Page;
