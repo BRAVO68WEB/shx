@@ -7,7 +7,7 @@ import { Plus, X } from 'lucide-react';
 import React, { useState } from 'react';
 
 interface URLContrlProps {
-	onAddURL: (url: string) => void;
+	onAddURL: (url: string) => Promise<void>;
 }
 
 function URLControls({ onAddURL }: URLContrlProps) {
