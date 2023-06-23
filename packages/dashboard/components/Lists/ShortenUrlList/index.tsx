@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Button from '@/components/ui/Button';
 import { Trash, Edit2, ArrowUpRight, X } from 'lucide-react';
 import URLControls from './URLControls';
@@ -9,6 +9,7 @@ import Input from '@/components/ui/Input';
 import api from '@/api';
 import { useRouter } from 'next/navigation';
 import { toast } from 'react-hot-toast';
+import Cookies from 'js-cookie';
 
 interface ShortenUrlListProps {
 	data: IUrl[];
@@ -26,6 +27,7 @@ function ShortenUrlList({ data }: ShortenUrlListProps) {
 		state: false,
 	});
 	const [input, setInput] = useState('');
+	const [instanceUrl, setInstanceURL] = useState('');
 	const onAddURL = async (url: string) => {
 		try {
 			await api.url.uploadUrl(url);
@@ -56,6 +58,10 @@ function ShortenUrlList({ data }: ShortenUrlListProps) {
 			toast.error('Error deleting url');
 		}
 	};
+
+	useEffect(() => {
+		setInstanceURL(Cookies.get('instanceUrl') ?? '');
+	}, []);
 	return (
 		<>
 			<URLControls onAddURL={onAddURL} />
@@ -80,7 +86,7 @@ function ShortenUrlList({ data }: ShortenUrlListProps) {
 					</tr>
 				</thead>
 				<tbody className="divide-y p-2">
-					{data.map(({ original_url, urlID }) => (
+					{data.map(({ original_url, urlID, short_key }) => (
 						<tr className="bg-gray-900 rounded" key={urlID}>
 							<td className="whitespace-nowrap  pl-4 pr-20 truncate text-sm font-medium text-white">
 								<div className="flex items-center gap-3">
@@ -97,10 +103,10 @@ function ShortenUrlList({ data }: ShortenUrlListProps) {
 							</td>
 							<td className="whitespace-nowrap  pl-4 text-sm font-medium text-white">
 								<div className="flex items-center gap-3">
-									<p className="w-80 truncate">{original_url}</p>
+									<p className="w-80 truncate">{`${instanceUrl}/${short_key}`}</p>
 									<a
 										referrerPolicy="no-referrer"
-										href={original_url}
+										href={`${instanceUrl}/${short_key}`}
 										target="_blank"
 										className="p-2 bg-white bg-opacity-10 rounded cursor-pointer"
 									>
