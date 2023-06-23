@@ -26,10 +26,10 @@ class ApiSdk {
 		ax.interceptors.request.use(async config => {
 			if (typeof window === 'undefined') {
 				const { cookies } = await import('next/headers');
-				config.headers['x-shx-api-key'] = cookies().get('apiKey')!.value;
-				config.baseURL = cookies().get('instanceUrl')!.value;
+				config.headers['x-shx-api-key'] = cookies().get('apiKey')?.value;
+				config.baseURL = cookies().get('instanceUrl')?.value;
 			} else {
-				config.headers['x-shx-api-key'] = Cookies.get().apiKey;
+				config.headers['x-shx-api-key'] = Cookies.get().apiKey ?? '';
 				config.baseURL = Cookies.get('instanceUrl') ?? '';
 			}
 

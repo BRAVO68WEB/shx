@@ -7,19 +7,18 @@ export class ApiKeys {
 		this.axios = axios;
 	}
 	private async getMasterKey() {
-		let key = '';
-		if (typeof window === undefined) {
+		if (typeof window === 'undefined') {
 			const { cookies } = await import('next/headers');
-			key = cookies().get('masterKey')?.value ?? '';
+			return cookies().get('masterKey')?.value ?? '';
 		} else {
-			key = Cookies.get('masterKey') ?? '';
+			return Cookies.get('masterKey') ?? '';
 		}
-		return key;
 	}
 	async getAllKeys() {
-		return await this.axios.get(`/apiKey`, {
-			params: { masterkey: this.getMasterKey() },
+		const res = await this.axios.get(`/apiKey`, {
+			params: { masterkey: await this.getMasterKey() },
 		});
+		return res.data.data as IApiKey[];
 	}
 	async createKey() {
 		const res = await this.axios.post(
@@ -28,6 +27,12 @@ export class ApiKeys {
 			{ params: { masterkey: await this.getMasterKey() } }
 		);
 		return res.data.data.key as string;
+	}
+	async disableApiKey(id: string) {
+		const res = await this.axios.delete('/apiKey', {
+			params: { masterkey: await this.getMasterKey(), apikeyID: id },
+		});
+		return res;
 	}
 }
 
