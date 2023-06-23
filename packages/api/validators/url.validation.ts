@@ -15,7 +15,7 @@ export const urlCreateValidation = async (
 		req.body = await schema.validateAsync(req.body);
 		next();
 	} catch (err) {
-		res.send(
+		res.status(400).send(
 			new CustomError({
 				data: err,
 				message: ErrorMsg.VALIDATION,
@@ -39,7 +39,7 @@ export const urlUpdateValidation = async (
 		req.body = await schema.validateAsync(req.body);
 		next();
 	} catch (err) {
-		res.send(
+		res.status(400).send(
 			new CustomError({
 				data: err,
 				message: ErrorMsg.VALIDATION,
@@ -64,7 +64,7 @@ export const urlGelAllValidation = async (
 		req.query = await schema.validateAsync(req.query);
 		next();
 	} catch (err) {
-		res.send(
+		res.status(400).send(
 			new CustomError({
 				data: err,
 				message: ErrorMsg.VALIDATION,

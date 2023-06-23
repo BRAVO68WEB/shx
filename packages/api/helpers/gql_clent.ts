@@ -1,5 +1,4 @@
 import { GraphQLClient } from 'graphql-request';
-import { configKeys } from '..';
 import axios from 'axios';
 import { logger } from '../libs';
 
@@ -8,9 +7,9 @@ export let client = new GraphQLClient('');
 export const hgqlInit = async () => {
 	logger.info('🚀 GraphQL Client Initialized');
 
-	let HASURA_URL: string = configKeys.HASURA_GRAPHQL_ENDPOINT || '';
+	let HASURA_URL: string = process.env.HASURA_GRAPHQL_ENDPOINT || '';
 	HASURA_URL += HASURA_URL.endsWith('/') ? 'v1/graphql' : '/v1/graphql';
-	const HASURA_ADMIN: string = configKeys.HASURA_GRAPHQL_ADMIN_SECRET || '';
+	const HASURA_ADMIN: string = process.env.HASURA_GRAPHQL_ADMIN_SECRET || '';
 
 	client = new GraphQLClient(HASURA_URL, {
 		headers: {
@@ -179,9 +178,9 @@ export const hgqlInit = async () => {
 
 		const config = {
 			method: 'post',
-			url: configKeys.HASURA_GRAPHQL_ENDPOINT + '/v1/metadata',
+			url: process.env.HASURA_GRAPHQL_ENDPOINT + '/v1/metadata',
 			headers: {
-				'x-hasura-admin-secret': configKeys.HASURA_GRAPHQL_ADMIN_SECRET,
+				'x-hasura-admin-secret': process.env.HASURA_GRAPHQL_ADMIN_SECRET,
 			},
 		};
 

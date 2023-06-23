@@ -146,7 +146,7 @@ export const is_uuid = (value: string) => {
 	return regex.test(value);
 };
 
-export type encapDataKey = { key: string; keyID: string };
+export type encapDataKey = { key: string; keyID: string; last_used: Date };
 
 export const encapDataKeys = (data: Apikeys[]) => {
 	const new_data: encapDataKey[] = [];
@@ -162,7 +162,8 @@ export const encapDataKeys = (data: Apikeys[]) => {
 
 		const key = `${parts[0]}-${hiddenMiddlePart}-${parts[2]}`;
 		const keyID = d.keyID;
-		new_data.push({ key, keyID });
+		const last_used = d.last_used;
+		new_data.push({ key, keyID, last_used });
 	});
 	return new_data;
 };

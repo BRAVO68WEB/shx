@@ -148,7 +148,8 @@ CREATE TABLE public.apikeys (
     "keyID" uuid DEFAULT gen_random_uuid() NOT NULL,
     key text DEFAULT public.generate_api_key() NOT NULL,
     created_at timestamp with time zone DEFAULT now() NOT NULL,
-    updated_at timestamp with time zone DEFAULT now() NOT NULL
+    updated_at timestamp with time zone DEFAULT now() NOT NULL,
+    last_used timestamp with time zone
 );
 
 
