@@ -12,6 +12,7 @@ export default class APIKeyService implements IAPIKeyService {
 				apikeys(where: { key: { _eq: $apikey } }) {
 					key
 					keyID
+					last_used
 				}
 			}
 		`;
@@ -25,7 +26,28 @@ export default class APIKeyService implements IAPIKeyService {
 		if (result.apikeys.length === 0) {
 			return null;
 		} else {
-			return result.apikeys[0];
+			// return result.apikeys[0];
+			const updateLastUsedquery = gql`
+				mutation updateLastUsed($apikeyID: uuid!) {
+					update_apikeys_by_pk(
+						pk_columns: { keyID: $apikeyID }
+						_set: { last_used: "now()" }
+					) {
+						key
+						keyID
+						last_used
+					}
+				}
+			`;
+
+			const updateLastUsedVariables = {
+				apikeyID: result.apikeys[0].keyID,
+			};
+
+			const updateLastUsedResult: { update_apikeys_by_pk: Apikeys } =
+				await client.request(updateLastUsedquery, updateLastUsedVariables);
+
+			return updateLastUsedResult.update_apikeys_by_pk;
 		}
 	}
 
@@ -71,6 +93,7 @@ export default class APIKeyService implements IAPIKeyService {
 				apikeys {
 					key
 					keyID
+					last_used
 				}
 			}
 		`;
@@ -86,6 +109,7 @@ export default class APIKeyService implements IAPIKeyService {
 				apikeys(where: { key: { _eq: $apikey } }) {
 					key
 					keyID
+					last_used
 				}
 			}
 		`;
