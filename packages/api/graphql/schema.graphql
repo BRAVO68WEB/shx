@@ -137,6 +137,7 @@ type apikeys {
   ): gists_aggregate!
   key: String!
   keyID: uuid!
+  last_used: timestamptz
 
   """An array relationship"""
   shorturls(
@@ -241,6 +242,7 @@ input apikeys_bool_exp {
   gists_aggregate: gists_aggregate_bool_exp
   key: String_comparison_exp
   keyID: uuid_comparison_exp
+  last_used: timestamptz_comparison_exp
   shorturls: shorturls_bool_exp
   shorturls_aggregate: shorturls_aggregate_bool_exp
   updated_at: timestamptz_comparison_exp
@@ -271,6 +273,7 @@ input apikeys_insert_input {
   gists: gists_arr_rel_insert_input
   key: String
   keyID: uuid
+  last_used: timestamptz
   shorturls: shorturls_arr_rel_insert_input
   updated_at: timestamptz
   uploads: uploads_arr_rel_insert_input
@@ -281,6 +284,7 @@ type apikeys_max_fields {
   created_at: timestamptz
   key: String
   keyID: uuid
+  last_used: timestamptz
   updated_at: timestamptz
 }
 
@@ -289,6 +293,7 @@ type apikeys_min_fields {
   created_at: timestamptz
   key: String
   keyID: uuid
+  last_used: timestamptz
   updated_at: timestamptz
 }
 
@@ -328,6 +333,7 @@ input apikeys_order_by {
   gists_aggregate: gists_aggregate_order_by
   key: order_by
   keyID: order_by
+  last_used: order_by
   shorturls_aggregate: shorturls_aggregate_order_by
   updated_at: order_by
   uploads_aggregate: uploads_aggregate_order_by
@@ -352,6 +358,9 @@ enum apikeys_select_column {
   keyID
 
   """column name"""
+  last_used
+
+  """column name"""
   updated_at
 }
 
@@ -362,6 +371,7 @@ input apikeys_set_input {
   created_at: timestamptz
   key: String
   keyID: uuid
+  last_used: timestamptz
   updated_at: timestamptz
 }
 
@@ -381,6 +391,7 @@ input apikeys_stream_cursor_value_input {
   created_at: timestamptz
   key: String
   keyID: uuid
+  last_used: timestamptz
   updated_at: timestamptz
 }
 
@@ -396,6 +407,9 @@ enum apikeys_update_column {
 
   """column name"""
   keyID
+
+  """column name"""
+  last_used
 
   """column name"""
   updated_at
@@ -555,11 +569,6 @@ enum gists_constraint {
   unique or primary key constraint on columns "gist_url_key"
   """
   gists_gist_url_key_key
-
-  """
-  unique or primary key constraint on columns "passkey"
-  """
-  gists_passkey_key
 
   """
   unique or primary key constraint on columns "gistID"
