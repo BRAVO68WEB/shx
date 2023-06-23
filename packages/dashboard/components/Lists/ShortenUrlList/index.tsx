@@ -43,8 +43,17 @@ function ShortenUrlList({ data }: ShortenUrlListProps) {
 		} catch (e) {
 			console.error(e);
 			toast.error('Error updating url');
-		}finally{
-			setEditURLModal({state:false})
+		} finally {
+			setEditURLModal({ state: false });
+		}
+	};
+	const onDeleteUrl = async (id: string) => {
+		try {
+			await api.url.deleteUrl(id);
+			router.refresh();
+		} catch (e) {
+			console.error(e);
+			toast.error('Error deleting url');
 		}
 	};
 	return (
@@ -106,6 +115,7 @@ function ShortenUrlList({ data }: ShortenUrlListProps) {
 									aria-label="Delete URL"
 									title="Delete URL"
 									className="rounded-full p-2 bg-red-100 text-red-600"
+									onClick={() => onDeleteUrl(urlID)}
 								>
 									<Trash className="h-4 w-4 " />
 								</Button>
