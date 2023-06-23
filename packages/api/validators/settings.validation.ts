@@ -12,12 +12,12 @@ export const setConfigValidation = async (
 	try {
 		const schema = Joi.object().keys({
 			key: Joi.string().required(),
-			value: Joi.string().required(),
+			value: Joi.any().required(),
 		});
 		req.body = await schema.validateAsync(req.body);
 		next();
 	} catch (err) {
-		res.send(
+		res.status(400).send(
 			new CustomError({
 				data: err,
 				message: ErrorMsg.VALIDATION,

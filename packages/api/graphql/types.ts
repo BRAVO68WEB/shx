@@ -99,6 +99,7 @@ export type Apikeys = {
 	gists_aggregate: Gists_Aggregate;
 	key: Scalars['String']['output'];
 	keyID: Scalars['uuid']['output'];
+	last_used?: Maybe<Scalars['timestamptz']['output']>;
 	/** An array relationship */
 	shorturls: Array<Shorturls>;
 	/** An aggregate relationship */
@@ -195,6 +196,7 @@ export type Apikeys_Bool_Exp = {
 	gists_aggregate?: InputMaybe<Gists_Aggregate_Bool_Exp>;
 	key?: InputMaybe<String_Comparison_Exp>;
 	keyID?: InputMaybe<Uuid_Comparison_Exp>;
+	last_used?: InputMaybe<Timestamptz_Comparison_Exp>;
 	shorturls?: InputMaybe<Shorturls_Bool_Exp>;
 	shorturls_aggregate?: InputMaybe<Shorturls_Aggregate_Bool_Exp>;
 	updated_at?: InputMaybe<Timestamptz_Comparison_Exp>;
@@ -216,6 +218,7 @@ export type Apikeys_Insert_Input = {
 	gists?: InputMaybe<Gists_Arr_Rel_Insert_Input>;
 	key?: InputMaybe<Scalars['String']['input']>;
 	keyID?: InputMaybe<Scalars['uuid']['input']>;
+	last_used?: InputMaybe<Scalars['timestamptz']['input']>;
 	shorturls?: InputMaybe<Shorturls_Arr_Rel_Insert_Input>;
 	updated_at?: InputMaybe<Scalars['timestamptz']['input']>;
 	uploads?: InputMaybe<Uploads_Arr_Rel_Insert_Input>;
@@ -227,6 +230,7 @@ export type Apikeys_Max_Fields = {
 	created_at?: Maybe<Scalars['timestamptz']['output']>;
 	key?: Maybe<Scalars['String']['output']>;
 	keyID?: Maybe<Scalars['uuid']['output']>;
+	last_used?: Maybe<Scalars['timestamptz']['output']>;
 	updated_at?: Maybe<Scalars['timestamptz']['output']>;
 };
 
@@ -236,6 +240,7 @@ export type Apikeys_Min_Fields = {
 	created_at?: Maybe<Scalars['timestamptz']['output']>;
 	key?: Maybe<Scalars['String']['output']>;
 	keyID?: Maybe<Scalars['uuid']['output']>;
+	last_used?: Maybe<Scalars['timestamptz']['output']>;
 	updated_at?: Maybe<Scalars['timestamptz']['output']>;
 };
 
@@ -268,6 +273,7 @@ export type Apikeys_Order_By = {
 	gists_aggregate?: InputMaybe<Gists_Aggregate_Order_By>;
 	key?: InputMaybe<Order_By>;
 	keyID?: InputMaybe<Order_By>;
+	last_used?: InputMaybe<Order_By>;
 	shorturls_aggregate?: InputMaybe<Shorturls_Aggregate_Order_By>;
 	updated_at?: InputMaybe<Order_By>;
 	uploads_aggregate?: InputMaybe<Uploads_Aggregate_Order_By>;
@@ -287,6 +293,8 @@ export enum Apikeys_Select_Column {
 	/** column name */
 	KeyId = 'keyID',
 	/** column name */
+	LastUsed = 'last_used',
+	/** column name */
 	UpdatedAt = 'updated_at',
 }
 
@@ -295,6 +303,7 @@ export type Apikeys_Set_Input = {
 	created_at?: InputMaybe<Scalars['timestamptz']['input']>;
 	key?: InputMaybe<Scalars['String']['input']>;
 	keyID?: InputMaybe<Scalars['uuid']['input']>;
+	last_used?: InputMaybe<Scalars['timestamptz']['input']>;
 	updated_at?: InputMaybe<Scalars['timestamptz']['input']>;
 };
 
@@ -311,6 +320,7 @@ export type Apikeys_Stream_Cursor_Value_Input = {
 	created_at?: InputMaybe<Scalars['timestamptz']['input']>;
 	key?: InputMaybe<Scalars['String']['input']>;
 	keyID?: InputMaybe<Scalars['uuid']['input']>;
+	last_used?: InputMaybe<Scalars['timestamptz']['input']>;
 	updated_at?: InputMaybe<Scalars['timestamptz']['input']>;
 };
 
@@ -322,6 +332,8 @@ export enum Apikeys_Update_Column {
 	Key = 'key',
 	/** column name */
 	KeyId = 'keyID',
+	/** column name */
+	LastUsed = 'last_used',
 	/** column name */
 	UpdatedAt = 'updated_at',
 }
@@ -469,8 +481,6 @@ export type Gists_Bool_Exp = {
 export enum Gists_Constraint {
 	/** unique or primary key constraint on columns "gist_url_key" */
 	GistsGistUrlKeyKey = 'gists_gist_url_key_key',
-	/** unique or primary key constraint on columns "passkey" */
-	GistsPasskeyKey = 'gists_passkey_key',
 	/** unique or primary key constraint on columns "gistID" */
 	GistsPkey = 'gists_pkey',
 }

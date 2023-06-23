@@ -1,5 +1,4 @@
 import UploaderService from '../data/uploader.service';
-import { configKeys } from '..';
 import { gql } from 'graphql-request';
 import { client } from '../helpers';
 import sharp from 'sharp';
@@ -19,13 +18,13 @@ export default class Uploader implements IUploaderService {
 	configService: ConfigService;
 
 	constructor() {
-		this.uploaderService = new UploaderService(configKeys.R2_BUCKET_NAME);
+		this.uploaderService = new UploaderService(process.env.R2_BUCKET_NAME);
 		this.configService = new ConfigService();
 	}
 
 	public uploadS = async (file: any, meta: UserMeta): Promise<Uploads> => {
 		await this.uploaderService.uploadFile(
-			configKeys.R2_BUCKET_FOLDER as string,
+			process.env.R2_BUCKET_FOLDER as string,
 			file.newName,
 			file.buffer,
 			file.mimetype,
@@ -44,11 +43,11 @@ export default class Uploader implements IUploaderService {
 		`;
 		const urlObj = {
 			url:
-				configKeys.R2_BUCKET_URL +
+				process.env.R2_BUCKET_URL +
 				'/' +
-				configKeys.R2_BUCKET_NAME +
+				process.env.R2_BUCKET_NAME +
 				'/' +
-				configKeys.R2_BUCKET_FOLDER +
+				process.env.R2_BUCKET_FOLDER +
 				'/' +
 				file.newName,
 		};
@@ -71,7 +70,7 @@ export default class Uploader implements IUploaderService {
 		await image.toFormat('jpeg');
 		const buffer = await image.toBuffer();
 		await this.uploaderService.uploadFile(
-			configKeys.R2_BUCKET_FOLDER as string,
+			process.env.R2_BUCKET_FOLDER as string,
 			file.newName,
 			buffer,
 			file.mimetype,
@@ -90,11 +89,11 @@ export default class Uploader implements IUploaderService {
 		`;
 		const urlObj = {
 			url:
-				configKeys.R2_BUCKET_URL +
+				process.env.R2_BUCKET_URL +
 				'/' +
-				configKeys.R2_BUCKET_NAME +
+				process.env.R2_BUCKET_NAME +
 				'/' +
-				configKeys.R2_BUCKET_FOLDER +
+				process.env.R2_BUCKET_FOLDER +
 				'/' +
 				file.newName,
 		};
@@ -123,7 +122,7 @@ export default class Uploader implements IUploaderService {
 		await image.toFormat('jpeg');
 		const buffer = await image.toBuffer();
 		await this.uploaderService.uploadFile(
-			configKeys.R2_BUCKET_FOLDER as string,
+			process.env.R2_BUCKET_FOLDER as string,
 			filename,
 			buffer,
 			'image/jpeg',
@@ -144,11 +143,11 @@ export default class Uploader implements IUploaderService {
 
 		const urlObj = {
 			url:
-				configKeys.R2_BUCKET_URL +
+				process.env.R2_BUCKET_URL +
 				'/' +
-				configKeys.R2_BUCKET_NAME +
+				process.env.R2_BUCKET_NAME +
 				'/' +
-				configKeys.R2_BUCKET_FOLDER +
+				process.env.R2_BUCKET_FOLDER +
 				'/' +
 				filename,
 		};
@@ -202,7 +201,7 @@ export default class Uploader implements IUploaderService {
 		let filename = await this.downloadFile(url);
 		filename = sanitize(filename);
 		await this.uploaderService.uploadFile(
-			configKeys.R2_BUCKET_FOLDER as string,
+			process.env.R2_BUCKET_FOLDER as string,
 			filename,
 			fs.readFileSync(`uploads/${filename}`),
 			'application/octet-stream',
@@ -223,11 +222,11 @@ export default class Uploader implements IUploaderService {
 
 		const urlObj = {
 			url:
-				configKeys.R2_BUCKET_URL +
+				process.env.R2_BUCKET_URL +
 				'/' +
-				configKeys.R2_BUCKET_NAME +
+				process.env.R2_BUCKET_NAME +
 				'/' +
-				configKeys.R2_BUCKET_FOLDER +
+				process.env.R2_BUCKET_FOLDER +
 				'/' +
 				filename,
 		};
@@ -325,7 +324,7 @@ export default class Uploader implements IUploaderService {
 		const filename = data.delete_uploads_by_pk.upload_url.split('/').pop()!;
 
 		await this.uploaderService.deleteFile(
-			configKeys.R2_BUCKET_FOLDER as string,
+			process.env.R2_BUCKET_FOLDER as string,
 			filename
 		);
 

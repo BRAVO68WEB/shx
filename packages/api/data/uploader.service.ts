@@ -4,7 +4,6 @@ import {
 	S3ClientConfig,
 	DeleteObjectCommand,
 } from '@aws-sdk/client-s3';
-import { configKeys } from '..';
 import { IUploadStrategy, UploaderRep } from '../interfaces/upload.interface';
 
 export default class UploadStrategy implements IUploadStrategy {
@@ -19,12 +18,12 @@ export default class UploadStrategy implements IUploadStrategy {
 		UploadStrategy._s3Opts = options;
 
 		const s3ClientOpts: S3ClientConfig = {
-			region: configKeys.R2_BUCKET_REGION || '',
-			endpoint: configKeys.R2_BUCKET_ENDPOINT || '',
+			region: process.env.R2_BUCKET_REGION || '',
+			endpoint: process.env.R2_BUCKET_ENDPOINT || '',
 			forcePathStyle: true,
 			credentials: {
-				accessKeyId: configKeys.R2_CLIENT_ID || '',
-				secretAccessKey: configKeys.R2_CLIENT_SECRET || '',
+				accessKeyId: process.env.R2_CLIENT_ID || '',
+				secretAccessKey: process.env.R2_CLIENT_SECRET || '',
 			},
 		};
 		const client = new S3Client(s3ClientOpts);
@@ -48,9 +47,9 @@ export default class UploadStrategy implements IUploadStrategy {
 		};
 		await UploadStrategy._s3Client.send(new PutObjectCommand(uploadParams));
 		return {
-			url: configKeys.R2_BUCKET_URL as string,
-			bucket_name: configKeys.R2_BUCKET_NAME as string,
-			folder: configKeys.R2_BUCKET_FOLDER as string,
+			url: process.env.R2_BUCKET_URL as string,
+			bucket_name: process.env.R2_BUCKET_NAME as string,
+			folder: process.env.R2_BUCKET_FOLDER as string,
 		};
 	}
 
@@ -63,9 +62,9 @@ export default class UploadStrategy implements IUploadStrategy {
 		await UploadStrategy._s3Client.send(new DeleteObjectCommand(deleteParams));
 
 		return {
-			url: configKeys.R2_BUCKET_URL as string,
-			bucket_name: configKeys.R2_BUCKET_NAME as string,
-			folder: configKeys.R2_BUCKET_FOLDER as string,
+			url: process.env.R2_BUCKET_URL as string,
+			bucket_name: process.env.R2_BUCKET_NAME as string,
+			folder: process.env.R2_BUCKET_FOLDER as string,
 		};
 	}
 }
