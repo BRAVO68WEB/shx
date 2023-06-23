@@ -1,6 +1,5 @@
 import { gql } from 'graphql-request';
 import { client } from '../helpers';
-import { configKeys } from '..';
 import { IAPIKeyService } from '../interfaces/apikey.interface';
 import { encapDataKeys } from '../libs';
 import { Apikeys, Apikeys_Mutation_Response } from '../graphql/types';
@@ -52,7 +51,7 @@ export default class APIKeyService implements IAPIKeyService {
 	}
 
 	public async generateS(masterKey: string): Promise<Apikeys> {
-		if (masterKey !== configKeys.MASTER_KEY)
+		if (masterKey !== process.env.MASTER_KEY)
 			throw new Error('Invalid master key');
 		const query = gql`
 			mutation generateAPIKey {
@@ -67,7 +66,7 @@ export default class APIKeyService implements IAPIKeyService {
 	}
 
 	public async deleteS(apikeyID: string, masterKey: string): Promise<number> {
-		if (masterKey !== configKeys.MASTER_KEY)
+		if (masterKey !== process.env.MASTER_KEY)
 			throw new Error('Invalid master key');
 		const query = gql`
 			mutation deleteAPIKey($apikeyID: uuid!) {
@@ -86,7 +85,7 @@ export default class APIKeyService implements IAPIKeyService {
 	}
 
 	public async listS(masterKey: string): Promise<encapDataKey[]> {
-		if (masterKey !== configKeys.MASTER_KEY)
+		if (masterKey !== process.env.MASTER_KEY)
 			throw new Error('Invalid master key');
 		const query = gql`
 			query listAPIKeys {

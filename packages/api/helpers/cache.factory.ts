@@ -1,6 +1,5 @@
 import * as redis from 'redis';
 import NodeCache from 'node-cache';
-import { configKeys } from '..';
 import { logger } from '../libs';
 
 export type CacheEnvironment = 'inmemory' | 'redis';
@@ -18,7 +17,7 @@ export default class CacheClient {
 	}
 
 	static init(forceEnv?: CacheEnvironment) {
-		const env = forceEnv || configKeys.CACHE_ENV || 'inmemory';
+		const env = forceEnv || process.env.CACHE_ENV || 'inmemory';
 
 		if (!['inmemory', 'redis'].includes(env))
 			throw new Error(
@@ -28,7 +27,7 @@ export default class CacheClient {
 
 		this._clientMode = env as CacheEnvironment;
 
-		const redisUrl = configKeys.REDIS_URL || '';
+		const redisUrl = process.env.REDIS_URL || '';
 
 		if (env === 'redis') {
 			this._redisClient = redis.createClient({

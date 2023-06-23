@@ -8,7 +8,7 @@ import ratelimiter from 'express-rate-limit';
 import { hgqlInit } from './helpers';
 import { errorHandler, notFoundHandler } from './libs';
 import pkg from './package.json' assert { type: 'json' };
-import configStore from './configs';
+import './configs';
 import CacheClient, { CacheEnvironment } from './helpers/cache.factory';
 import URLStoreController from './controllers/urlstore.controller';
 import ConfigService from './services/config.service';
@@ -19,17 +19,15 @@ logger.info('🚀 @' + pkg.author.name + '/' + pkg.name, 'v' + pkg.version);
 
 const isDev: boolean = process.env.NODE_ENV == 'production';
 logger.info(isDev ? '🚀 Production Mode' : '🚀 Development Mode');
-const configs = new configStore(isDev);
-const configKeys = await configs.getConfigStore();
 const urlStoreController = new URLStoreController();
 const logStream = new LogStream();
 
-logger.info(`🔑 Master Key ${configKeys.MASTER_KEY}`);
+logger.info(`🔑 Master Key ${process.env.MASTER_KEY}`);
 
 import routes from './routes';
 
 hgqlInit();
-CacheClient.init(configKeys.CACHE_ENV as CacheEnvironment);
+CacheClient.init(process.env.CACHE_ENV as CacheEnvironment);
 
 app.use(cors());
 app.use(helmet());
@@ -65,10 +63,10 @@ app.get('/:urlKey', urlStoreController.get);
 app.use(notFoundHandler);
 app.use(errorHandler);
 
-app.listen(configKeys.PORT, async () => {
-	logger.info(`🚂 Server running on port ${configKeys.PORT}`);
+app.listen(process.env.PORT, async () => {
+	logger.info(`🚂 Server running on port ${process.env.PORT}`);
 	const { initConfig } = new ConfigService();
 	await initConfig();
 });
 
-export { configKeys, logger };
+export { logger };
