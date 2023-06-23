@@ -4,46 +4,41 @@ import Notes from './notes';
 import ApiKeys from './apiKeys';
 import Url from './url';
 import Settings from './settings';
+import Cookies from 'js-cookie';
 
 class ApiSdk {
 	private _axios: Axios;
-	private _apiKey: string;
-	private _instanceUrl: string;
 	uploads: Uploads;
 	notes: Notes;
 	apiKeys: ApiKeys;
 	url: Url;
-	settings:Settings
+	settings: Settings;
 	constructor() {
-		this._instanceUrl = process.env.NEXT_PUBLIC_API_URL as string;
-		this._apiKey = process.env.NEXT_PUBLIC_API_KEY as string;
-		this._axios = axios.create({
-			baseURL: this._instanceUrl,
-			headers: {
-				'x-shx-api-key': this._apiKey,
-			},
-		});
+		this._axios = this.createAxios();
 		this.uploads = new Uploads(this._axios);
 		this.notes = new Notes(this._axios);
 		this.apiKeys = new ApiKeys(this._axios);
 		this.url = new Url(this._axios);
 		this.settings = new Settings(this._axios);
 	}
-	private _setAxios() {
-		this._axios.defaults.baseURL = this._instanceUrl;
-		const headers: any = this._axios.defaults.headers;
-		headers['x-shx-api-key'] = this._apiKey;
+	private createAxios(): Axios {
+		const ax = axios.create();
+		ax.interceptors.request.use(async config => {
+			if (typeof window === 'undefined') {
+				const { cookies } = await import('next/headers');
+				config.headers['x-shx-api-key'] = cookies().get('apiKey')!.value;
+				config.baseURL = cookies().get('instanceUrl')!.value;
+			} else {
+				config.headers['x-shx-api-key'] = Cookies.get().apiKey;
+				config.baseURL = Cookies.get('instanceUrl') ?? '';
+			}
+
+			return config;
+		});
+		return ax;
 	}
 	getAxios() {
 		return this._axios;
-	}
-	setInstanceUrl(instanceUrl: string) {
-		this._instanceUrl = instanceUrl;
-		this._setAxios();
-	}
-	setApiKey(apiKey: string) {
-		this._apiKey = apiKey;
-		this._setAxios();
 	}
 }
 
