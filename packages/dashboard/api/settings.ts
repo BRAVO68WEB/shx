@@ -10,6 +10,10 @@ export class Settings {
 		const data = res.data.data as ISettings;
 		return data;
 	}
+	async updateASetting(key: string, value:string|string[]){
+		const res = await this.axios.post('/settings', {key, value});
+		return res
+	}
 }
 
 export default Settings;
