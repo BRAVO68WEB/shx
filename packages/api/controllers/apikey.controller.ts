@@ -60,10 +60,12 @@ export default class APIKeyController
 			return next(error);
 		}
 		if (delKey === 0)
-			throw new CustomError({
-				message: 'API Key not found',
-				statusCode: 404,
-			});
+			return next(
+				new CustomError({
+					message: 'API Key not found',
+					statusCode: 404,
+				})
+			);
 		return res.status(200).json(makeResponse({ message: 'API Key revoked' }));
 	};
 
