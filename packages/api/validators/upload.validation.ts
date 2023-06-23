@@ -16,7 +16,7 @@ export const deleteFileValidation = async (
 		req.query = await schema.validateAsync(req.query);
 		next();
 	} catch (err) {
-		res.send(
+		res.status(400).send(
 			new CustomError({
 				data: err,
 				message: ErrorMsg.VALIDATION,
@@ -39,7 +39,7 @@ export const urlUploadValidation = async (
 		req.body = await schema.validateAsync(req.body);
 		next();
 	} catch (err) {
-		res.send(
+		res.status(400).send(
 			new CustomError({
 				data: err,
 				message: ErrorMsg.VALIDATION,
