@@ -9,8 +9,11 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { LoginSchema, LoginType } from '@/lib/validators/login';
 import api from '@/api';
 import { toast } from 'react-hot-toast';
+import { useRouter } from 'next/navigation';
 
 const LoginForm = () => {
+	const router = useRouter();
+
 	const { register, handleSubmit } = useForm<LoginType>({
 		resolver: zodResolver(LoginSchema),
 	});
@@ -22,6 +25,7 @@ const LoginForm = () => {
 			const res = await api.apiKeys.createKey();
 			if (res) {
 				Cookies.set('apiKey', res);
+				router.push('/dashboard');
 			} else {
 				Cookies.remove('masterKey');
 				Cookies.remove('instanceUrl');
