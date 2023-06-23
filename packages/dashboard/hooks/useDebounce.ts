@@ -1,5 +1,5 @@
 export const useDebounce = (
-	callback: (param: any) => void,
+	callback: (param: any) => void | Promise<void>,
 	gap: number
 ) => {
 	let timeout: NodeJS.Timeout | null = null;
