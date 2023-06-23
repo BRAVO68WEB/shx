@@ -171,7 +171,9 @@ function ShortenUrlList({ data }: ShortenUrlListProps) {
 						onChange={evt => setInput(evt.target.value)}
 					/>
 					<Button
-						onClick={() => onEditUrl(editURLModal.url!, editURLModal.id!)}
+						onClick={() =>
+							onEditUrl(editURLModal.url ?? '', editURLModal.id ?? '')
+						}
 					>
 						Modify URl
 					</Button>
