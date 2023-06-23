@@ -2,7 +2,6 @@ import { NextFunction, Request, Response } from 'express';
 import Joi from 'joi';
 import { CustomError, NotFoundError } from './error';
 import { pick } from './utilities';
-import { configKeys } from '..';
 
 export const errorHandler = async (
 	err: any,
@@ -21,7 +20,7 @@ export const errorHandler = async (
 		message: err.message,
 		error: true,
 		data: null,
-		error_stack: configKeys.NODE_ENV === 'production' ? undefined : err.stack,
+		error_stack: process.env.NODE_ENV === 'production' ? undefined : err.stack,
 	});
 };
 
