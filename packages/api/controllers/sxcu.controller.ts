@@ -13,8 +13,11 @@ export default class SxcuController
 		next: NextFunction
 	): Promise<Response | void> => {
 		try {
+			const { apikey } = req.query as {
+				apikey: string;
+			};
 			const fileData = await this.createUploadImageSxcu(
-				req.user.apiKey,
+				apikey,
 				req.protocol + '://' + req.hostname
 			);
 			res.send(fileData);
@@ -29,8 +32,11 @@ export default class SxcuController
 		next: NextFunction
 	): Promise<Response | void> => {
 		try {
+			const { apikey } = req.query as {
+				apikey: string;
+			};
 			const fileData = await this.createUploadFileSxcu(
-				req.user.apiKey,
+				apikey,
 				req.protocol + '://' + req.hostname
 			);
 			res.send(fileData);
@@ -45,8 +51,11 @@ export default class SxcuController
 		next: NextFunction
 	): Promise<Response | void> => {
 		try {
+			const { apikey } = req.query as {
+				apikey: string;
+			};
 			const fileData = await this.createURLShrinkSxcu(
-				req.user.apiKey,
+				apikey,
 				req.protocol + '://' + req.hostname
 			);
 			res.send(fileData);
@@ -61,8 +70,11 @@ export default class SxcuController
 		next: NextFunction
 	): Promise<Response | void> => {
 		try {
+			const { apikey } = req.query as {
+				apikey: string;
+			};
 			const fileData = await this.createPasteSxcu(
-				req.user.apiKey,
+				apikey,
 				req.protocol + '://' + req.hostname
 			);
 			res.send(fileData);

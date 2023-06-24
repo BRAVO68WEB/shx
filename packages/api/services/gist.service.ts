@@ -23,6 +23,7 @@ export default class GistService implements IGistService {
 					isPrivate
 					isOneTimeOnly
 					views
+					passkey
 				}
 			}
 		`;
@@ -64,8 +65,12 @@ export default class GistService implements IGistService {
 				};
 				await client.request(updtViewQuery, updtViewVariables);
 			}
-			if (gistData.passkey == passkey && gistData.isPrivate) {
-				return null;
+			if (gistData.isPrivate) {
+				if (gistData.passkey == passkey) {
+					return gistData;
+				} else {
+					return null;
+				}
 			} else {
 				return gistData;
 			}
