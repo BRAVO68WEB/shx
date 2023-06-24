@@ -37,15 +37,6 @@ function NotesList({ data, onDeleteNote }: NotesLitsProps) {
 							<Button
 								variant="transparent"
 								size={'icon'}
-								aria-label="Edit Note"
-								title="Edit Note"
-								className="rounded-full hover:bg-black"
-							>
-								<Edit className="h-5 w-5 " />
-							</Button>
-							<Button
-								variant="transparent"
-								size={'icon'}
 								aria-label="Copy Note"
 								title="Copy Note"
 								className="rounded-full hover:bg-black"
