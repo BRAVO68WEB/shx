@@ -1,7 +1,7 @@
 import Button from '@/components/ui/Button';
 import { ArrowUpRight, Trash } from 'lucide-react';
 import React from 'react';
-import { cn } from '@/lib/utils';
+import { cn, parseDate } from '@/lib/utils';
 import { UploadsListComponentProps } from '@/types/list';
 
 export default function LinearList({
@@ -10,9 +10,6 @@ export default function LinearList({
 	onDelete,
 }: UploadsListComponentProps) {
 	// parse a date from gmt format to iso format
-	const parseDate = (date: string) => {
-		return new Date(date).toISOString().split('T')[0];
-	};
 
 	return (
 		<div className="flex flex-col w-full gap-2 ">

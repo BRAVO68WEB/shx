@@ -2,6 +2,7 @@
 
 import api from '@/api';
 import Button from '@/components/ui/Button';
+import { parseDate } from '@/lib/utils';
 import Cookies from 'js-cookie';
 import { useRouter } from 'next/navigation';
 import React, { useState } from 'react';
@@ -47,10 +48,13 @@ function ApiKeyList({ data }: ApiKeyListProps) {
 					</tr>
 				</thead>
 				<tbody className="divide-y p-2">
-					{apiKeys.map(({ key, keyID }) => (
+					{apiKeys.map(({ key, keyID, last_used }) => (
 						<tr className="bg-gray-900 rounded" key={keyID}>
 							<td className="whitespace-nowrap  pl-4 text-sm font-medium text-white">
 								<p className="text-xl">{key}</p>
+								<p className="text-xs text-gray-400">
+									Last Used: {parseDate(last_used)}
+								</p>
 							</td>
 							<td className="relative whitespace-nowrap py-4 px-4 text-right text-sm font-medium icons flex center items-center gap-3">
 								<Button
