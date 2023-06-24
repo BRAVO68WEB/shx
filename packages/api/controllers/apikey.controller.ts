@@ -15,13 +15,16 @@ export default class APIKeyController
 		next: NextFunction
 	): Promise<Response | void> => {
 		let apikeys;
+		let metadata;
 		try {
 			const { masterkey } = req.query as { masterkey: string };
-			apikeys = await this.listS(masterkey);
+			const { data, meta } = await this.listS(masterkey);
+			apikeys = data;
+			metadata = meta;
 		} catch (error) {
 			return next(error);
 		}
-		return res.status(200).json(makeResponse(apikeys));
+		return res.status(200).json(makeResponse(apikeys, metadata));
 	};
 
 	public generate = async (

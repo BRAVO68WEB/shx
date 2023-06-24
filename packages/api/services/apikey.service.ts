@@ -1,9 +1,8 @@
 import { gql } from 'graphql-request';
 import { client } from '../helpers';
-import { IAPIKeyService } from '../interfaces/apikey.interface';
-import { encapDataKeys } from '../libs';
+import { IAPIKeyService, IListAPIKeys } from '../interfaces/apikey.interface';
+import { encapDataKeys, encapDataKey } from '../libs';
 import { Apikeys, Apikeys_Mutation_Response } from '../graphql/types';
-import { encapDataKey } from '../libs';
 export default class APIKeyService implements IAPIKeyService {
 	public async checkS(apikey: string): Promise<Apikeys | null> {
 		const query = gql`
@@ -25,7 +24,6 @@ export default class APIKeyService implements IAPIKeyService {
 		if (result.apikeys.length === 0) {
 			return null;
 		} else {
-			// return result.apikeys[0];
 			const updateLastUsedquery = gql`
 				mutation updateLastUsed($apikeyID: uuid!) {
 					update_apikeys_by_pk(
@@ -84,7 +82,7 @@ export default class APIKeyService implements IAPIKeyService {
 		return result.delete_apikeys.affected_rows;
 	}
 
-	public async listS(masterKey: string): Promise<encapDataKey[]> {
+	public async listS(masterKey: string): Promise<IListAPIKeys> {
 		if (masterKey !== process.env.MASTER_KEY)
 			throw new Error('Invalid master key');
 		const query = gql`
@@ -94,12 +92,28 @@ export default class APIKeyService implements IAPIKeyService {
 					keyID
 					last_used
 				}
+
+				apikeys_aggregate {
+					aggregate {
+						count
+					}
+				}
 			}
 		`;
 		const result: {
 			apikeys: Apikeys[];
+			apikeys_aggregate: {
+				aggregate: {
+					count: number;
+				};
+			};
 		} = await client.request(query);
-		return encapDataKeys(result.apikeys);
+		return {
+			data: encapDataKeys(result.apikeys),
+			meta: {
+				total: result.apikeys_aggregate.aggregate.count,
+			},
+		};
 	}
 
 	public async verifyS(apikey: string): Promise<boolean> {
