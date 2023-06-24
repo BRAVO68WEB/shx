@@ -58,8 +58,8 @@ export const urlGelAllValidation = async (
 	try {
 		const schema = Joi.object().keys({
 			query: Joi.string().optional(),
-			page: Joi.number().optional(),
-			limit: Joi.number().optional(),
+			page: Joi.number().optional().default(1),
+			limit: Joi.number().optional().default(10),
 		});
 		req.query = await schema.validateAsync(req.query);
 		next();
