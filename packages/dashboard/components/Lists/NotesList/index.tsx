@@ -11,7 +11,9 @@ interface NotesLitsProps {
 
 function NotesList({ data, onDeleteNote }: NotesLitsProps) {
 	function copyNoteLink(id: string) {
-		navigator.clipboard.writeText(`${window.location.origin.toString()}/notes/${id}`);
+		navigator.clipboard.writeText(
+			`${window.location.origin.toString()}/notes/${id}`
+		);
 	}
 	return (
 		<div className="flex flex-col w-full gap-1">
@@ -53,6 +55,8 @@ function NotesList({ data, onDeleteNote }: NotesLitsProps) {
 							</Button>
 							<Link
 								href={`/notes/${note.gist_url_key}`}
+								target="_blank"
+								referrerPolicy="no-referrer"
 								aria-label="Go to Note"
 								title="Go to Note"
 								className="rounded-full hover:bg-black p-3 h-min w-min"
