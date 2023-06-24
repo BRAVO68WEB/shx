@@ -15,8 +15,11 @@ export class Settings {
 		return res
 	}
 	async getInstanceInfo(){
-		
-	}
+		const res = await this.axios.get('/info/sys');
+		delete res.data.data.cpuUsage
+		delete res.data.data.memoryUsage
+		return res.data.data as ISysSettings
+	}	
 }
 
 export default Settings;
