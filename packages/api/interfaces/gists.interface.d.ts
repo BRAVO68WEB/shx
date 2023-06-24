@@ -29,7 +29,7 @@ export interface IGistService {
 		searchString: string,
 		pageNo: number,
 		pageSize: number
-	): Promise<Gists[]>;
+	): Promise<IListGists>;
 }
 
 export interface IPrivate {
@@ -39,4 +39,14 @@ export interface IPrivate {
 
 export interface GistRep extends Gists {
 	gist_url?: string;
+}
+
+export interface IListGists {
+	data: Gists[];
+	meta: {
+		total: number;
+		pageNo: number;
+		pageSize: number;
+		totalPages: number;
+	};
 }

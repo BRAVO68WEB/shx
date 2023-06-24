@@ -96,13 +96,17 @@ export default class URLStoreController
 		next: NextFunction
 	): Promise<Response | void> => {
 		try {
-			const { query, limit, page } = req.query;
-			const urlstore = await this.getAllURLS(
-				query as string,
-				Number(limit),
-				Number(page)
+			const { query, limit, page } = req.query as {
+				query: string;
+				limit: string;
+				page: string;
+			};
+			const { data, meta } = await this.getAllURLS(
+				query,
+				parseInt(limit),
+				parseInt(page)
 			);
-			res.status(200).json(makeResponse(urlstore));
+			res.status(200).json(makeResponse(data, meta));
 		} catch (error) {
 			next(error);
 		}

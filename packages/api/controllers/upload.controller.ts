@@ -125,9 +125,21 @@ export default class UploadController
 		next: NextFunction
 	): Promise<Response | void> => {
 		try {
-			const { limit, offset, query = '' } = req.query;
-			const data = await this.listFilesS(query, Number(limit), Number(offset));
-			res.status(200).json(makeResponse(data));
+			const {
+				limit,
+				page,
+				query = '',
+			} = req.query as {
+				limit: string;
+				page: string;
+				query: string;
+			};
+			const { data, meta } = await this.listFilesS(
+				query,
+				parseInt(limit),
+				parseInt(page)
+			);
+			res.status(200).json(makeResponse(data, meta));
 		} catch (error: any) {
 			next(error);
 		}

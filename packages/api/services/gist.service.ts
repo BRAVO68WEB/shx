@@ -1,6 +1,10 @@
 import { gql } from 'graphql-request';
 import { client } from '../helpers';
-import { IGistService, IPrivate } from '../interfaces/gists.interface';
+import {
+	IGistService,
+	IListGists,
+	IPrivate,
+} from '../interfaces/gists.interface';
 import { UserMeta } from '../types';
 import { Gists, Gists_Mutation_Response } from '../graphql/types';
 
@@ -127,7 +131,7 @@ export default class GistService implements IGistService {
 		searchString = '',
 		pageNo = 1,
 		pageSize = 10
-	): Promise<Gists[]> {
+	): Promise<IListGists> {
 		const query = gql`
 			query listGists($searchString: String!, $pageNo: Int!, $pageSize: Int!) {
 				gists(
@@ -148,6 +152,19 @@ export default class GistService implements IGistService {
 					isOneTimeOnly
 					views
 				}
+
+				gists_aggregate(
+					where: {
+						_or: [
+							{ content: { _iregex: $searchString } }
+							{ gist_url_key: { _iregex: $searchString } }
+						]
+					}
+				) {
+					aggregate {
+						count
+					}
+				}
 			}
 		`;
 		const variables = {
@@ -157,8 +174,29 @@ export default class GistService implements IGistService {
 		};
 		const result: {
 			gists: Gists[];
+			gists_aggregate: {
+				aggregate: {
+					count: number;
+				};
+			};
 		} = await client.request(query, variables);
-		return result.gists;
+		result.gists = result.gists.map(gist => {
+			if (gist.isPrivate) {
+				gist.content = 'Locked 🔒';
+			}
+			return gist;
+		});
+		return {
+			data: result.gists,
+			meta: {
+				pageNo,
+				pageSize,
+				total: result.gists_aggregate.aggregate.count,
+				totalPages: Math.ceil(
+					result.gists_aggregate.aggregate.count / pageSize
+				),
+			},
+		};
 	}
 
 	public async updateGistS(gistID: string, content: string): Promise<number> {

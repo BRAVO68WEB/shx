@@ -1,7 +1,7 @@
 import { NextFunction, Response } from 'express';
 import { ModRequest } from '../types';
 import { Apikeys } from '../graphql/types';
-import { encapDataKey } from '../libs'
+import { encapDataKey } from '../libs';
 
 export interface IAPIKeyController {
 	list(
@@ -27,11 +27,18 @@ export interface IAPIKeyController {
 }
 
 export interface IAPIKeyService {
-	listS(masterkey: string): Promise<encapDataKey[]>;
+	listS(masterkey: string): Promise<IListAPIKeys>;
 	generateS(masterkey: string): Promise<Apikeys>;
 	deleteS(apikey: string, masterkey: string): Promise<number>;
 	checkS(apikey: string): Promise<Apikeys | null>;
 	verifyS(apikey: string): Promise<boolean>;
+}
+
+export interface IListAPIKeys {
+	data: encapDataKey[];
+	meta: {
+		total: number;
+	};
 }
 
 export interface IAPIKeyAuth {
