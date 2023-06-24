@@ -1,3 +1,4 @@
+import React from 'react';
 import './globals.css';
 import { Source_Code_Pro } from 'next/font/google';
 import Providers from '@/components/Providers';
