@@ -112,16 +112,6 @@ function Page() {
 					Save
 				</Button>
 			</div>
-			<div className="flex items-center w-full gap-4">
-				<Input
-					id="instance-url"
-					withLabel
-					label="Instance URL"
-					type="text"
-					className="w-full"
-				/>
-				<Button className="w-20 h-min ">Save</Button>
-			</div>
 			<div className="flex gap-4">
 				<TagInput
 					tags={settings.imageExtensions}
