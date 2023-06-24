@@ -1,7 +1,7 @@
 import { gql } from 'graphql-request';
 import { client } from '../helpers';
 import { UserMeta } from '../types';
-import { IURLStoreService } from '../interfaces/urlstore.interface';
+import { IListURLS, IURLStoreService } from '../interfaces/urlstore.interface';
 import { Shorturls, Shorturls_Mutation_Response } from '../graphql/types';
 
 export default class URLStore implements IURLStoreService {
@@ -64,8 +64,8 @@ export default class URLStore implements IURLStoreService {
 	public async getAllURLS(
 		searchQuery = '',
 		limit = 10,
-		offset = 0
-	): Promise<Shorturls[]> {
+		offset = 1
+	): Promise<IListURLS> {
 		const query = gql`
 			query getAllURLS($searchQuery: String!, $limit: Int!, $offset: Int!) {
 				shorturls(
@@ -83,17 +83,45 @@ export default class URLStore implements IURLStoreService {
 					short_key
 					urlID
 				}
+
+				shorturls_aggregate(
+					where: {
+						_or: [
+							{ short_key: { _iregex: $searchQuery } }
+							{ original_url: { _iregex: $searchQuery } }
+						]
+					}
+				) {
+					aggregate {
+						count
+					}
+				}
 			}
 		`;
 		const variables = {
 			searchQuery,
 			limit,
-			offset,
+			offset: (offset - 1) * limit,
 		};
 		const result: {
 			shorturls: Shorturls[];
+			shorturls_aggregate: {
+				aggregate: {
+					count: number;
+				};
+			};
 		} = await client.request(query, variables);
-		return result.shorturls;
+		return {
+			data: result.shorturls,
+			meta: {
+				pageNo: offset,
+				pageSize: limit,
+				total: result.shorturls_aggregate.aggregate.count,
+				totalPages: Math.ceil(
+					result.shorturls_aggregate.aggregate.count / limit
+				),
+			},
+		};
 	}
 
 	public async getaURLS(urlID: string): Promise<Shorturls> {

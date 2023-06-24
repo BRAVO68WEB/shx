@@ -126,12 +126,12 @@ export default class GistController
 				limit: string;
 				page: string;
 			};
-			const gists = await this.listGistsS(
+			const { data, meta } = await this.listGistsS(
 				search,
 				parseInt(page),
 				parseInt(limit)
 			);
-			res.status(200).json(makeResponse(gists));
+			res.status(200).json(makeResponse(data, meta));
 		} catch (error) {
 			next(error);
 		}

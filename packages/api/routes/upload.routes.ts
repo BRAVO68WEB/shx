@@ -5,6 +5,7 @@ import APIKeyAuth from '../middlewares/apikey_check';
 import {
 	deleteFileValidation,
 	urlUploadValidation,
+	listFileValidation,
 } from '../validators/upload.validation';
 
 const uploadController = new UploadController();
@@ -45,7 +46,12 @@ router.post(
 	uploadController.uploadFileFromURL as any
 );
 
-router.get('/', apiKeyAuth.check as any, uploadController.getAllFiles as any);
+router.get(
+	'/',
+	apiKeyAuth.check as any,
+	listFileValidation as any,
+	uploadController.getAllFiles as any
+);
 
 router.get(
 	'/:fileID',

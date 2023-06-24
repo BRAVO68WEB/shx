@@ -49,3 +49,28 @@ export const urlUploadValidation = async (
 		return;
 	}
 };
+
+export const listFileValidation = async (
+	req: ModRequest,
+	res: Response,
+	next: NextFunction
+) => {
+	try {
+		const schema = Joi.object().keys({
+			query: Joi.string().optional(),
+			page: Joi.number().optional().default(1),
+			limit: Joi.number().optional().default(10),
+		});
+		req.query = await schema.validateAsync(req.query);
+		next();
+	} catch (err) {
+		res.status(400).send(
+			new CustomError({
+				data: err,
+				message: ErrorMsg.VALIDATION,
+				statusCode: 400,
+			})
+		);
+		return;
+	}
+};

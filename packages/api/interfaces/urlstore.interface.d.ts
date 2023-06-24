@@ -43,9 +43,19 @@ export interface IURLStoreService {
 		searchQuery: string,
 		limit: number,
 		offset: number
-	): Promise<Shorturls[]>;
+	): Promise<IListURLS>;
 	getaURLS(urlID: string): Promise<Shorturls>;
 	updateURLS(urlKey: string, updateObject: any): Promise<number>;
+}
+
+export interface IListURLS {
+	data: Shorturls[];
+	meta: {
+		total: number;
+		pageNo: number;
+		pageSize: number;
+		totalPages: number;
+	};
 }
 
 export interface URLStoreRep extends Shorturls {
