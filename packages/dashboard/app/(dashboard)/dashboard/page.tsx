@@ -2,7 +2,7 @@ import Markdown from '@/components/Markdown';
 import axios from 'axios';
 import React from 'react';
 import showdown from 'showdown';
-let converter = new showdown.Converter();
+const converter = new showdown.Converter();
 
 const Dashboard = async () => {
 	const { data } = await axios.get(

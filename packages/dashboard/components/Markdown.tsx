@@ -12,7 +12,7 @@ function Markdown({ markdown }: MarkdownProps) {
 	const ref = useRef<HTMLDivElement>(null);
 	useEffect(() => {
 		if (ref.current?.innerHTML) ref.current.innerHTML = markdown;
-	}, []);
+	}, [markdown]);
 	return (
 		<div className="markdown-body w-full p-10" ref={ref}>
 			Markdown
