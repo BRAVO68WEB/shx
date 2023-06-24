@@ -1,8 +1,6 @@
 import Markdown from '@/components/Markdown';
 import axios from 'axios';
 import React from 'react';
-import showdown from 'showdown';
-const converter = new showdown.Converter();
 
 const Dashboard = async () => {
 	const { data } = await axios.get(
@@ -10,7 +8,7 @@ const Dashboard = async () => {
 	);
 	return (
 		<>
-			<Markdown markdown={converter.makeHtml(data)} />
+			<Markdown markdown={data} />
 		</>
 	);
 };
