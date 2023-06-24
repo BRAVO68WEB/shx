@@ -1,8 +1,6 @@
 import Button from '@/components/ui/Button';
-import Cookies from 'js-cookie';
-import { ArrowUpRight, Copy, Edit, Trash2 } from 'lucide-react';
+import { ArrowUpRight, Copy,  Trash2 } from 'lucide-react';
 import Link from 'next/link';
-import { useEffect, useState } from 'react';
 
 interface NotesLitsProps {
 	data: INote[];

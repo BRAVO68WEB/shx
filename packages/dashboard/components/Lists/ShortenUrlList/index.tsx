@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import Button from '@/components/ui/Button';
 import { Trash, Edit2, ArrowUpRight, X } from 'lucide-react';
 import URLControls from './URLControls';
@@ -9,7 +9,6 @@ import Input from '@/components/ui/Input';
 import api from '@/api';
 import { useRouter } from 'next/navigation';
 import { toast } from 'react-hot-toast';
-import Cookies from 'js-cookie';
 
 interface ShortenUrlListProps {
 	data: IUrl[];

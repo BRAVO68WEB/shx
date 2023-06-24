@@ -2,7 +2,6 @@
 
 import React, { ChangeEventHandler, useEffect, useState } from 'react';
 import Button from '@/components/ui/Button';
-import Input from '@/components/ui/Input';
 import TagInput from '@/components/TagInput';
 import api from '@/api';
 import { toast } from 'react-hot-toast';

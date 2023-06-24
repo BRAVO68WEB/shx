@@ -11,7 +11,7 @@ export class Notes {
 		const data = res.data.data as INote[];
 		return data;
 	}
-	async getSingleNote(id: string, passkey: string = '') {
+	async getSingleNote(id: string, passkey = '') {
 		const res = await this.axios.get(`/gist/${id}`, {
 			params: passkey ? { passkey } : {},
 		});

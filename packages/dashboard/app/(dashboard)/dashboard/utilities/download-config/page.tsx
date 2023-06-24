@@ -61,7 +61,7 @@ function Page() {
 	const [apiKey, setApiKey] = useState('');
 	useEffect(() => {
 		setApiKey(Cookies.get('apiKey') ?? '');
-	});
+	},[]);
 
 	async function onDownloadFile(url: string, filename: string) {
 		try {
