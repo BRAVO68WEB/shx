@@ -1,7 +1,7 @@
 import { gql } from 'graphql-request';
 import { client } from '../helpers';
 import { IAPIKeyService, IListAPIKeys } from '../interfaces/apikey.interface';
-import { encapDataKeys, encapDataKey } from '../libs';
+import { encapDataKeys } from '../libs';
 import { Apikeys, Apikeys_Mutation_Response } from '../graphql/types';
 export default class APIKeyService implements IAPIKeyService {
 	public async checkS(apikey: string): Promise<Apikeys | null> {
