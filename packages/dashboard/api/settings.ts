@@ -14,6 +14,9 @@ export class Settings {
 		const res = await this.axios.post('/settings', {key, value});
 		return res
 	}
+	async getInstanceInfo(){
+		
+	}
 }
 
 export default Settings;
