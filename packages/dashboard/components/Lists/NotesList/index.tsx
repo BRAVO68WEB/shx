@@ -11,7 +11,7 @@ interface NotesLitsProps {
 
 function NotesList({ data, onDeleteNote }: NotesLitsProps) {
 	function copyNoteLink(id: string) {
-		navigator.clipboard.writeText(`${window.location.origin.toString()}/${id}`);
+		navigator.clipboard.writeText(`${window.location.origin.toString()}/notes/${id}`);
 	}
 	return (
 		<div className="flex flex-col w-full gap-1">
