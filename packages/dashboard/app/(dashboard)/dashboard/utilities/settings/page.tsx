@@ -117,6 +117,11 @@ function Page() {
 					tags={settings.imageExtensions}
 					onAddTags={addImageExt}
 					placeholder="Image Extensions"
+					onChange={value =>
+						setSettings(old => {
+							return { ...old, imageExtensions: value };
+						})
+					}
 				/>
 
 				<Button
@@ -133,6 +138,11 @@ function Page() {
 					tags={settings.fileExtensions}
 					onAddTags={addFileExt}
 					placeholder="File Extensions"
+					onChange={value =>
+						setSettings(old => {
+							return { ...old, fileExtensions: value };
+						})
+					}
 				/>
 				<Button
 					onClick={() =>

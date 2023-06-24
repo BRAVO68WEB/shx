@@ -5,10 +5,11 @@ import Button from './ui/Button';
 interface TagInput {
 	tags: string[];
 	onAddTags: (value: string) => void;
+	onChange: (value: string[]) => void;
 	placeholder?: string;
 }
 
-function TagInput({ tags, placeholder, onAddTags }: TagInput) {
+function TagInput({ tags, placeholder, onAddTags, onChange }: TagInput) {
 	const inputRef = useRef<HTMLInputElement>(null);
 	const onSubmit: FormEventHandler<HTMLFormElement> = evt => {
 		evt.preventDefault();
@@ -17,10 +18,17 @@ function TagInput({ tags, placeholder, onAddTags }: TagInput) {
 			inputRef.current.value = '';
 		}
 	};
+	const onDelete = (i: number) => {
+		onChange(tags.filter((_tag, index) => i !== index));
+	};
 	return (
 		<div className="w-full flex flex-wrap gap-2">
 			{tags.map((tag, index) => (
-				<Button key={index} className="rounded w-min m-0 items-center">
+				<Button
+					onClick={() => onDelete(index)}
+					key={index}
+					className="rounded w-min m-0 items-center"
+				>
 					{tag}
 				</Button>
 			))}
