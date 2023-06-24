@@ -18,9 +18,8 @@ const LoginForm = () => {
 		resolver: zodResolver(LoginSchema),
 	});
 
-	const onSubmit = async ({ masterkey, instanceUrl }: LoginType) => {
+	const onSubmit = async ({ masterkey }: LoginType) => {
 		Cookies.set('masterKey', masterkey);
-		Cookies.set('instanceUrl', instanceUrl);
 		try {
 			const res = await api.apiKeys.createKey();
 			if (res) {
@@ -28,14 +27,12 @@ const LoginForm = () => {
 				router.push('/dashboard');
 			} else {
 				Cookies.remove('masterKey');
-				Cookies.remove('instanceUrl');
 				Cookies.remove('apiKey');
 			}
 		} catch (err) {
 			console.error(err);
 			toast.error('error');
 			Cookies.remove('masterKey');
-			Cookies.remove('instanceUrl');
 			Cookies.remove('apiKey');
 		}
 	};
@@ -52,14 +49,6 @@ const LoginForm = () => {
 				placeholder="Master Key"
 				type="text"
 				id="masterKey"
-			/>
-			<Input
-				{...register('instanceUrl')}
-				label="Instance Url"
-				withLabel={true}
-				placeholder="Instance Url"
-				type="text"
-				id="instanceUrl"
 			/>
 			<Button type="submit" className="mt-8">
 				Sign in

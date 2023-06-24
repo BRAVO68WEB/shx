@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import Button from '@/components/ui/Button';
 import { Trash, Edit2, ArrowUpRight, X } from 'lucide-react';
 import URLControls from './URLControls';
@@ -9,7 +9,6 @@ import Input from '@/components/ui/Input';
 import api from '@/api';
 import { useRouter } from 'next/navigation';
 import { toast } from 'react-hot-toast';
-import Cookies from 'js-cookie';
 
 interface ShortenUrlListProps {
 	data: IUrl[];
@@ -27,7 +26,7 @@ function ShortenUrlList({ data }: ShortenUrlListProps) {
 		state: false,
 	});
 	const [input, setInput] = useState('');
-	const [instanceUrl, setInstanceURL] = useState('');
+
 	const onAddURL = async (url: string) => {
 		try {
 			await api.url.uploadUrl(url);
@@ -59,9 +58,6 @@ function ShortenUrlList({ data }: ShortenUrlListProps) {
 		}
 	};
 
-	useEffect(() => {
-		setInstanceURL(Cookies.get('instanceUrl') ?? '');
-	}, []);
 	return (
 		<>
 			<URLControls onAddURL={onAddURL} />
@@ -103,10 +99,10 @@ function ShortenUrlList({ data }: ShortenUrlListProps) {
 							</td>
 							<td className="whitespace-nowrap  pl-4 text-sm font-medium text-white">
 								<div className="flex items-center gap-3">
-									<p className="w-80 truncate">{`${instanceUrl}/${short_key}`}</p>
+									<p className="w-80 truncate">{`${process.env.NEXT_PUBLIC_INSTANCE_URL}/${short_key}`}</p>
 									<a
 										referrerPolicy="no-referrer"
-										href={`${instanceUrl}/${short_key}`}
+										href={`${process.env.NEXT_PUBLIC_INSTANCE_URL}/${short_key}`}
 										target="_blank"
 										className="p-2 bg-white bg-opacity-10 rounded cursor-pointer"
 									>

@@ -32,12 +32,12 @@ export const sidebarGroups: SidebarGroup[] = [
 				href: '/dashboard/utilities/instance-info',
 			},
 			{
-				name: 'Uploads',
+				name: 'Settings',
 				href: '/dashboard/utilities/settings',
 			},
 			{
-				name: 'Notes',
-				href: '/dashboard/utilites/download-config',
+				name: 'Download Config',
+				href: '/dashboard/utilities/download-config',
 			},
 		],
 	},

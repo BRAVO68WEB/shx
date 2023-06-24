@@ -2,7 +2,6 @@
 
 import React, { ChangeEventHandler, useEffect, useState } from 'react';
 import Button from '@/components/ui/Button';
-import Input from '@/components/ui/Input';
 import TagInput from '@/components/TagInput';
 import api from '@/api';
 import { toast } from 'react-hot-toast';
@@ -112,21 +111,16 @@ function Page() {
 					Save
 				</Button>
 			</div>
-			<div className="flex items-center w-full gap-4">
-				<Input
-					id="instance-url"
-					withLabel
-					label="Instance URL"
-					type="text"
-					className="w-full"
-				/>
-				<Button className="w-20 h-min ">Save</Button>
-			</div>
 			<div className="flex gap-4">
 				<TagInput
 					tags={settings.imageExtensions}
 					onAddTags={addImageExt}
 					placeholder="Image Extensions"
+					onChange={value =>
+						setSettings(old => {
+							return { ...old, imageExtensions: value };
+						})
+					}
 				/>
 
 				<Button
@@ -143,6 +137,11 @@ function Page() {
 					tags={settings.fileExtensions}
 					onAddTags={addFileExt}
 					placeholder="File Extensions"
+					onChange={value =>
+						setSettings(old => {
+							return { ...old, fileExtensions: value };
+						})
+					}
 				/>
 				<Button
 					onClick={() =>

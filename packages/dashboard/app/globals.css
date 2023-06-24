@@ -1,17 +1,29 @@
-
-*{
-  margin:0;
-  padding:0;
-  box-sizing: border-box;
+* {
+	margin: 0;
+	padding: 0;
+	box-sizing: border-box;
 }
 
-:root{
-  --primary:#3A86FF;
-  --secondary:#8338EC;
+:root {
+	--primary: #3a86ff;
+	--secondary: #8338ec;
 }
 
-body{
-  color:white
+body {
+	color: white;
+}
+
+.markdown-body p:nth-child(3) {
+	display: flex;
+  gap: 10px;
+}
+.markdown-body p:nth-child(4) {
+	display: flex;
+  gap: 10px;
+}
+.markdown-body p:nth-child(5) {
+	display: flex;
+  gap: 10px;
 }
 
 @tailwind base;

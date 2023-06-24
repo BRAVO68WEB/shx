@@ -1,6 +1,6 @@
 import Button from '@/components/ui/Button';
-import { Edit, Trash2 } from 'lucide-react';
-import React from 'react';
+import { ArrowUpRight, Copy,  Trash2 } from 'lucide-react';
+import Link from 'next/link';
 
 interface NotesLitsProps {
 	data: INote[];
@@ -8,6 +8,11 @@ interface NotesLitsProps {
 }
 
 function NotesList({ data, onDeleteNote }: NotesLitsProps) {
+	function copyNoteLink(id: string) {
+		navigator.clipboard.writeText(
+			`${window.location.origin.toString()}/notes/${id}`
+		);
+	}
 	return (
 		<div className="flex flex-col w-full gap-1">
 			{data.map(note => {
@@ -30,12 +35,23 @@ function NotesList({ data, onDeleteNote }: NotesLitsProps) {
 							<Button
 								variant="transparent"
 								size={'icon'}
-								aria-label="Edit Note"
-								title="Edit Note"
+								aria-label="Copy Note"
+								title="Copy Note"
 								className="rounded-full hover:bg-black"
+								onClick={() => copyNoteLink(note.gist_url_key)}
 							>
-								<Edit className="h-5 w-5 " />
+								<Copy className="h-5 w-5 " />
 							</Button>
+							<Link
+								href={`/notes/${note.gist_url_key}`}
+								target="_blank"
+								referrerPolicy="no-referrer"
+								aria-label="Go to Note"
+								title="Go to Note"
+								className="rounded-full hover:bg-black p-3 h-min w-min"
+							>
+								<ArrowUpRight className="h-5 w-5 " />
+							</Link>
 						</div>
 					</div>
 				);

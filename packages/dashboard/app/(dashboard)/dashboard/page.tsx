@@ -1,9 +1,14 @@
+import Markdown from '@/components/Markdown';
+import axios from 'axios';
 import React from 'react';
 
-const Dashboard = () => {
+const Dashboard = async () => {
+	const { data } = await axios.get(
+		'https://raw.githubusercontent.com/BRAVO68WEB/shx/dev/README.md'
+	);
 	return (
 		<>
-			<h1 className="text-5xl">Dasbhboard</h1>
+			<Markdown markdown={data} />
 		</>
 	);
 };

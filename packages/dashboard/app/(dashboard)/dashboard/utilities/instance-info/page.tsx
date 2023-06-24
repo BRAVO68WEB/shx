@@ -1,13 +1,9 @@
+import api from '@/api';
 import React from 'react';
 
-function Page() {
-	const urls = [
-		{
-			id: 'afdas',
-			originalURL: 'https://www.google.com',
-			shortenedURL: 'https://www.google.com',
-		},
-	];
+async function Page() {
+	const res = await api.settings.getInstanceInfo();
+	const data = Object.entries(res);
 
 	return (
 		<div>
@@ -29,19 +25,13 @@ function Page() {
 					</tr>
 				</thead>
 				<tbody className="divide-y p-2">
-					{urls.map(({ originalURL, shortenedURL, id }) => (
+					{data.map((val, id) => (
 						<tr className="bg-gray-900 rounded" key={id}>
 							<td className="whitespace-nowrap py-5  pl-4 pr-20 text-sm font-medium text-white">
-								<div className="flex items-center gap-3">
-									{originalURL}
-									
-								</div>
+								<div className="flex items-center gap-3">{val[0]}</div>
 							</td>
 							<td className="whitespace-nowrap  pl-4 text-sm font-medium text-white">
-								<div className="flex items-center gap-3">
-									{shortenedURL}
-									
-								</div>
+								<div className="flex items-center gap-3">{val[1]}</div>
 							</td>
 						</tr>
 					))}
