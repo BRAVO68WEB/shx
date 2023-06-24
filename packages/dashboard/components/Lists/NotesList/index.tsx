@@ -1,6 +1,6 @@
 import Button from '@/components/ui/Button';
 import Cookies from 'js-cookie';
-import { ArrowUpRight, Edit, Trash2 } from 'lucide-react';
+import { ArrowUpRight, Copy, Edit, Trash2 } from 'lucide-react';
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
 
@@ -10,10 +10,9 @@ interface NotesLitsProps {
 }
 
 function NotesList({ data, onDeleteNote }: NotesLitsProps) {
-	const [instanceUrl, setInstanceURL] = useState('');
-	useEffect(() => {
-		setInstanceURL(Cookies.get('instanceUrl') ?? '');
-	}, []);
+	function copyNoteLink(id: string) {
+		navigator.clipboard.writeText(`${window.location.origin.toString()}/${id}`);
+	}
 	return (
 		<div className="flex flex-col w-full gap-1">
 			{data.map(note => {
@@ -41,6 +40,16 @@ function NotesList({ data, onDeleteNote }: NotesLitsProps) {
 								className="rounded-full hover:bg-black"
 							>
 								<Edit className="h-5 w-5 " />
+							</Button>
+							<Button
+								variant="transparent"
+								size={'icon'}
+								aria-label="Copy Note"
+								title="Copy Note"
+								className="rounded-full hover:bg-black"
+								onClick={() => copyNoteLink(note.gist_url_key)}
+							>
+								<Copy className="h-5 w-5 " />
 							</Button>
 							<Link
 								href={`/notes/${note.gist_url_key}`}
