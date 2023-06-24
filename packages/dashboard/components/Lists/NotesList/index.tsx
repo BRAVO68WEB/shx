@@ -1,6 +1,8 @@
 import Button from '@/components/ui/Button';
-import { Edit, Trash2 } from 'lucide-react';
-import React from 'react';
+import Cookies from 'js-cookie';
+import { ArrowUpRight, Edit, Trash2 } from 'lucide-react';
+import Link from 'next/link';
+import { useEffect, useState } from 'react';
 
 interface NotesLitsProps {
 	data: INote[];
@@ -8,6 +10,10 @@ interface NotesLitsProps {
 }
 
 function NotesList({ data, onDeleteNote }: NotesLitsProps) {
+	const [instanceUrl, setInstanceURL] = useState('');
+	useEffect(() => {
+		setInstanceURL(Cookies.get('instanceUrl') ?? '');
+	}, []);
 	return (
 		<div className="flex flex-col w-full gap-1">
 			{data.map(note => {
@@ -36,6 +42,14 @@ function NotesList({ data, onDeleteNote }: NotesLitsProps) {
 							>
 								<Edit className="h-5 w-5 " />
 							</Button>
+							<Link
+								href={`/notes/${note.gist_url_key}`}
+								aria-label="Go to Note"
+								title="Go to Note"
+								className="rounded-full hover:bg-black p-3 h-min w-min"
+							>
+								<ArrowUpRight className="h-5 w-5 " />
+							</Link>
 						</div>
 					</div>
 				);
