@@ -2,7 +2,6 @@ import { sidebarGroups } from '@/lib/sidebar';
 import { cookies } from 'next/headers';
 import Link from 'next/link';
 import { redirect } from 'next/navigation';
-import React from 'react';
 
 interface DashboardLayoutProps {
 	children: React.ReactNode;
@@ -12,8 +11,7 @@ const Layout = ({ children }: DashboardLayoutProps) => {
 	const cookieList = cookies();
 	const apiKey = cookieList.has('apiKey');
 	const masterKey = cookieList.has('masterKey');
-	const instanceUrl = cookieList.has('instanceUrl');
-	if (!apiKey || !masterKey || !instanceUrl) redirect('/');
+	if (!apiKey || !masterKey) redirect('/');
 	return (
 		<div className="flex h-screen">
 			<div className="sidebar w-full max-w-xs h-screen bg-black flex flex-col overflow-x-hidden overflow-y-auto">

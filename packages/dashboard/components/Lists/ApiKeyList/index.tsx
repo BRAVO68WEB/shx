@@ -22,7 +22,6 @@ function ApiKeyList({ data }: ApiKeyListProps) {
 			if (apiKey.endsWith(key.substring(9))) {
 				Cookies.remove('apiKey');
 				Cookies.remove('masterKey');
-				Cookies.remove('instanceUrl');
 				router.replace('/');
 			}
 			setApiKeys(old => old.filter(key => key.keyID !== id));
