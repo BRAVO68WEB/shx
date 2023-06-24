@@ -2,6 +2,8 @@
 
 import api from '@/api';
 import Button from '@/components/ui/Button';
+import Cookies from 'js-cookie';
+import { useRouter } from 'next/navigation';
 import React, { useState } from 'react';
 import { toast } from 'react-hot-toast';
 
@@ -11,9 +13,17 @@ interface ApiKeyListProps {
 
 function ApiKeyList({ data }: ApiKeyListProps) {
 	const [apiKeys, setApiKeys] = useState(data);
-	const onDisableApiKey = async (id: string) => {
+	const router = useRouter();
+	const onDisableApiKey = async (id: string, key: string) => {
 		try {
+			const apiKey = Cookies.get().apiKey as string;
 			await api.apiKeys.disableApiKey(id);
+			if (apiKey.endsWith(key.substring(9))) {
+				Cookies.remove('apiKey');
+				Cookies.remove('masterKey');
+				Cookies.remove('instanceUrl');
+				router.replace('/');
+			}
 			setApiKeys(old => old.filter(key => key.keyID !== id));
 		} catch (err) {
 			console.error('Error Deleting api key');
@@ -49,7 +59,7 @@ function ApiKeyList({ data }: ApiKeyListProps) {
 									aria-label="Disable Api Key"
 									title="Disable Api Key"
 									className="rounded-full p-2 bg-red-100 text-red-600"
-									onClick={() => onDisableApiKey(keyID)}
+									onClick={() => onDisableApiKey(keyID, key)}
 								>
 									Disable
 								</Button>
