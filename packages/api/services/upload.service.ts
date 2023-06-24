@@ -2,7 +2,7 @@ import UploaderService from '../data/uploader.service';
 import { gql } from 'graphql-request';
 import { client } from '../helpers';
 import sharp from 'sharp';
-import { IUploaderService } from '../interfaces/upload.interface';
+import { IListUploads, IUploaderService } from '../interfaces/upload.interface';
 import { UserMeta } from '../types';
 import axios from 'axios';
 import fs from 'fs';
@@ -333,9 +333,9 @@ export default class Uploader implements IUploaderService {
 
 	public listFilesS = async (
 		searchQuery: any,
-		limit: number,
-		offset: number
-	): Promise<Uploads[]> => {
+		limit = 1,
+		offset = 10
+	): Promise<IListUploads> => {
 		const query = gql`
 			query listFiles($searchQuery: String!, $limit: Int!, $offset: Int!) {
 				uploads(
@@ -373,14 +373,27 @@ export default class Uploader implements IUploaderService {
 		const variables = {
 			searchQuery,
 			limit: limit,
-			offset: offset,
+			offset: (offset - 1) * limit,
 		};
 
 		const data: {
 			uploads: Uploads[];
+			uploads_aggregate: {
+				aggregate: {
+					count: number;
+				};
+			};
 		} = await client.request(query, variables);
 
-		return data.uploads;
+		return {
+			data: data.uploads,
+			meta: {
+				total: data.uploads_aggregate.aggregate.count,
+				pageNo: offset,
+				pageSize: limit,
+				totalPages: Math.ceil(data.uploads_aggregate.aggregate.count / limit),
+			},
+		};
 	};
 
 	public getFileS = async (fileID: string): Promise<Uploads> => {

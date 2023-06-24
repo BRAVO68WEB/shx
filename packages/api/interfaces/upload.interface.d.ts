@@ -52,8 +52,18 @@ export interface IUploaderService {
 		searchQuery: any,
 		limit: number,
 		offset: number
-	): Promise<Uploads[]>;
+	): Promise<IListUploads>;
 	getFileS(fileID: string): Promise<Uploads>;
+}
+
+export interface IListUploads {
+	data: Uploads[];
+	meta: {
+		total: number;
+		pageNo: number;
+		pageSize: number;
+		totalPages: number;
+	};
 }
 
 export interface UploaderConfig {
