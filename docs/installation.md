@@ -1,6 +1,6 @@
 ## Intallation
 
-- [api](installation-api.md)
-- [dashboard](installation-dashboard.md)
-- [cli](installation-cli.md)
-- [discord](installation-discord.md)
+- [api](installation-api)
+- [dashboard](installation-dashboard)
+- [cli](installation-cli)
+- [discord](installation-discord)
