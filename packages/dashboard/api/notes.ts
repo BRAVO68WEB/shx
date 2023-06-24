@@ -12,7 +12,9 @@ export class Notes {
 		return data;
 	}
 	async getSingleNote(id: string, passkey: string = '') {
-		const res = await this.axios.get(`/gist/${id}`, { params: { passkey } });
+		const res = await this.axios.get(`/gist/${id}`, {
+			params: passkey ? { passkey } : {},
+		});
 		const data = res.data.data as INote;
 		return data;
 	}
