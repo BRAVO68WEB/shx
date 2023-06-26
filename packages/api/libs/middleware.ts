@@ -3,12 +3,7 @@ import Joi from 'joi';
 import { CustomError, NotFoundError } from './error';
 import { pick } from './utilities';
 
-export const errorHandler = async (
-	err: any,
-	_req: Request,
-	res: Response,
-	_next: NextFunction
-) => {
+export const errorHandler = async (err: any, _req: Request, res: Response) => {
 	if ('statusCode' in err) {
 		return res.status(err.statusCode).json({
 			message: err.message,
