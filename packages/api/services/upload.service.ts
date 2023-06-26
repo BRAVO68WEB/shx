@@ -168,7 +168,7 @@ export default class Uploader implements IUploaderService {
 	};
 
 	public downloadImage = async (url: string): Promise<string> => {
-		let filename = nanoid() + url.split('/').pop()!;
+		let filename = nanoid() + url.split('/').pop();
 		filename = sanitize(filename);
 		const whitelistedExtensions = await this.configService.getConfigS(
 			'imageExtensions'
@@ -247,7 +247,7 @@ export default class Uploader implements IUploaderService {
 	};
 
 	public downloadFile = async (url: string): Promise<string> => {
-		let filename = nanoid() + url.split('/').pop()!;
+		let filename = nanoid() + url.split('/').pop();
 		filename = sanitize(filename);
 		const whitelistedExtensions = await this.configService.getConfigS(
 			'fileExtensions'
@@ -321,7 +321,9 @@ export default class Uploader implements IUploaderService {
 			delete_uploads_by_pk: Uploads;
 		} = await client.request(delquery, variables);
 
-		const filename = data.delete_uploads_by_pk.upload_url.split('/').pop()!;
+		const filename = data.delete_uploads_by_pk.upload_url
+			.split('/')
+			.pop() as string;
 
 		await this.uploaderService.deleteFile(
 			process.env.R2_BUCKET_FOLDER as string,

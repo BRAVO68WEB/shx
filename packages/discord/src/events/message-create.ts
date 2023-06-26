@@ -397,7 +397,13 @@ export const event: DiscordEvent = {
 				}
 
 				for (let index = 0, l = requiredArugments.length; index < l; index++) {
-					const _argument = requiredArugments[index];
+					const _argument = requiredArugments[index] as {
+						type: 'STRING' | 'NUMBER' | 'BOOLEAN' | 'USER' | 'CHANNEL';
+						required: boolean;
+						text?: string[];
+						customLength?: { min: number; max: number };
+						rest: boolean;
+					};
 					const userArgument = arguments_[index];
 
 					switch (_argument.type) {
@@ -412,8 +418,8 @@ export const event: DiscordEvent = {
 								}
 								if (
 									_argument.customLength &&
-									(content.length > _argument.customLength.max! ||
-										content.length < _argument.customLength.min!)
+									(content.length > _argument.customLength.max ||
+										content.length < _argument.customLength.min)
 								) {
 									const text = `${index.toString()} (ERR_Length)`;
 									return reject(message, usage, text);
