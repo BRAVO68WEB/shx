@@ -21,7 +21,7 @@
     "axios": "^1.4.0",
     "class-variance-authority": "^0.6.0",
     "clsx": "^1.2.1",
-    "eslint": "8.41.0",
+    "eslint": "8.43.0",
     "eslint-config-next": "13.4.5",
     "github-markdown-css": "^5.2.0",
     "install": "^0.13.0",

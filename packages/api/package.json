@@ -64,7 +64,7 @@
 		"@typescript-eslint/parser": "^5.59.8",
 		"concurrently": "^8.2.0",
 		"cross-env": "^7.0.3",
-		"eslint": "^8.35.0",
+		"eslint": "^8.43.0",
 		"eslint-config-prettier": "^8.7.0",
 		"graphqurl": "^1.0.1",
 		"hasura-cli": "^2.15.1",
