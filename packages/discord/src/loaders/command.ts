@@ -61,8 +61,12 @@ export async function loadTextCommand(client: Client) {
 		}
 
 		if (command.data.intervalLimit) {
-			const list = command.data.intervalLimit;
-			if (list.minute! > list.hour! || list.hour! > list.day!) {
+			const list = command.data.intervalLimit as {
+				minute: number;
+				hour: number;
+				day: number;
+			};
+			if (list.minute > list.hour || list.hour > list.day) {
 				throw 'Impolitic Custom Interval style!';
 			}
 		}
