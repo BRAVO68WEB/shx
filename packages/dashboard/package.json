@@ -47,7 +47,7 @@
     "@storybook/addon-links": "^7.0.17",
     "@storybook/blocks": "^7.0.17",
     "@storybook/nextjs": "^7.0.22",
-    "@storybook/react": "^7.0.17",
+    "@storybook/react": "^7.0.24",
     "@storybook/testing-library": "^0.2.0",
     "@types/js-cookie": "^3.0.3",
     "@types/showdown": "^2.0.1",
