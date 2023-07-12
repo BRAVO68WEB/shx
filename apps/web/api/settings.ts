@@ -10,16 +10,16 @@ export class Settings {
 		const data = res.data.data as ISettings;
 		return data;
 	}
-	async updateASetting(key: string, value:string|string[]){
-		const res = await this.axios.post('/settings', {key, value});
-		return res
+	async updateASetting(key: string, value: string | string[]) {
+		const res = await this.axios.post('/settings', { key, value });
+		return res;
 	}
-	async getInstanceInfo(){
+	async getInstanceInfo() {
 		const res = await this.axios.get('/info/sys');
-		delete res.data.data.cpuUsage
-		delete res.data.data.memoryUsage
-		return res.data.data as ISysSettings
-	}	
+		delete res.data.data.cpuUsage;
+		delete res.data.data.memoryUsage;
+		return res.data.data as ISysSettings;
+	}
 }
 
 export default Settings;

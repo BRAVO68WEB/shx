@@ -14,5 +14,5 @@ jobs:
         with:
           node-version: 16
       - run: npm install -g yarn
-      - run: cd packages/dashboard/ && yarn && yarn build
+      - run: cd apps/web/ && yarn && yarn build
       - run: du -sh

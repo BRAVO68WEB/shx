@@ -7,10 +7,10 @@
 
 ## 📥 Installation
 
-1. Navigate to the `packages/discord` directory:
+1. Navigate to the `apps/discord` directory:
 
 ```bash
-cd packages/discord
+cd apps/discord
 ```
 
 2. Install all dependencies:

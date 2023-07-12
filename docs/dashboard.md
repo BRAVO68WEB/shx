@@ -1,6 +1,6 @@
 ## Dashboard
 
-> This package is located in the `packages/dashboard` directory of the monorepo.
+> This package is located in the `apps/web` directory of the monorepo.
 
 ### 📝 Description
 

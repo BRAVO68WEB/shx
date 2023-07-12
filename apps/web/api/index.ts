@@ -27,11 +27,10 @@ class ApiSdk {
 			if (typeof window === 'undefined') {
 				const { cookies } = await import('next/headers');
 				config.headers['x-shx-api-key'] = cookies().get('apiKey')?.value;
-				
 			} else {
 				config.headers['x-shx-api-key'] = Cookies.get().apiKey ?? '';
 			}
-			config.baseURL = process.env.NEXT_PUBLIC_INSTANCE_URL
+			config.baseURL = process.env.NEXT_PUBLIC_INSTANCE_URL;
 
 			return config;
 		});

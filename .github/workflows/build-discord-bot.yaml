@@ -14,5 +14,5 @@ jobs:
         with:
           node-version: 16
       - run: npm install -g yarn
-      - run: cd packages/discord/ && yarn && yarn build
+      - run: cd apps/discord/ && yarn && yarn build
       - run: du -sh
