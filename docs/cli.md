@@ -1,6 +1,6 @@
 # CLI
 
-> This package is located in the `packages/cli` directory of the monorepo.
+> This package is located in the `apps/cli` directory of the monorepo.
 
 ## 📝 Description
 

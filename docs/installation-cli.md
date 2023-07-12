@@ -9,10 +9,10 @@
 
 ### From Source
 
-1. Navigate to the `packages/cli` directory:
+1. Navigate to the `apps/cli` directory:
 
 ```bash
-cd packages/cli
+cd apps/cli
 ```
 
 2. Install all dependencies:

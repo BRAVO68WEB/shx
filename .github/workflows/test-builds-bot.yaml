@@ -13,12 +13,12 @@ jobs:
     - name: Checkout
       uses: actions/checkout@v2
 
-    - name: Write ENV_DISCORD to packages/discord/.env
+    - name: Write ENV_DISCORD to apps/discord/.env
       run: |
-        wget ${{ secrets.ENV_DISCORD }} -O packages/discord/.env
+        wget ${{ secrets.ENV_DISCORD }} -O apps/discord/.env
         
     - name: Start containers
-      run: cd packages/discord && docker compose -f "docker-compose.yaml" up -d --build
+      run: cd apps/discord && docker compose -f "docker-compose.yaml" up -d --build
 
     - name: Wait for containers
       run: sleep 30

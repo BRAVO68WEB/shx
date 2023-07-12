@@ -1,6 +1,6 @@
 ## Discord
 
-> This package is located in the `packages/dashboard` directory of the monorepo.
+> This package is located in the `apps/discord` directory of the monorepo.
 
 ### 📝 Description
 

@@ -2,13 +2,13 @@ api:
 - packages/api/**/*
 
 cli:
-- packages/cli/**/*
+- apps/cli/**/*
 
 dashboard:
-- packages/dashboard/**/*
+- apps/web/**/*
 
 discord:
-- packages/discord/**/*
+- apps/discord/**/*
 
 documentation:
 - docs
