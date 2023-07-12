@@ -24,12 +24,12 @@ export class Url {
 		short_key: string;
 	}) {
 		const res = await this.axios.put(`/url/${id}`, { original_url, short_key });
-        return res
+		return res;
 	}
 	async deleteUrl(id: string) {
-        const res = await this.axios.delete(`/url/${id}`);
-        return res;
-    }
+		const res = await this.axios.delete(`/url/${id}`);
+		return res;
+	}
 }
 
 export default Url;
