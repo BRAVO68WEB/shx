@@ -33,7 +33,7 @@
 		"redis": "^4.6.7",
 		"sanitize-filename": "^1.6.3",
 		"sharp": "^0.32.3",
-		"winston": "^3.9.0",
+		"winston": "^3.10.0",
 		"zod": "^3.21.4"
 	},
 	"scripts": {
