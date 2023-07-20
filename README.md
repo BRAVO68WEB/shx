@@ -43,25 +43,9 @@ Shx is a platform ment to store and share files, images, text and URLs with ease
 - CLI Support
 - Web Dashboard
 
-## 🎁 Project Setup
+## Docs
 
-### @packages/api
-
-![GitHub package.json version (subfolder of monorepo)](https://img.shields.io/github/package-json/v/BRAVO68WEB/shx?filename=packages%2Fapi%2Fpackage.json&logo=npm&style=for-the-badge)
-
-The API package contains the server-side code responsible for handling file, image, and text uploads, as well as URL shortening. It provides the core functionality of the ShareX server.
-
-### @packages/cli
-
-![GitHub package.json version (subfolder of monorepo)](https://img.shields.io/github/package-json/v/BRAVO68WEB/shx?filename=packages%2Fcli%2Fpackage.json&logo=npm&style=for-the-badge)
-
-The CLI package includes the command-line interface (CLI) for interacting with the ShareX server from the terminal. It allows users to perform various actions, such as uploading files, images, or text, and generating short URLs.
-
-### @packages/dashboard
-
-![GitHub package.json version (subfolder of monorepo)](https://img.shields.io/github/package-json/v/BRAVO68WEB/shx?filename=packages%2Fdashboard%2Fpackage.json&logo=npm&style=for-the-badge)
-
-The dashboard package contains the web dashboard for the ShareX server. It allows users to view their uploaded files, images, and text, as well as manage their account and settings via a web interface.
+[Read here](https://github.com/BRAVO68WEB/shx/wiki)
 
 ## 📝 License
 
