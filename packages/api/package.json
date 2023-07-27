@@ -67,7 +67,7 @@
 		"eslint": "^8.45.0",
 		"eslint-config-prettier": "^8.7.0",
 		"graphqurl": "^1.0.1",
-		"hasura-cli": "^2.29.1",
+		"hasura-cli": "^2.30.0",
 		"husky": "^8.0.3",
 		"lint-staged": "^13.2.3",
 		"nodemon": "^2.0.22",
