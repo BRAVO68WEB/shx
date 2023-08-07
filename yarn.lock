@@ -4217,10 +4217,10 @@ escape-string-regexp@^1.0.5:
   resolved "https://registry.yarnpkg.com/escape-string-regexp/-/escape-string-regexp-1.0.5.tgz#1b61c0562190a8dff6ae3bb2cf0200ca130b86d4"
   integrity sha512-vbRorB5FUQWvla16U8R/qgaFIya2qGzwDrNmCZuYKrbdSUMG6I1ZCGQRefkRVhuOkIGVne7BQ35DSfo1qvJqFg==
 
-eslint-config-prettier@^8.9.0:
-  version "8.9.0"
-  resolved "https://registry.yarnpkg.com/eslint-config-prettier/-/eslint-config-prettier-8.9.0.tgz#094b6254b2804b0544f7cee535f802b6d29ee10b"
-  integrity sha512-+sbni7NfVXnOpnRadUA8S28AUlsZt9GjgFvABIRL9Hkn8KqNzOp+7Lw4QWtrwn20KzU3wqu1QoOj2m+7rKRqkA==
+eslint-config-prettier@^9.0.0:
+  version "9.0.0"
+  resolved "https://registry.yarnpkg.com/eslint-config-prettier/-/eslint-config-prettier-9.0.0.tgz#eb25485946dd0c66cd216a46232dc05451518d1f"
+  integrity sha512-IcJsTkJae2S35pRsRAwoCE+925rJJStOdkKnLVgtE+tEpqU0EVVM7OqrwxqgptKdX29NUwC82I5pXsGFIgSevw==
 
 eslint-scope@^5.1.1:
   version "5.1.1"
@@ -7317,6 +7317,11 @@ tslib@^1.11.1, tslib@^1.8.1, tslib@^1.9.3:
   integrity sha512-Xni35NKzjgMrwevysHTCArtLDpPvye8zV/0E4EyYn43P7/7qvQwPh9BGkHewbMulVntbigmcT7rdX3BNo9wRJg==
 
 tslib@^2.0.0, tslib@^2.0.3, tslib@^2.1.0, tslib@^2.3.1, tslib@^2.4.0, tslib@^2.5.0, tslib@^2.5.3, tslib@^2.6.1:
+  version "2.6.1"
+  resolved "https://registry.yarnpkg.com/tslib/-/tslib-2.6.1.tgz#fd8c9a0ff42590b25703c0acb3de3d3f4ede0410"
+  integrity sha512-t0hLfiEKfMUoqhG+U1oid7Pva4bbDPHYfJNiB7BiIjRkj1pyC++4N3huJfqY6aRH6VTB0rvtzQwjM4K6qpfOig==
+
+tslib@^2.6.1:
   version "2.6.1"
   resolved "https://registry.yarnpkg.com/tslib/-/tslib-2.6.1.tgz#fd8c9a0ff42590b25703c0acb3de3d3f4ede0410"
   integrity sha512-t0hLfiEKfMUoqhG+U1oid7Pva4bbDPHYfJNiB7BiIjRkj1pyC++4N3huJfqY6aRH6VTB0rvtzQwjM4K6qpfOig==
