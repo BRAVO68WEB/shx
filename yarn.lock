@@ -2748,10 +2748,10 @@
     "@swc/core-win32-ia32-msvc" "1.3.70"
     "@swc/core-win32-x64-msvc" "1.3.70"
 
-"@swc/wasm@^1.3.62":
-  version "1.3.66"
-  resolved "https://registry.yarnpkg.com/@swc/wasm/-/wasm-1.3.66.tgz#65caba266539de18570c680a6e3b1b87a3455348"
-  integrity sha512-YxTkQLpfYr2j2vAHG+guWOGzpBYoqciJcHJKq1ecqHki8mxeTV6Origkyh4DzlG/K1hoy1/FtL6kal71Ktg+lg==
+"@swc/wasm@^1.3.76":
+  version "1.3.76"
+  resolved "https://registry.yarnpkg.com/@swc/wasm/-/wasm-1.3.76.tgz#235c9e1b4389ec6384d097d8cc98f66c435a058d"
+  integrity sha512-AgI1dbzYFn4jXlD6sGJ/xn0KXSoAGHHUFlobSJi6EqA8AKUD3penlPSiRSUi+4rPQzhVDKLh8rKH1GgQOdWcBg==
 
 "@tsconfig/node10@^1.0.7":
   version "1.0.9"
@@ -4985,10 +4985,10 @@ has@^1.0.3:
   dependencies:
     function-bind "^1.1.1"
 
-hasura-cli@^2.30.0:
-  version "2.30.0"
-  resolved "https://registry.yarnpkg.com/hasura-cli/-/hasura-cli-2.30.0.tgz#b19385268ebd2756f3dc218d5519284421c4e6f0"
-  integrity sha512-qlrpAnIK1V8vD/a0RU3SLTqiQW9rslYBQhwlqODzXWV0tLpfZQIXUFQgUZabPRhowmABYBr+McIuuuDPDJMXSw==
+hasura-cli@^2.31.0:
+  version "2.31.0"
+  resolved "https://registry.yarnpkg.com/hasura-cli/-/hasura-cli-2.31.0.tgz#056ec918cd4788cc937a67c95ddd9508ecc8a6c2"
+  integrity sha512-+U/mGfvkOcHtJz0YT7zcFQH5x0SE25RFXM6UIa2bu6OGPwJdX1PRJSt4y/CEbTRAiKPCXWqVknlldXPIezXfTw==
   dependencies:
     axios "^0.21.1"
     chalk "^2.4.2"
