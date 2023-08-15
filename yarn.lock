@@ -4985,10 +4985,10 @@ has@^1.0.3:
   dependencies:
     function-bind "^1.1.1"
 
-hasura-cli@^2.30.0:
-  version "2.30.0"
-  resolved "https://registry.yarnpkg.com/hasura-cli/-/hasura-cli-2.30.0.tgz#b19385268ebd2756f3dc218d5519284421c4e6f0"
-  integrity sha512-qlrpAnIK1V8vD/a0RU3SLTqiQW9rslYBQhwlqODzXWV0tLpfZQIXUFQgUZabPRhowmABYBr+McIuuuDPDJMXSw==
+hasura-cli@^2.31.0:
+  version "2.31.0"
+  resolved "https://registry.yarnpkg.com/hasura-cli/-/hasura-cli-2.31.0.tgz#056ec918cd4788cc937a67c95ddd9508ecc8a6c2"
+  integrity sha512-+U/mGfvkOcHtJz0YT7zcFQH5x0SE25RFXM6UIa2bu6OGPwJdX1PRJSt4y/CEbTRAiKPCXWqVknlldXPIezXfTw==
   dependencies:
     axios "^0.21.1"
     chalk "^2.4.2"
@@ -7317,11 +7317,6 @@ tslib@^1.11.1, tslib@^1.8.1, tslib@^1.9.3:
   integrity sha512-Xni35NKzjgMrwevysHTCArtLDpPvye8zV/0E4EyYn43P7/7qvQwPh9BGkHewbMulVntbigmcT7rdX3BNo9wRJg==
 
 tslib@^2.0.0, tslib@^2.0.3, tslib@^2.1.0, tslib@^2.3.1, tslib@^2.4.0, tslib@^2.5.0, tslib@^2.5.3, tslib@^2.6.1:
-  version "2.6.1"
-  resolved "https://registry.yarnpkg.com/tslib/-/tslib-2.6.1.tgz#fd8c9a0ff42590b25703c0acb3de3d3f4ede0410"
-  integrity sha512-t0hLfiEKfMUoqhG+U1oid7Pva4bbDPHYfJNiB7BiIjRkj1pyC++4N3huJfqY6aRH6VTB0rvtzQwjM4K6qpfOig==
-
-tslib@^2.6.1:
   version "2.6.1"
   resolved "https://registry.yarnpkg.com/tslib/-/tslib-2.6.1.tgz#fd8c9a0ff42590b25703c0acb3de3d3f4ede0410"
   integrity sha512-t0hLfiEKfMUoqhG+U1oid7Pva4bbDPHYfJNiB7BiIjRkj1pyC++4N3huJfqY6aRH6VTB0rvtzQwjM4K6qpfOig==
