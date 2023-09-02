@@ -6,13 +6,12 @@ import helmet from 'helmet';
 import ratelimiter from 'express-rate-limit';
 
 import { hgqlInit } from './helpers';
-import { errorHandler, notFoundHandler } from './libs';
+import { errorHandler, notFoundHandler, logger, LogStream } from './libs';
 import pkg from './package.json' assert { type: 'json' };
 import './configs';
 import CacheClient, { CacheEnvironment } from './helpers/cache.factory';
 import URLStoreController from './controllers/urlstore.controller';
 import ConfigService from './services/config.service';
-import { logger, LogStream } from './libs';
 
 export const app: express.Application = express();
 logger.info('🚀 @' + pkg.author.name + '/' + pkg.name, 'v' + pkg.version);
