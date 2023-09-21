@@ -1,22 +1,29 @@
-import { Router } from 'express';
+import { Hono } from 'hono';
 import APIKeyAuth from '../middlewares/apikey_check';
 import ConfigController from '../controllers/config.controller';
-import { setConfigValidation } from '../validators/settings.validation';
+import { z } from 'zod';
+import { zValidator } from '@hono/zod-validator';
 
 const configController = new ConfigController();
 const apiKeyAuth = new APIKeyAuth();
 
-const router = Router();
+const router = new Hono();
 
-router.get('/', apiKeyAuth.check as any, configController.getAllConfig as any);
+router.get('/', apiKeyAuth.check, configController.getAllConfig);
 
 router.post(
 	'/',
-	apiKeyAuth.check as any,
-	setConfigValidation as any,
-	configController.setConfig as any
+	apiKeyAuth.check,
+	zValidator(
+		'json',
+		z.object({
+			key: z.string(),
+			value: z.string(),
+		})
+	),
+	configController.setConfig
 );
 
-router.get('/:key', apiKeyAuth.check as any, configController.getConfig as any);
+router.get('/:key', apiKeyAuth.check, configController.getConfig);
 
 export default router;

@@ -1,44 +1,59 @@
-import { Router } from 'express';
+import { Hono } from 'hono';
 import URLStoreController from '../controllers/urlstore.controller';
 import APIKeyAuth from '../middlewares/apikey_check';
-import {
-	urlCreateValidation,
-	urlGelAllValidation,
-	urlUpdateValidation,
-} from '../validators/url.validation';
+import { zValidator } from "@hono/zod-validator"
+import { z } from 'zod';
 
 const urlStoreController = new URLStoreController();
 const apiKeyAuth = new APIKeyAuth();
 
-const router = Router();
+const router = new Hono();
 
 router.post(
 	'/',
-	apiKeyAuth.check as any,
-	urlCreateValidation as any,
-	urlStoreController.create as any
+	apiKeyAuth.check,
+	zValidator(
+		'json', 
+		z.object({
+			url: z.string(),
+		})
+	),
+	urlStoreController.create
 );
 
-router.get('/:urlID', apiKeyAuth.check as any, urlStoreController.fetch as any);
+router.get('/:urlID', apiKeyAuth.check, urlStoreController.fetch);
 
 router.get(
 	'/',
-	apiKeyAuth.check as any,
-	urlGelAllValidation as any,
-	urlStoreController.getAll as any
+	apiKeyAuth.check,
+	zValidator(
+		'query', 
+		z.object({
+			search: z.string().optional(),
+			page: z.number().optional().default(1),
+			limit: z.number().optional().default(10),
+		})
+	),
+	urlStoreController.getAll
 );
 
 router.put(
 	'/:urlID',
-	apiKeyAuth.check as any,
-	urlUpdateValidation as any,
-	urlStoreController.update as any
+	apiKeyAuth.check,
+	zValidator(
+		'json', 
+		z.object({
+			short_key: z.string().optional(),
+			original_url: z.string().optional(),
+		})
+	),
+	urlStoreController.update
 );
 
 router.delete(
 	'/:urlID',
-	apiKeyAuth.check as any,
-	urlStoreController.delete as any
+	apiKeyAuth.check,
+	urlStoreController.delete
 );
 
 export default router;

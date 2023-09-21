@@ -1,43 +1,29 @@
-import { NextFunction, Response } from 'express';
-import { ModRequest, UserMeta } from '../types';
+import { Context } from 'hono';
+import { UserMeta } from '../types';
 import { Uploads } from '../graphql/types';
 
 export interface IUploaderController {
 	upload(
-		req: ModRequest,
-		res: Response,
-		next: NextFunction
-	): Promise<Response | void>;
+		ctx: Context
+	);
 	uploadImage(
-		req: ModRequest,
-		res: Response,
-		next: NextFunction
-	): Promise<Response | void>;
+		ctx: Context
+	);
 	uploadImageFromURL(
-		req: ModRequest,
-		res: Response,
-		next: NextFunction
-	): Promise<Response | void>;
+		ctx: Context
+	);
 	uploadFileFromURL(
-		req: ModRequest,
-		res: Response,
-		next: NextFunction
-	): Promise<Response | void>;
+		ctx: Context
+	);
 	getFile(
-		req: ModRequest,
-		res: Response,
-		next: NextFunction
-	): Promise<Response | void>;
+		ctx: Context
+	);
 	getAllFiles(
-		req: ModRequest,
-		res: Response,
-		next: NextFunction
-	): Promise<Response | void>;
+		ctx: Context
+	);
 	deleteFile(
-		req: ModRequest,
-		res: Response,
-		next: NextFunction
-	): Promise<Response | void>;
+		ctx: Context
+	);
 }
 
 export interface IUploaderService {

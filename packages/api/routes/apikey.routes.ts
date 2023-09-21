@@ -1,24 +1,38 @@
-import { Router } from 'express';
+import { Hono } from 'hono';
+import { z } from 'zod';
+import { zValidator } from '@hono/zod-validator'
 import APIKeyController from '../controllers/apikey.controller';
-import {
-	apiKeyLCValidation,
-	apiKeyRevokeValidation,
-} from '../validators/apikey.validation';
 
 const apiKeyController = new APIKeyController();
 
-const router = Router();
+const router = new Hono();
 
-router.get('/', apiKeyLCValidation as any, apiKeyController.list as any);
+router.get('/', zValidator(
+	'query',
+	z.object({
+		masterkey: z.string()
+	})
+), apiKeyController.list);
 
-router.post('/', apiKeyLCValidation as any, apiKeyController.generate as any);
+router.post('/', zValidator(
+	'query',
+	z.object({
+		masterkey: z.string()
+	})
+), apiKeyController.generate);
 
 router.delete(
 	'/',
-	apiKeyRevokeValidation as any,
-	apiKeyController.revoke as any
+	zValidator(
+		'query',
+		z.object({
+			masterkey: z.string(),
+			apikeyID: z.string(),
+		})
+	),
+	apiKeyController.revoke
 );
 
-router.get('/verify/:apikey', apiKeyController.verify as any);
+router.get('/verify/:apikey', apiKeyController.verify);
 
 export default router;

@@ -1,89 +1,80 @@
-import { NextFunction, Response } from 'express';
+import { Context } from 'hono';
 import APIKeyService from '../services/apikey.service';
-import { ModRequest } from '../types';
 import { makeResponse } from '../libs';
 import { IAPIKeyController } from '../interfaces/apikey.interface';
-import { CustomError } from '../libs/error';
 
 export default class APIKeyController
 	extends APIKeyService
 	implements IAPIKeyController
 {
 	public list = async (
-		req: ModRequest,
-		res: Response,
-		next: NextFunction
-	): Promise<Response | void> => {
+		ctx: Context
+	) => {
 		let apikeys;
 		let metadata;
 		try {
-			const { masterkey } = req.query as { masterkey: string };
+			const { masterkey } = ctx.req.query() as { masterkey: string };
 			const { data, meta } = await this.listS(masterkey);
 			apikeys = data;
 			metadata = meta;
 		} catch (error) {
-			return next(error);
+			return ctx.json({
+				error,
+			}, 401)
 		}
-		return res.status(200).json(makeResponse(apikeys, metadata));
+		return ctx.json(makeResponse(apikeys, metadata));
 	};
 
 	public generate = async (
-		req: ModRequest,
-		res: Response,
-		next: NextFunction
-	): Promise<Response | void> => {
+		ctx: Context
+	) => {
 		let apikey;
 		try {
-			const { masterkey } = req.query as { masterkey: string };
+			const { masterkey } = ctx.req.query() as { masterkey: string };
 			apikey = await this.generateS(masterkey);
 		} catch (error: any) {
-			return next(
-				new CustomError({
-					message: error.message,
-					statusCode: 502,
-				})
-			);
+			return ctx.json({
+				error,
+			}, 401)
 		}
-		return res.status(200).json(makeResponse(apikey));
+		return ctx.json(makeResponse(apikey), 201);
 	};
 
 	public revoke = async (
-		req: ModRequest,
-		res: Response,
-		next: NextFunction
-	): Promise<Response | void> => {
+		ctx: Context
+	) => {
 		let delKey;
 		try {
-			const { masterkey, apikeyID } = req.query as {
+			const { masterkey, apikeyID } = ctx.req.query() as {
 				masterkey: string;
 				apikeyID: string;
 			};
 			delKey = await this.deleteS(apikeyID, masterkey);
 		} catch (error) {
-			return next(error);
+			return ctx.json({
+				error,
+			}, 401);
 		}
 		if (delKey === 0)
-			return next(
-				new CustomError({
-					message: 'API Key not found',
-					statusCode: 404,
-				})
-			);
-		return res.status(200).json(makeResponse({ message: 'API Key revoked' }));
+			return ctx.json({
+				message: 'API Key not found',
+				statusCode: 404,
+			}, 404)
+		return ctx.json(makeResponse({ message: 'API Key revoked' }), 202);
 	};
 
 	public verify = async (
-		req: ModRequest,
-		res: Response,
-		next: NextFunction
-	): Promise<Response | void> => {
+		ctx: Context
+	) => {
 		let result;
 		try {
-			const { apikey } = req.params as { apikey: string };
+			const { apikey } = ctx.req.param() as { apikey: string };
 			result = await this.verifyS(apikey);
 		} catch (error) {
-			return next(error);
+			return ctx.json({
+				error,
+			}, 401);
 		}
-		return res.status(200).json(makeResponse({ result }));
+		return ctx.json(makeResponse({ result }), 200);
 	};
 }

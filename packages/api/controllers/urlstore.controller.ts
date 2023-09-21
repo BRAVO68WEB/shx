@@ -1,5 +1,4 @@
-import { Response, NextFunction, Request } from 'express';
-import { ModRequest } from '../types';
+import { Context } from 'hono';
 import URLStoreService from '../services/urlstore.service';
 import { makeResponse } from '../libs';
 import {
@@ -12,122 +11,103 @@ export default class URLStoreController
 	implements IURLStoreController
 {
 	public create = async (
-		req: ModRequest,
-		res: Response,
-		next: NextFunction
-	): Promise<Response | void> => {
+		ctx: Context
+	) => {
 		try {
-			const { url } = req.body;
-			let urlstore: URLStoreRep = await this.storeURLS(url, req.user);
+			const client_url = ctx.req.url.split(ctx.req.path)[0];
+			const { url } = await ctx.req.json();
+			let urlstore: URLStoreRep = await this.storeURLS(url, await ctx.get("user"));
 			urlstore = {
 				...urlstore,
-				url: `${req.protocol}://${req.hostname}/${urlstore.short_key}`,
+				url: `${client_url}/${urlstore.short_key}`,
 			};
-			res.status(201).json(makeResponse(urlstore));
+			return ctx.json(makeResponse(urlstore), 201);
 		} catch (error) {
-			next(error);
+			return ctx.json(error)
 		}
 	};
 
 	public get = async (
-		req: Request,
-		res: Response,
-		next: NextFunction
-	): Promise<Response | void> => {
+		ctx: Context
+	) => {
 		try {
-			const { urlKey } = req.params;
+			const { urlKey } = ctx.req.param();
 			const urlstore = await this.getURLS(urlKey);
-			if (urlstore === null) {
-				return res
-					.status(404)
-					.json(makeResponse({ message: 'URL not found !!' }));
+			if (!urlstore) {
+				return ctx
+					.json(makeResponse({ message: 'URL not found !!' }), 404);
 			}
-			res.status(304).redirect(urlstore.original_url);
+			return ctx.redirect(urlstore.original_url, 304);
 		} catch (error) {
-			next(error);
+			return ctx.json(error);
 		}
 	};
 
 	public delete = async (
-		req: ModRequest,
-		res: Response,
-		next: NextFunction
-	): Promise<Response | void> => {
+		ctx: Context
+	) => {
 		try {
-			const { urlID } = req.params;
+			const { urlID } = ctx.req.param();
 			const urlstore = await this.deleteURLS(urlID);
-			if (urlstore === null) {
-				return res
-					.status(404)
-					.json(makeResponse({ message: 'URL not found !!' }));
+			if (!urlstore) {
+				return ctx
+					.json(makeResponse({ message: 'URL not found !!' }), 404);
 			}
-			res.status(202).json(makeResponse({ message: 'URL deleted !!' }));
+			return ctx.json(makeResponse({ message: 'URL deleted !!' }), 202);
 		} catch (error) {
-			next(error);
+			return ctx.json(error);
 		}
 	};
 
 	public update = async (
-		req: ModRequest,
-		res: Response,
-		next: NextFunction
-	): Promise<Response | void> => {
+		ctx: Context
+	) => {
 		try {
-			const { urlID } = req.params;
-			const { original_url, short_key } = req.body;
+			const { urlID } = ctx.req.param();
+			const { original_url, short_key } = await ctx.req.json();
 			const urlstore = await this.updateURLS(urlID, {
 				original_url,
 				short_key,
 			});
-			if (urlstore === null) {
-				return res
-					.status(404)
-					.json(makeResponse({ message: 'URL not found !!' }));
+			if (!urlstore) {
+				return ctx
+					.json(makeResponse({ message: 'URL not found !!' }), 404);
 			}
-			res.status(200).json(makeResponse({ message: 'URL updated !!' }));
+			return ctx.json(makeResponse({ message: 'URL updated !!' }));
 		} catch (error) {
-			next(error);
+			return ctx.json(error);
 		}
 	};
 
 	public getAll = async (
-		req: ModRequest,
-		res: Response,
-		next: NextFunction
-	): Promise<Response | void> => {
+		ctx: Context
+	) => {
 		try {
-			const { query, limit, page } = req.query as {
-				query: string;
-				limit: string;
-				page: string;
-			};
+			const { query, limit, page } = ctx.req.query();
 			const { data, meta } = await this.getAllURLS(
 				query,
 				parseInt(limit),
 				parseInt(page)
 			);
-			res.status(200).json(makeResponse(data, meta));
+			return ctx.json(makeResponse(data, meta));
 		} catch (error) {
-			next(error);
+			return ctx.json(error);
 		}
 	};
 
 	public fetch = async (
-		req: ModRequest,
-		res: Response,
-		next: NextFunction
-	): Promise<Response | void> => {
+		ctx: Context
+	) => {
 		try {
-			const { urlID } = req.params;
+			const { urlID } = ctx.req.param();
 			const urlstore = await this.getaURLS(urlID);
-			if (urlstore === null) {
-				return res
-					.status(404)
-					.json(makeResponse({ message: 'URL not found !!' }));
+			if (!urlstore) {
+				return ctx
+					.json(makeResponse({ message: 'URL not found !!' }), 404);
 			}
-			res.status(200).json(makeResponse(urlstore));
+			return ctx.json(makeResponse(urlstore));
 		} catch (error) {
-			next(error);
+			return ctx.json(error);
 		}
 	};
 }

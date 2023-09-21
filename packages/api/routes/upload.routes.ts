@@ -1,68 +1,51 @@
-import { Router } from 'express';
+import { Hono } from 'hono';
 import UploadController from '../controllers/upload.controller';
-import { UploadFactory } from '../helpers/upload.factory';
 import APIKeyAuth from '../middlewares/apikey_check';
-import {
-	deleteFileValidation,
-	urlUploadValidation,
-	listFileValidation,
-} from '../validators/upload.validation';
 
 const uploadController = new UploadController();
-const uploaderFactory = new UploadFactory();
 const apiKeyAuth = new APIKeyAuth();
 
-const router = Router();
+const router = new Hono();
 
 router.post(
 	'/file',
-	apiKeyAuth.check as any,
-	uploaderFactory.getUploader().single('file'),
-	uploadController.upload as any
+	apiKeyAuth.check,
+	uploadController.upload
 );
 
 router.post(
 	'/image',
-	apiKeyAuth.check as any,
-	uploaderFactory
-		.getUploader({
-			mimeFilters: ['image/jpeg', 'image/png', 'image/gif'],
-		})
-		.single('file'),
-	uploadController.uploadImage as any
+	apiKeyAuth.check,
+	uploadController.uploadImage
 );
 
 router.post(
 	'/image-from-url',
-	apiKeyAuth.check as any,
-	urlUploadValidation as any,
-	uploadController.uploadImageFromURL as any
+	apiKeyAuth.check,
+	uploadController.uploadImageFromURL
 );
 
 router.post(
 	'/file-from-url',
-	apiKeyAuth.check as any,
-	urlUploadValidation as any,
-	uploadController.uploadFileFromURL as any
+	apiKeyAuth.check,
+	uploadController.uploadFileFromURL
 );
 
 router.get(
 	'/',
-	apiKeyAuth.check as any,
-	listFileValidation as any,
-	uploadController.getAllFiles as any
+	apiKeyAuth.check,
+	uploadController.getAllFiles
 );
 
 router.get(
 	'/:fileID',
-	apiKeyAuth.check as any,
-	uploadController.getFile as any
+	apiKeyAuth.check,
+	uploadController.getFile
 );
 
 router.get(
 	'/delete/:fileID',
-	deleteFileValidation as any,
-	uploadController.deleteFile as any
+	uploadController.deleteFile
 );
 
 export default router;

@@ -1,24 +1,17 @@
-import { NextFunction, Response } from 'express';
-import { ModRequest } from '../types';
+import { Context } from 'hono';
 
 type IConfigStore = 'development' | 'production';
 
 export interface IConfigController {
 	getAllConfig(
-		req: ModRequest,
-		res: Response,
-		next: NextFunction
-	): Promise<Response | void>;
+		ctx: Context
+	);
 	setConfig(
-		req: ModRequest,
-		res: Response,
-		next: NextFunction
-	): Promise<Response | void>;
+		ctx: Context
+	);
 	getConfig(
-		req: ModRequest,
-		res: Response,
-		next: NextFunction
-	): Promise<Response | void>;
+		ctx: Context
+	);
 }
 
 export interface IConfigService {
