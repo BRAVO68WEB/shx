@@ -38,7 +38,7 @@
 	"scripts": {
 		"dev": "concurrently \"npm run dev:api\" \"npm run dev:hasura\"",
 		"dev:hasura": "cd hasura && hasura --skip-update-check  --envfile ../.env console",
-		"dev:api": "cross-env NODE_ENV=development nodemon -x node --no-warnings --loader @esbuild-kit/esm-loader index.ts --signal SIGKILL --ignore node_modules",
+		"dev:api": "dotenv -- cross-env NODE_ENV=development nodemon -x node --no-warnings --loader @esbuild-kit/esm-loader index.ts --signal SIGKILL --ignore node_modules",
 		"build": "tsc -p tsconfig.json",
 		"start": "node --es-module-specifier-resolution=node --loader ts-node/esm ./build/index.js",
 		"fetch:schemas": "bash bin/fetch-gql-schema.sh",
