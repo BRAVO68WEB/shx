@@ -1,17 +1,9 @@
-import { Request } from 'express';
 export interface PaginationType {
 	page: number;
 	limit: number;
 	sort_order?: 'asc' | 'desc';
 	sort_by?: string;
 	filters?: { [k: string]: any };
-}
-
-export interface ModRequest extends Request {
-	file: any;
-	files: any;
-	user: UserMeta;
-	image: any;
 }
 
 export interface UserMeta {
@@ -43,6 +35,12 @@ export interface SXCUFile {
 	ErrorMessage: string;
 }
 
-export interface FileData extends Express.Multer.File {
-	newName: string;
+
+export type Bindings = {
+	SHX_BUCKET: R2Bucket,
+	SHX_SETTINGS: KVNamespace,
+}
+
+export type Variables = {
+	user: any
 }

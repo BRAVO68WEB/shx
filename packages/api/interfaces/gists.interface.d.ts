@@ -1,18 +1,14 @@
-import { NextFunction, Response, Request } from 'express';
-import { ModRequest, UserMeta } from '../types';
+import { Context } from 'hono';
+import { UserMeta } from '../types';
 import { Gists } from '../graphql/types';
 
 export interface IGistController {
 	create(
-		req: ModRequest,
-		res: Response,
-		next: NextFunction
-	): Promise<Response | void>;
+		ctx: Context
+	);
 	get(
-		req: Request,
-		res: Response,
-		next: NextFunction
-	): Promise<Response | void>;
+		ctx: Context
+	);
 }
 
 export interface IGistService {

@@ -1,52 +1,24 @@
-import { NextFunction, Response } from 'express';
-import { ModRequest, UserMeta } from '../types';
+import { Context } from 'hono';
+import { UserMeta } from '../types';
 import { Uploads } from '../graphql/types';
 
 export interface IUploaderController {
 	upload(
-		req: ModRequest,
-		res: Response,
-		next: NextFunction
-	): Promise<Response | void>;
-	uploadImage(
-		req: ModRequest,
-		res: Response,
-		next: NextFunction
-	): Promise<Response | void>;
-	uploadImageFromURL(
-		req: ModRequest,
-		res: Response,
-		next: NextFunction
-	): Promise<Response | void>;
-	uploadFileFromURL(
-		req: ModRequest,
-		res: Response,
-		next: NextFunction
-	): Promise<Response | void>;
+		ctx: Context
+	);
 	getFile(
-		req: ModRequest,
-		res: Response,
-		next: NextFunction
-	): Promise<Response | void>;
+		ctx: Context
+	);
 	getAllFiles(
-		req: ModRequest,
-		res: Response,
-		next: NextFunction
-	): Promise<Response | void>;
+		ctx: Context
+	);
 	deleteFile(
-		req: ModRequest,
-		res: Response,
-		next: NextFunction
-	): Promise<Response | void>;
+		ctx: Context
+	);
 }
 
 export interface IUploaderService {
-	uploadImageS(file: any, meta: UserMeta): Promise<Uploads>;
 	uploadS(file: any, meta: UserMeta): Promise<Uploads>;
-	uploadImageViaURLS(url: string, meta: UserMeta): Promise<Uploads>;
-	uploadFileViaURLS(url: string, meta: UserMeta): Promise<Uploads>;
-	downloadImage(url: string): Promise<string>;
-	downloadFile(url: string): Promise<string>;
 	deleteFileS(fileID: string, delToken: string): Promise<Uploads>;
 	listFilesS(
 		searchQuery: any,

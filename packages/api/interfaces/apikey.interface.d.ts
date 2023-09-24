@@ -1,29 +1,20 @@
-import { NextFunction, Response } from 'express';
-import { ModRequest } from '../types';
+import { Context, Next } from 'hono';
 import { Apikeys } from '../graphql/types';
 import { encapDataKey } from '../libs';
 
 export interface IAPIKeyController {
 	list(
-		req: ModRequest,
-		res: Response,
-		next: NextFunction
-	): Promise<Response | void>;
+		ctx: Context
+	);
 	generate(
-		req: ModRequest,
-		res: Response,
-		next: NextFunction
-	): Promise<Response | void>;
+		ctx: Context
+	);
 	revoke(
-		req: ModRequest,
-		res: Response,
-		next: NextFunction
-	): Promise<Response | void>;
+		ctx: Context
+	);
 	verify(
-		req: ModRequest,
-		res: Response,
-		next: NextFunction
-	): Promise<Response | void>;
+		ctx: Context
+	);
 }
 
 export interface IAPIKeyService {
@@ -42,5 +33,5 @@ export interface IListAPIKeys {
 }
 
 export interface IAPIKeyAuth {
-	check(req: ModRequest, res: Response, next: NextFunction): Promise<void>;
+	check(ctx: Context, next: Next);
 }

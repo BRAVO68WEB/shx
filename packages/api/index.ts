@@ -1,72 +1,74 @@
-import 'dotenv/config';
-import cors from 'cors';
-import express from 'express';
-import morgan from 'morgan';
-import helmet from 'helmet';
-import ratelimiter from 'express-rate-limit';
+import './configs';
+
+import { Hono } from 'hono';
+import { logger as rlogger } from 'hono/logger';
+import { poweredBy } from 'hono/powered-by'
 
 import { hgqlInit } from './helpers';
-import { errorHandler, notFoundHandler } from './libs';
+import { notFoundHandler } from './libs';
 import pkg from './package.json' assert { type: 'json' };
-import './configs';
-import CacheClient, { CacheEnvironment } from './helpers/cache.factory';
-import URLStoreController from './controllers/urlstore.controller';
-import ConfigService from './services/config.service';
-import { logger, LogStream } from './libs';
-
-export const app: express.Application = express();
-logger.info('🚀 @' + pkg.author.name + '/' + pkg.name, 'v' + pkg.version);
-
-const isDev: boolean = process.env.NODE_ENV == 'production';
-logger.info(isDev ? '🚀 Production Mode' : '🚀 Development Mode');
-const urlStoreController = new URLStoreController();
-const logStream = new LogStream();
-
-logger.info(`🔑 Master Key ${process.env.MASTER_KEY}`);
-
 import routes from './routes';
 
+import URLStoreController from './controllers/urlstore.controller';
+import ConfigService from './services/config.service';
+import { Bindings, Variables } from './types';
+
+export type Env = {
+	ENVIRONMENT: 'development' | 'production';
+	SHX_BUCKET: R2Bucket;
+	SHX_SETTINGS: KVNamespace;
+	R2_BUCKET_ENDPOINT: string;
+	R2_CLIENT_ID: string;
+	R2_CLIENT_SECRET: string;
+	R2_BUCKET_NAME: number;
+	R2_BUCKET_FOLDER: string;
+	R2_BUCKET_URL: string;
+	R2_BUCKET_REGION: string;
+	HASURA_GRAPHQL_ADMIN_SECRET: string;
+	HASURA_GRAPHQL_ENDPOINT: string;
+	DATABASE_URL: string;
+	MASTER_KEY: string;
+};
+  
+
+export const app = new Hono<{Bindings: Bindings, Variables: Variables}>({
+	strict: false
+});
+
+app.use('*', rlogger())
+app.use('*', poweredBy())
+
+console.log('🚀 @' + pkg.author.name + '/' + pkg.name, 'v' + pkg.version);
+
+const isDev: boolean = process.env.NODE_ENV == 'production';
+console.log(isDev ? '🚀 Production Mode' : '🚀 Development Mode');
+
+const urlStoreController = new URLStoreController();
+
+console.log(`🔑 Master Key ${process.env.MASTER_KEY}`);
+
 hgqlInit();
-CacheClient.init(process.env.CACHE_ENV as CacheEnvironment);
 
-app.use(cors());
-app.use(helmet());
-app.use(
-	morgan('combined', {
-		stream: logStream,
-	})
-);
-app.use(express.json());
-app.use(express.urlencoded({ extended: true, limit: '50mb' }));
-app.use(
-	ratelimiter({
-		windowMs: 15 * 60 * 1000,
-		max: 100,
-	})
-);
-app.set('trust proxy', 1);
-
-app.use('/health', (req, res) => {
-	return res.status(200).json({
+app.get('/health', (ctx) => {
+	return ctx.json({
 		app: pkg.name,
-		request_ip: req.ip,
 		uptime: process.uptime(),
 		hrtime: process.hrtime(),
 	});
 });
 
-logger.info('🦄 Base Route /');
+console.log('🦄 Base Route /');
 
-app.use('/', routes);
+app.route('/', routes);
 app.get('/:urlKey', urlStoreController.get);
 
-app.use(notFoundHandler);
-app.use(errorHandler);
+app.all('*', notFoundHandler);
 
-app.listen(process.env.PORT, async () => {
-	logger.info(`🚂 Server running on port ${process.env.PORT}`);
-	const { initConfig } = new ConfigService();
-	await initConfig();
-});
+console.log(`🚂 Server running on port ${process.env.PORT}`);
 
-export { logger };
+const { initConfig } = new ConfigService();
+await initConfig();
+
+app.showRoutes()
+
+export default app

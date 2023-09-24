@@ -1,4 +1,4 @@
-import CacheClient from '../helpers/cache.factory';
+import { Context } from 'hono';
 import {
 	IConfigService,
 	ConfigKeysTypes,
@@ -6,22 +6,31 @@ import {
 	ThemeType,
 	LanguageType,
 } from '../interfaces/config.interface';
-import { logger } from '../libs';
-
+import { Bindings, Variables } from '../types';
+import { Env } from '../index';
 export default class ConfigService implements IConfigService {
+	
+
 	public initConfig = async (): Promise<boolean> => {
-		const config = await CacheClient.keys('config');
+		let config = [
+			await Env.SHX_SETTINGS.get('theme'),
+			await SHX_SETTINGS.get('language'),
+			await SHX_SETTINGS.get('imageExtensions'),
+			await SHX_SETTINGS.get('fileExtensions'),
+		];
+
+		config = await Promise.all(config);
+
 		if (config && config.length > 0) {
-			logger.info('⚽ Config already initialized');
 			return true;
 		} else {
-			await this.setConfigS('theme', 'dark');
-			await this.setConfigS('language', 'en');
-			await this.setConfigS(
+			await this.setConfigS(ctx, 'theme', 'dark');
+			await this.setConfigS(ctx, 'language', 'en');
+			await this.setConfigS(ctx, 
 				'imageExtensions',
 				JSON.stringify(['jpg', 'jpeg', 'png', 'gif', 'webp', 'svg', 'ico'])
 			);
-			await this.setConfigS(
+			await this.setConfigS(ctx, 
 				'fileExtensions',
 				JSON.stringify([
 					'png',
@@ -48,21 +57,33 @@ export default class ConfigService implements IConfigService {
 					'html',
 				])
 			);
-			logger.info('⚽ Config initialized successfully');
+			console.log('⚽ Config initialized successfully');
 			return false;
 		}
 	};
 
-	public getAllConfigS = async (): Promise<Settings> => {
-		const settings: Partial<Settings | any> = await CacheClient.hgetall(
-			'config'
-		);
+	public getAllConfigS = async (ctx: Context<{Bindings: Bindings, Variables: Variables}>): Promise<Settings> => {
+		const config = [
+			await ctx.env.SHX_SETTINGS.get('theme'),
+			await ctx.env.SHX_SETTINGS.get('language'),
+			await ctx.env.SHX_SETTINGS.get('imageExtensions'),
+			await ctx.env.SHX_SETTINGS.get('fileExtensions'),
+		];
+
+		const [theme, language, imageExtensions, fileExtensions] = await Promise.all(config);
+		const settings: Partial<Settings | any> = {
+			theme: theme as ThemeType,
+			language: language as LanguageType,
+			imageExtensions,
+			fileExtensions,
+		}
 		settings.imageExtensions = JSON.parse(settings['imageExtensions']);
 		settings.fileExtensions = JSON.parse(settings['fileExtensions']);
 		return settings as Settings;
 	};
 
 	public setConfigS = async (
+		ctx: Context<{Bindings: Bindings, Variables: Variables}>,
 		key: ConfigKeysTypes,
 		value: string[] | string | boolean | number | ThemeType | LanguageType
 	): Promise<void> => {
@@ -72,6 +93,7 @@ export default class ConfigService implements IConfigService {
 	};
 
 	public getConfigS = async (
+		ctx: Context<{Bindings: Bindings, Variables: Variables}>,
 		key: ConfigKeysTypes
 	): Promise<
 		| string[]

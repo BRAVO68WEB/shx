@@ -1,16 +1,16 @@
-import { Router } from 'express';
+import { Hono } from 'hono';
 import SXCUController from '../controllers/sxcu.controller';
 
 const sxcuController = new SXCUController();
 
-const router = Router();
+const router = new Hono();
 
-router.get('/file.sxcu', sxcuController.file as any);
+router.get('/file.sxcu', sxcuController.file);
 
-router.get('/image.sxcu', sxcuController.image as any);
+router.get('/image.sxcu', sxcuController.image);
 
-router.get('/url.sxcu', sxcuController.url as any);
+router.get('/url.sxcu', sxcuController.url);
 
-router.get('/gist.sxcu', sxcuController.text as any);
+router.get('/gist.sxcu', sxcuController.text);
 
 export default router;

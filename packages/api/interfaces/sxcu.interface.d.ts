@@ -1,27 +1,19 @@
-import { NextFunction, Response } from 'express';
-import { ModRequest, SXCUFile } from '../types';
+import { Context } from 'hono';
+import { SXCUFile } from '../types';
 
 export interface ISXCUController {
 	file(
-		req: ModRequest,
-		res: Response,
-		next: NextFunction
-	): Promise<Response | void>;
+		ctx: Context
+	);
 	url(
-		req: ModRequest,
-		res: Response,
-		next: NextFunction
-	): Promise<Response | void>;
+		ctx: Context
+	);
 	image(
-		req: ModRequest,
-		res: Response,
-		next: NextFunction
-	): Promise<Response | void>;
+		ctx: Context
+	);
 	text(
-		req: ModRequest,
-		res: Response,
-		next: NextFunction
-	): Promise<Response | void>;
+		ctx: Context
+	);
 }
 
 export interface ISXCUService {

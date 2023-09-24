@@ -1,4 +1,4 @@
-import { NextFunction, Response } from 'express';
+import { Context } from 'hono';
 import { ModRequest } from '../types';
 import SxcuService from '../services/sxcu.service';
 import { ISXCUController } from '../interfaces/sxcu.interface';
@@ -8,78 +8,106 @@ export default class SxcuController
 	implements ISXCUController
 {
 	public image = async (
-		req: ModRequest,
-		res: Response,
-		next: NextFunction
-	): Promise<Response | void> => {
+		ctx: Context
+	) => {
 		try {
-			const { apikey } = req.query as {
+			const client_url = ctx.req.url.split(ctx.req.path)[0];
+			const { apikey } = ctx.req.query() as {
 				apikey: string;
 			};
 			const fileData = await this.createUploadImageSxcu(
 				apikey,
-				req.protocol + '://' + req.hostname
+				client_url
 			);
-			res.send(fileData);
-		} catch (error: any) {
-			next(error);
+			ctx.header(
+				"content-type", "application/octet-stream"
+			);
+			ctx.header(
+				"content-disposition", `attachment; filename=${fileData.Name}.sxcu`
+			);
+			return ctx.body(fileData as any);
+		} catch (error) {
+			return ctx.json({
+				error,
+			})
 		}
 	};
 
 	public file = async (
-		req: ModRequest,
-		res: Response,
-		next: NextFunction
-	): Promise<Response | void> => {
+		ctx: Context
+	) => {
 		try {
-			const { apikey } = req.query as {
+			const client_url = ctx.req.url.split(ctx.req.path)[0];
+			const { apikey } = ctx.req.query() as {
 				apikey: string;
 			};
 			const fileData = await this.createUploadFileSxcu(
 				apikey,
-				req.protocol + '://' + req.hostname
+				client_url
 			);
-			res.send(fileData);
-		} catch (error: any) {
-			next(error);
+			ctx.header(
+				"content-type", "application/octet-stream"
+			);
+			ctx.header(
+				"content-disposition", `attachment; filename=${fileData.Name}.sxcu`
+			);
+			return ctx.body(fileData as any)
+		} catch (error) {
+			return ctx.json({
+				error,
+			})
 		}
 	};
 
 	public url = async (
-		req: ModRequest,
-		res: Response,
-		next: NextFunction
-	): Promise<Response | void> => {
+		ctx: Context
+	) => {
 		try {
-			const { apikey } = req.query as {
+			const client_url = ctx.req.url.split(ctx.req.path)[0];
+			const { apikey } = ctx.req.query() as {
 				apikey: string;
 			};
 			const fileData = await this.createURLShrinkSxcu(
 				apikey,
-				req.protocol + '://' + req.hostname
+				client_url
 			);
-			res.send(fileData);
-		} catch (error: any) {
-			next(error);
+			ctx.header(
+				"content-type", "application/octet-stream"
+			);
+			ctx.header(
+				"content-disposition", `attachment; filename=${fileData.Name}.sxcu`
+			);
+			return ctx.body(fileData as any)
+		} catch (error) {
+			return ctx.json({
+				error,
+			})
 		}
 	};
 
 	public text = async (
-		req: ModRequest,
-		res: Response,
-		next: NextFunction
-	): Promise<Response | void> => {
+		ctx: Context
+	) => {
 		try {
-			const { apikey } = req.query as {
+			const client_url = ctx.req.url.split(ctx.req.path)[0];
+			const { apikey } = ctx.req.query() as {
 				apikey: string;
 			};
 			const fileData = await this.createPasteSxcu(
 				apikey,
-				req.protocol + '://' + req.hostname
+				client_url
 			);
-			res.send(fileData);
-		} catch (error: any) {
-			next(error);
+			ctx.header(
+				"content-type", "application/octet-stream"
+			);
+			ctx.header(
+				"content-disposition", `attachment; filename=${fileData.Name}.sxcu`
+			);
+			return ctx.body(fileData as any)
+		} catch (error) {
+			return ctx.json({
+				error,
+			})
 		}
 	};
 }
