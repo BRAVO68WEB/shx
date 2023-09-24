@@ -2,83 +2,32 @@ import { Context } from 'hono';
 import Uploader from '../services/upload.service';
 import { makeResponse } from '../libs';
 import { IUploaderController, UploadRep } from '../interfaces/upload.interface';
-
+import { Bindings, Variables } from '../types';
 export default class UploadController
 	extends Uploader
 	implements IUploaderController
 {
 	public upload = async (
-		ctx: Context
+		ctx: Context<{ Bindings: Bindings, Variables: Variables }>
 	) => {
 		try {
-			const { file } = await ctx.req.parseBody();
+			const { file } = await ctx.req.parseBody() as {
+				file: File;
+			}
 			if (!file) {
 				throw new Error('Please upload a file');
 			}
-			let data: UploadRep = await this.uploadS(file, await await ctx.get("user"));
+			const file_name = Date.now() + "-" + file.name;
+			const shx_upload = await ctx.env.SHX_BUCKET.put(file_name, ctx.req.body);
+			console.log(shx_upload);
+			let data: UploadRep = await this.uploadS(file_name, await ctx.get("user"));
 			data = {
 				...data,
 				url: data.upload_url,
 			};
 			return ctx.json(makeResponse(data));
 		} catch (error) {
-			return ctx.json(error)
-		}
-	};
-
-	public uploadImage = async (
-		ctx: Context
-	) => {
-		try {
-			const { file } = await ctx.req.parseBody();
-			if (!file) {
-				throw new Error('Please upload a image');
-			}
-			let data: UploadRep = await this.uploadImageS(file, await ctx.get("user"));
-			data = {
-				...data,
-				url: data.upload_url,
-			};
-			return ctx.json(makeResponse(data));
-		} catch (error) {
-			return ctx.json(error)
-		}
-	};
-
-	public uploadImageFromURL = async (
-		ctx: Context
-	) => {
-		try {
-			const { url } = await ctx.req.json();
-			if (!url) {
-				throw new Error('Please provide a url');
-			}
-			let data: UploadRep = await this.uploadImageViaURLS(url, await ctx.get("user"));
-			data = {
-				...data,
-				url: data.upload_url,
-			};
-			return ctx.json(makeResponse(data));
-		} catch (error) {
-			return ctx.json(error)
-		}
-	};
-
-	public uploadFileFromURL = async (
-		ctx: Context
-	) => {
-		try {
-			const { url } = await ctx.req.json();
-			if (!url) {
-				throw new Error('Please provide a url');
-			}
-			let data: UploadRep = await this.uploadFileViaURLS(url, await ctx.get("user"));
-			data = {
-				...data,
-				url: data.upload_url,
-			};
-			return ctx.json(makeResponse(data));
-		} catch (error) {
+			console.log(error)
 			return ctx.json(error)
 		}
 	};

@@ -8,6 +8,8 @@
 	"private": true,
 	"scripts": {
 		"dev": "dotnev -- turbo dev",
+		"build": "dotenv -- turbo build",
+		"start": "dotenv -- turbo start",
 		"prettier": "prettier --write \"**/*.{ts,tsx,js,jsx,json,css,scss,md}\"",
 		"prepare": "husky install",
 		"configure-husky": "npx husky install && npx husky add .husky/pre-commit \"npx --no-install lint-staged\""

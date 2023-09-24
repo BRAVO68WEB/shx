@@ -3,11 +3,12 @@ import APIKeyAuth from '../middlewares/apikey_check';
 import ConfigController from '../controllers/config.controller';
 import { z } from 'zod';
 import { zValidator } from '@hono/zod-validator';
+import { Bindings, Variables } from '../types';
 
 const configController = new ConfigController();
 const apiKeyAuth = new APIKeyAuth();
 
-const router = new Hono();
+const router = new Hono<{Bindings: Bindings, Variables: Variables}>();
 
 router.get('/', apiKeyAuth.check, configController.getAllConfig);
 

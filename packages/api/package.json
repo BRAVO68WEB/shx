@@ -37,8 +37,9 @@
 	},
 	"scripts": {
 		"dev": "concurrently \"npm run dev:api\" \"npm run dev:hasura\"",
+    	"deploy": "wrangler deploy --minify src/index.ts",
 		"dev:hasura": "cd hasura && hasura --skip-update-check  --envfile ../.env console",
-		"dev:api": "dotenv -- cross-env NODE_ENV=development nodemon -x node --no-warnings --loader @esbuild-kit/esm-loader index.ts --signal SIGKILL --ignore node_modules",
+		"dev:api": "dotenv -- cross-env NODE_ENV=development wrangler dev index.ts",
 		"build": "tsc -p tsconfig.json",
 		"start": "node --es-module-specifier-resolution=node --loader ts-node/esm ./build/index.js",
 		"fetch:schemas": "bash bin/fetch-gql-schema.sh",
@@ -47,6 +48,7 @@
 		"watch": "tsc -w"
 	},
 	"devDependencies": {
+		"@cloudflare/workers-types": "^4.20230914.0",
 		"@esbuild-kit/esm-loader": "^2.5.5",
 		"@graphql-codegen/cli": "^5.0.0",
 		"@graphql-codegen/typescript": "^4.0.0",
@@ -66,6 +68,7 @@
 		"lint-staged": "^14.0.1",
 		"nodemon": "^3.0.1",
 		"prettier": "^2.8.2",
-		"typescript": "^5.1.6"
+		"typescript": "^5.1.6",
+		"wrangler": "^3.9.0"
 	}
 }

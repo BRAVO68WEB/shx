@@ -1,11 +1,10 @@
 import { GraphQLClient } from 'graphql-request';
 import axios from 'axios';
-import { logger } from '../libs';
 
 export let client = new GraphQLClient('');
 
 export const hgqlInit = async () => {
-	logger.info('🚀 GraphQL Client Initialized');
+	console.log('🚀 GraphQL Client Initialized');
 
 	let HASURA_URL: string = process.env.HASURA_GRAPHQL_ENDPOINT || '';
 	HASURA_URL += HASURA_URL.endsWith('/') ? 'v1/graphql' : '/v1/graphql';
@@ -189,7 +188,7 @@ export const hgqlInit = async () => {
 				...config,
 				data: data,
 			}).then(res => {
-				logger.info(
+				console.log(
 					'🪄 Hasura Tables Metadata Tracked for ' + res.data.length + ' tables'
 				);
 			});
@@ -197,7 +196,7 @@ export const hgqlInit = async () => {
 				...config,
 				data: data2,
 			}).then(res => {
-				logger.info(
+				console.log(
 					'🪄 Hasura Relationships Metadata Tracked for ' +
 						res.data.length +
 						' relationships'
@@ -205,9 +204,9 @@ export const hgqlInit = async () => {
 			});
 		} catch (err: any) {
 			if (err.response?.data?.code == 'already-tracked') {
-				logger.info('🃏 Hasura Metadata Already Tracked');
+				console.log('🃏 Hasura Metadata Already Tracked');
 			} else {
-				logger.info('🚨 Hasura Metadata Tracking Failed');
+				console.log('🚨 Hasura Metadata Tracking Failed');
 
 				setTimeout(() => {
 					hgqlInit();

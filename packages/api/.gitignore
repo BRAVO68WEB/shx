@@ -13,3 +13,6 @@ uploads/*.mp3
 uploads/*.zip
 uploads/*.rar
 uploads/*.pdf
+
+# CF secrets
+secrets.json

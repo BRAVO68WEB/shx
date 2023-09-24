@@ -15,7 +15,7 @@ export interface IConfigController {
 }
 
 export interface IConfigService {
-	initConfig(): Promise<boolean>;
+	initConfig(T): Promise<boolean>;
 	getAllConfigS(): Promise<Settings>;
 	setConfigS(key: ConfigKeysTypes, value: string): Promise<void>;
 	getConfigS(

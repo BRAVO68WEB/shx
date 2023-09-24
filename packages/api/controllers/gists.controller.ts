@@ -1,6 +1,4 @@
-import { NextFunction, Response, Request } from 'express';
 import GistService from '../services/gist.service';
-import { ModRequest } from '../types';
 import { makeResponse } from '../libs';
 import {
 	GistRep,
@@ -8,6 +6,13 @@ import {
 	IPrivate,
 } from '../interfaces/gists.interface';
 import { Context } from 'hono';
+
+type Bindings = {
+	SHX_BUCKET: R2Bucket
+}
+type Variables = {
+	user: any
+}
 
 export default class GistController
 	extends GistService

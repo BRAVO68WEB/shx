@@ -5,17 +5,21 @@ import {
 	IConfigController,
 	ConfigKeysTypes,
 } from '../interfaces/config.interface';
+import { Bindings, Variables } from "../types"
 
 export default class ConfigController
 	extends ConfigService
 	implements IConfigController
 {
 	public getAllConfig = async (
-		ctx: Context
+		ctx: Context<{
+			Bindings: Bindings,
+			Variables: Variables
+		}>
 	) => {
 		let config;
 		try {
-			config = await this.getAllConfigS();
+			config = await this.getAllConfigS(ctx);
 		} catch (error) {
 			return ctx.json({
 				error,
@@ -31,7 +35,7 @@ export default class ConfigController
 			const { key, value } = await ctx.req.json();
 			if (!key || !value)
 				throw new Error("Invalid Request");
-			await this.setConfigS(key, value);
+			await this.setConfigS(ctx, key, value);
 			return ctx.json(
 				makeResponse({
 					message: 'Config updated successfully',
@@ -52,7 +56,7 @@ export default class ConfigController
 			const { key } = ctx.req.param() as { key: ConfigKeysTypes };
 			if (!key)
 				throw new Error("Invalid Request");
-			const config = await this.getConfigS(key);
+			const config = await this.getConfigS(ctx, key);
 			ctx.json(makeResponse(config));
 		} catch (error) {
 			return ctx.json({

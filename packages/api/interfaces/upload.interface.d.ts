@@ -6,15 +6,6 @@ export interface IUploaderController {
 	upload(
 		ctx: Context
 	);
-	uploadImage(
-		ctx: Context
-	);
-	uploadImageFromURL(
-		ctx: Context
-	);
-	uploadFileFromURL(
-		ctx: Context
-	);
 	getFile(
 		ctx: Context
 	);
@@ -27,12 +18,7 @@ export interface IUploaderController {
 }
 
 export interface IUploaderService {
-	uploadImageS(file: any, meta: UserMeta): Promise<Uploads>;
 	uploadS(file: any, meta: UserMeta): Promise<Uploads>;
-	uploadImageViaURLS(url: string, meta: UserMeta): Promise<Uploads>;
-	uploadFileViaURLS(url: string, meta: UserMeta): Promise<Uploads>;
-	downloadImage(url: string): Promise<string>;
-	downloadFile(url: string): Promise<string>;
 	deleteFileS(fileID: string, delToken: string): Promise<Uploads>;
 	listFilesS(
 		searchQuery: any,
