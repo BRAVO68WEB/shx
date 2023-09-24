@@ -63,7 +63,7 @@ export default class ConfigService implements IConfigService {
 	};
 
 	public getAllConfigS = async (ctx: Context<{Bindings: Bindings, Variables: Variables}>): Promise<Settings> => {
-		let config = [
+		const config = [
 			await ctx.env.SHX_SETTINGS.get('theme'),
 			await ctx.env.SHX_SETTINGS.get('language'),
 			await ctx.env.SHX_SETTINGS.get('imageExtensions'),
