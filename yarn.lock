@@ -4379,10 +4379,10 @@ expand-template@^2.0.3:
   resolved "https://registry.yarnpkg.com/expand-template/-/expand-template-2.0.3.tgz#6e14b3fcee0f3a6340ecb57d2e8918692052a47c"
   integrity sha512-XYfuKMvj4O35f/pOXLObndIRvyQ+/+6AhODh+OKWj9S9498pHHn/IMszH+gt0fBCRWMNfk1ZSp5x3AifmnI2vg==
 
-express-rate-limit@^6.9.0:
-  version "6.9.0"
-  resolved "https://registry.yarnpkg.com/express-rate-limit/-/express-rate-limit-6.9.0.tgz#afecb23936d9cd1d133a3c20056708b9955cad0f"
-  integrity sha512-AnISR3V8qy4gpKM62/TzYdoFO9NV84fBx0POXzTryHU/qGUJBWuVGd+JhbvtVmKBv37t8/afmqdnv16xWoQxag==
+express-rate-limit@^7.0.2:
+  version "7.0.2"
+  resolved "https://registry.yarnpkg.com/express-rate-limit/-/express-rate-limit-7.0.2.tgz#0257a823d1547bca35c268d4111e2c7da2473407"
+  integrity sha512-EZoojG9civtJ6GRR7vE0JErow5q/ltbIl0RGbYhrNJKwBC9/kp2HckpdAvQkkE0sRAAtFDBvILvwZSR2kQroDw==
 
 express@4.16.3:
   version "4.16.3"
