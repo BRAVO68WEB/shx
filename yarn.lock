@@ -4990,10 +4990,10 @@ has@^1.0.3:
   dependencies:
     function-bind "^1.1.1"
 
-hasura-cli@^2.31.0:
-  version "2.31.0"
-  resolved "https://registry.yarnpkg.com/hasura-cli/-/hasura-cli-2.31.0.tgz#056ec918cd4788cc937a67c95ddd9508ecc8a6c2"
-  integrity sha512-+U/mGfvkOcHtJz0YT7zcFQH5x0SE25RFXM6UIa2bu6OGPwJdX1PRJSt4y/CEbTRAiKPCXWqVknlldXPIezXfTw==
+hasura-cli@^2.34.0:
+  version "2.34.0"
+  resolved "https://registry.yarnpkg.com/hasura-cli/-/hasura-cli-2.34.0.tgz#40c81ee5e48dc2e8e05a1db62869018fe03fd12d"
+  integrity sha512-+x3ALaSN+dlFXHAlE6Jftq3ZKdoXryF9LzQ3euaIOL6U0O6e/b4SJSChi6OKCdFIbxWK6VoGdv5FFMBaeC+ShA==
   dependencies:
     axios "^0.21.1"
     chalk "^2.4.2"
