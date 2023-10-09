@@ -2783,10 +2783,10 @@
   resolved "https://registry.yarnpkg.com/@swc/types/-/types-0.1.4.tgz#8d647e111dc97a8e2881bf71c2ee2d011698ff10"
   integrity sha512-z/G02d+59gyyUb7KYhKi9jOhicek6QD2oMaotUyG+lUkybpXoV49dY9bj7Ah5Q+y7knK2jU67UTX9FyfGzaxQg==
 
-"@swc/wasm@^1.3.76":
-  version "1.3.76"
-  resolved "https://registry.yarnpkg.com/@swc/wasm/-/wasm-1.3.76.tgz#235c9e1b4389ec6384d097d8cc98f66c435a058d"
-  integrity sha512-AgI1dbzYFn4jXlD6sGJ/xn0KXSoAGHHUFlobSJi6EqA8AKUD3penlPSiRSUi+4rPQzhVDKLh8rKH1GgQOdWcBg==
+"@swc/wasm@^1.3.92":
+  version "1.3.92"
+  resolved "https://registry.yarnpkg.com/@swc/wasm/-/wasm-1.3.92.tgz#3074c20b05ef6cb6f597cbd3823fa741937d8e41"
+  integrity sha512-hOaY0Nsz3B2b8IdiUF2JKPsa3pH1Aj3E+F+pgfXXgxbsLOgYcdNjWLkuJfHgh/F3TSs8FVs8gCXktO+nAI0fWw==
 
 "@tsconfig/node10@^1.0.7":
   version "1.0.9"
