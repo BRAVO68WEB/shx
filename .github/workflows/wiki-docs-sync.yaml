@@ -3,6 +3,8 @@ on:
   workflow_dispatch: # Manual dispatch
   schedule:
     - cron: '0 1 * * 0' # At 01:00 on Sunday.
+permissions:
+  contents: read
 jobs:
   update-wiki:
     runs-on: ubuntu-latest
