@@ -34,7 +34,7 @@
 		"sanitize-filename": "^1.6.3",
 		"sharp": "^0.32.6",
 		"winston": "^3.10.0",
-		"zod": "^3.22.4"
+		"zod": "^4.4.3"
 	},
 	"scripts": {
 		"dev": "concurrently \"npm run dev:express\" \"npm run dev:hasura\"",
